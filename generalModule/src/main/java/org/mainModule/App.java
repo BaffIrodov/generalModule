@@ -15,6 +15,6 @@ public class App
 
     public static void main( String[] args ) throws IOException {
         System.out.println( "Hello World!" );
-        mainPageResults.getHtml();
+        mainPageResults.parseResults(1);
     }
 }
