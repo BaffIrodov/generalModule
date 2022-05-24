@@ -18,23 +18,25 @@ public class ResultsPageParser {
     List<String> listOfLinks = new ArrayList<>();
 
     public void parseResults(int targetResultsPageCount) throws IOException {
+        long now = System.currentTimeMillis();
         Document document = Jsoup.connect("https://www.hltv.org/results").userAgent(USER_AGENT).get(); //первое подключение, не требует таргета
         if (document.connection().response().statusCode() == 200) {
             listOfLinks = getAllResultsHrefs(document);
         }
-        System.out.print(document.head());
+        System.out.print("Первый запрос результатов: " + (System.currentTimeMillis() - now) + "\n");
         if (targetResultsPageCount != 0) {
             for (int i = 0; i < targetResultsPageCount; i++) {
+                now = System.currentTimeMillis();
                 Document doc = Jsoup.connect(getNextResultsUrl()).userAgent(USER_AGENT).get();
                 listOfLinks = getAllResultsHrefs(doc);
-                System.out.print(document.head());
+                System.out.print((i+1) + "-й запрос результатов: " + (System.currentTimeMillis() - now) + "\n");
             }
         }
     }
 
     private List<String> getAllResultsHrefs(Document doc) {
         Elements elementsWithHrefs = doc.body().getElementsByClass("result-con");
-        if(offset == 0 && (elementsWithHrefs.size() - 100) != 0) //на первой странице результатов есть матчи из текущего большого чемпионата. Они дублируются
+        if (offset == 0 && (elementsWithHrefs.size() - 100) != 0) //на первой странице результатов есть матчи из текущего большого чемпионата. Они дублируются
         {
             elementsWithHrefs = skipTheseResults(elementsWithHrefs, elementsWithHrefs.size() - 100);
         }
@@ -43,14 +45,14 @@ public class ResultsPageParser {
             //ссылка такого образца /matches/2356525/eternal-fire-vs-saw-esl-pro-league-season-16-conference-play-in
             return "https://www.hltv.org" + element.childNodes().get(0).attributes().get("href");
         }).collect(Collectors.toList());
-        return  listOfLinks;
+        return listOfLinks;
     }
 
-    private Elements skipTheseResults(Elements elements, int skipOffset){
+    private Elements skipTheseResults(Elements elements, int skipOffset) {
         int i = 1;
         Elements elementsAfterSkip = new Elements();
-        for(Element element : elements){
-            if(i > skipOffset){
+        for (Element element : elements) {
+            if (i > skipOffset) {
                 elementsAfterSkip.add(element);
             }
             i++;
