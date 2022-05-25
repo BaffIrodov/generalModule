@@ -1,6 +1,6 @@
 package org.mainModule.entities;
 
-public enum Maps {
+public enum MapsEnum {
     DUST2,
     MIRAGE,
     INFERNO,

@@ -27,6 +27,6 @@ public class MatchesPageParser {
             }
             else return null;
         }).collect(Collectors.toList());
-        System.out.print("Запрос будущих матчей: " + (System.currentTimeMillis() - now) + "\n");
+        System.out.println("Запрос будущих матчей: " + (System.currentTimeMillis() - now));
     }
 }
