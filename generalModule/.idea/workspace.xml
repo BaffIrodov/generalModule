@@ -5,17 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76d8e0e0-7367-45a0-8430-81c979666c98" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Map.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Maps.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/MapsEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/MatchesPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/MatchesPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/MapsEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/MapsEnum.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/MatchesPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/MatchesPageParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/MapsEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/MapsEnum.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultPageParser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultsPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultsPageParser.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
