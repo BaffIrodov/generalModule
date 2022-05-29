@@ -4,6 +4,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.mainModule.common.CommonUtils;
+import org.mainModule.common.UserAgent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,21 +15,20 @@ import java.util.stream.Collectors;
 
 public class ResultsPageParser {
 
-    public static String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36";
     private int offset = 0;
     List<String> listOfLinks = new ArrayList<>();
-    private ResultPageParser resultPageParser = new ResultPageParser();
+    private final ResultPageParser resultPageParser = new ResultPageParser();
 
     public void parseResults(int targetResultsPageCount) throws IOException {
         long now = System.currentTimeMillis();
-        Document document = Jsoup.connect("https://www.hltv.org/results").userAgent(USER_AGENT).get(); //первое подключение, не требует таргета
+        Document document = Jsoup.connect("https://www.hltv.org/results").userAgent(UserAgent.USER_AGENT_CHROME).get(); //первое подключение, не требует таргета
         if (document.connection().response().statusCode() == 200) {
             listOfLinks = getAllResultsHrefs(document);
             AtomicInteger iterator = new AtomicInteger();
             listOfLinks.forEach(link -> {
                 try {
                     iterator.getAndIncrement();
-                    resultPageParser.parsePlayers(link, iterator.get());
+                    resultPageParser.parseMapStats(link, iterator.get());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -37,7 +38,7 @@ public class ResultsPageParser {
         if (targetResultsPageCount != 0) {
             for (int i = 0; i < targetResultsPageCount; i++) {
                 now = System.currentTimeMillis();
-                Document doc = Jsoup.connect(getNextResultsUrl()).userAgent(USER_AGENT).get();
+                Document doc = Jsoup.connect(getNextResultsUrl()).userAgent(UserAgent.USER_AGENT_CHROME).get();
                 listOfLinks = getAllResultsHrefs(doc);
                 System.out.println((i+1) + "-й запрос результатов: " + (System.currentTimeMillis() - now));
             }
@@ -53,9 +54,9 @@ public class ResultsPageParser {
         List<String> listOfLinks = elementsWithHrefs.stream().map(element -> {
             //элемент в childNodes содержит только одну ноду. В ноде есть два атрибута в виде мапы. По ключу href находится чистая ссылка на матч
             //ссылка такого образца /matches/2356525/eternal-fire-vs-saw-esl-pro-league-season-16-conference-play-in
-            return "https://www.hltv.org" + element.childNodes().get(0).attributes().get("href");
+            return element.childNodes().get(0).attributes().get("href");
         }).collect(Collectors.toList());
-        return listOfLinks;
+        return CommonUtils.hltvLinkTemplate(listOfLinks);
     }
 
     private Elements skipTheseResults(Elements elements, int skipOffset) {

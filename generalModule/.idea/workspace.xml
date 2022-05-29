@@ -5,12 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76d8e0e0-7367-45a0-8430-81c979666c98" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/common/UserAgent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerToBD.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/MapsEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/MapsEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResults.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/MatchesPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/MatchesPageParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/MapsEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/MapsEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/common/CommonUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/common/CommonUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/PlayerInMapResults.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/PlayerInMapResults.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultPageParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultsPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultsPageParser.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +55,7 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration name="org.mainModule.App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="App" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="org.mainModule.App" />
       <module name="generalModule" />
       <extension name="coverage">
@@ -63,7 +70,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.org.mainModule.App" />
+        <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
   </component>
@@ -97,6 +104,8 @@
       <configuration name="Application">
         <watch expression="((HttpConnection)doc.connection).res" custom="org.jsoup.helper.HttpConnection" />
         <watch expression="elementsWithHrefs.get(41)" />
+        <watch expression="((Element)maps.get(0).childNodes.get(0)).childNodes" custom="org.jsoup.nodes.Element" />
+        <watch expression="doc" />
       </configuration>
     </watches-manager>
   </component>

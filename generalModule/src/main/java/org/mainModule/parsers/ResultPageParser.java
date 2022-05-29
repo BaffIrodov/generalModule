@@ -6,34 +6,47 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.mainModule.common.CommonUtils;
+import org.mainModule.common.UserAgent;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ResultPageParser {
-    public int timeout = 1;
-    public static String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36";
-    public void parsePlayers(String resultUrl, int iterator) throws IOException {
+    private final StatsPageParser statsPageParser = new StatsPageParser();
+    public void parseMapStats(String resultUrl, int iterator) throws IOException {
+        List<String> statsLinks = new ArrayList<>();
         CommonUtils.waiter(300);
         long now = System.currentTimeMillis();
-        Document doc = Jsoup.connect(resultUrl).userAgent(USER_AGENT).get();
+        Document doc = Jsoup.connect(resultUrl).userAgent(UserAgent.USER_AGENT_CHROME).get();
         if (doc.connection().response().statusCode() == 200) {
-            getAllPlayers(doc, iterator, now);
-            getAllMaps(doc, iterator, now);
+            statsLinks = getAllStatsLinks(doc);
+            for(String link : statsLinks){
+                statsPageParser.parseMapStats(link);
+            }
         }
         System.out.print("Обработано " + iterator + " из 100 игр" +
                 "Время обработки одного матча результатов: " + (System.currentTimeMillis() - now) + "\r");
     }
 
-    public void getAllPlayers(Document doc, int iterator, long now){
-        Elements players = doc.body().getElementsByClass("player");
-        List<Element> playersAsList = players.stream().filter(e -> {
-            return e.attributes().get("class").equals("player");
-        }).collect(Collectors.toList());
+    //получаем ссылки на все странички, на которых приведена полная детализация по карте
+    public List<String> getAllStatsLinks(Document doc){
+        Elements maps = doc.body().getElementsByClass("results-center-stats");
+        List<String> statsLinks = maps.stream().map(e -> e.childNodes().stream().map
+                (r -> r.attributes().get("href")).findFirst().orElse(null)).collect(Collectors.toList());
+        //------
+        // В следующей строчке выкидываются ситуации, когда команда выиграла технической победой или имела фору в одну карту (все карты default)
+        //------
+        statsLinks = statsLinks.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        // Если лист нулевой - то дальше парсинг и не пойдет - в статсы
+        return CommonUtils.hltvLinkTemplate(statsLinks);
     }
 
-    public void getAllMaps(Document doc, int iterator, long now){
+    //бесполезно
+    //получаем все названия карт по очередности
+    public void getAllMapNames(Document doc){
         Elements maps = doc.body().getElementsByClass("stats-menu-link");
         List<String> mapNamesUnprocessed = maps.stream().map(e -> {
             List<Node> nodesWithMapName = e.childNodes().stream().filter(r -> {
@@ -43,6 +56,15 @@ public class ResultPageParser {
                 Node ok = r.childNodes().get(0);
                 return ok.toString().replace("\n", "");
             }).findFirst().orElse("");
+        }).collect(Collectors.toList());
+    }
+
+    //бесполезно
+    //получаю элементы со всеми игроками, но нет детализации по самим раундам
+    public void getAllPlayers(Document doc){
+        Elements players = doc.body().getElementsByClass("player");
+        List<Element> playersAsList = players.stream().filter(e -> {
+            return e.attributes().get("class").equals("player");
         }).collect(Collectors.toList());
     }
 }
