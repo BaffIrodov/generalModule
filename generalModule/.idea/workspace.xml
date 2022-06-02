@@ -5,17 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76d8e0e0-7367-45a0-8430-81c979666c98" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/common/UserAgent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerToBD.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResults.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/MatchesPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/MatchesPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/App.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/common/CommonUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/common/CommonUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/Map.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/Map.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/MapsEnum.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/MapsEnum.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/Player.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/PlayerInMapResults.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/PlayerInMapResults.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/Team.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/Team.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/MapPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/MapPageParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/MatchPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/MatchPageParser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/MatchesPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/MatchesPageParser.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultPageParser.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultsPageParser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/parsers/ResultsPageParser.class" afterDir="false" />
     </list>
@@ -100,14 +105,50 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="((HttpConnection)doc.connection).res" custom="org.jsoup.helper.HttpConnection" />
-        <watch expression="elementsWithHrefs.get(41)" />
-        <watch expression="((Element)maps.get(0).childNodes.get(0)).childNodes" custom="org.jsoup.nodes.Element" />
-        <watch expression="doc" />
-      </configuration>
-    </watches-manager>
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java</url>
+          <line>102</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java</url>
+          <line>84</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java</url>
+          <line>87</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java</url>
+          <line>90</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java</url>
+          <line>93</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java</url>
+          <line>96</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java</url>
+          <line>99</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -17,12 +17,12 @@ public class Player {
 
     public Player(){
         this.stability = 0;
-        this.dust2Results = new PlayerInMapResults();
-        this.mirageResults = new PlayerInMapResults();
-        this.infernoResults = new PlayerInMapResults();
-        this.nukeResults = new PlayerInMapResults();
-        this.overpassResults = new PlayerInMapResults();
-        this.vertigoResults = new PlayerInMapResults();
-        this.ancientResults = new PlayerInMapResults();
+        this.dust2Results = null;
+        this.mirageResults = null;
+        this.infernoResults = null;
+        this.nukeResults = null;
+        this.overpassResults = null;
+        this.vertigoResults = null;
+        this.ancientResults = null;
     }
 }

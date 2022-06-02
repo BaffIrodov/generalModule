@@ -2,6 +2,7 @@ package org.mainModule.entities;
 
 public class PlayerInMapResults {
     public int kills;
+    public int assists;
     public int deaths;
     public long kd;
     public long hs;
@@ -11,6 +12,7 @@ public class PlayerInMapResults {
 
     public PlayerInMapResults(){
         this.kills = 0;
+        this.assists = 0;
         this.deaths = 0;
         this.kd = 0;
         this.hs = 0;
