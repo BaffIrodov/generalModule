@@ -4,16 +4,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.mainModule.common.CommonUtils;
 import org.mainModule.common.UserAgent;
 import org.mainModule.entities.MapsEnum;
-import org.mainModule.entities.Player;
-import org.mainModule.entities.PlayerInMapResults;
+import org.mainModule.entities.PlayerInMapResultsToBD;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -23,21 +28,22 @@ public class StatsPageParser {
 
 
     public void parseMapStats(String statsUrl) throws IOException {
-        List<Player> listPlayers = new ArrayList<>();
+        List<List<PlayerInMapResultsToBD>> listPlayersLeftAndRight = new ArrayList<>();
         CommonUtils.waiter(300);
         long now = System.currentTimeMillis();
         Document doc = Jsoup.connect(statsUrl).userAgent(UserAgent.USER_AGENT_CHROME).get();
         if (doc.connection().response().statusCode() == 200) {
-            listPlayers = getAllPlayers(doc);
+            listPlayersLeftAndRight = getAllPlayers(doc);
         }
-//        System.out.print("Обработано " + iterator + " из 100 игр" +
-//                "Время обработки одного матча результатов: " + (System.currentTimeMillis() - now) + "\r");
+        System.out.println((System.currentTimeMillis() - now));
+        int i = 0;
     }
 
-    public List<Player> getAllPlayers(Document doc){
-        List<Player> players = new ArrayList<>();
+    public List<List<PlayerInMapResultsToBD>> getAllPlayers(Document doc) {
+        List<List<PlayerInMapResultsToBD>> players = new ArrayList<>();
         //получаем текущую карту
         MapsEnum currentMap = getCurrentMapName(doc);
+        String date = getCurrentMapDate(doc);
         //получаем все элементы, принадлежащие таблицам с игроками и их результатами
         Elements table = doc.body().getElementsByClass("stats-table");
         Elements maps = doc.body().getElementsByClass("st-player");
@@ -56,64 +62,100 @@ public class StatsPageParser {
         List<Node> leftTeam = teamsConverted.get(0);
         List<Node> rightTeam = teamsConverted.get(1);
         //инициализация команд
-        List<Player> playersLeft = new ArrayList<>();
-        for(int i = 0; i < 5; i++) {playersLeft.add(new Player());}
-        List<Player> playersRight = new ArrayList<>();
-        for(int i = 0; i < 5; i++) {playersRight.add(new Player());}
-        AtomicInteger iterator = new AtomicInteger();
+        List<PlayerInMapResultsToBD> playersLeft = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            playersLeft.add(new PlayerInMapResultsToBD());
+        }
+        List<PlayerInMapResultsToBD> playersRight = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            playersRight.add(new PlayerInMapResultsToBD());
+        }
+        AtomicInteger iteratorLeft = new AtomicInteger();
         leftTeam.stream().forEach(currentPlayer -> {
+            //получаем все ноды каждого игрока, нод будет 19, но в них входят textElement`ы, их надо отфильтровать
             List<Node> nodes = currentPlayer.childNodes();
+            //фильтрация нод - нам нужны только элемент-классы с тэгом
             nodes = nodes.stream().filter(node -> (node.getClass().equals(Element.class) && ((Element) node).tagName().equals("td"))).collect(Collectors.toList());
-            nodes.forEach(node -> {
-                PlayerInMapResults currentPlayerResults = new PlayerInMapResults();
-                getAttribute(playersLeft.get(iterator.get()), node, currentMap, currentPlayerResults);
-            });
-            int i = 0;
-        iterator.getAndIncrement();
+            PlayerInMapResultsToBD calculatedPlayer = getPlayerResultsInOneMap(playersLeft.get(iteratorLeft.get()), nodes, currentMap, date);
+            playersLeft.set(iteratorLeft.get(), calculatedPlayer);
+            iteratorLeft.getAndIncrement();
         });
+        AtomicInteger iteratorRight = new AtomicInteger();
+        rightTeam.stream().forEach(currentPlayer -> {
+            //получаем все ноды каждого игрока, нод будет 19, но в них входят textElement`ы, их надо отфильтровать
+            List<Node> nodes = currentPlayer.childNodes();
+            //фильтрация нод - нам нужны только элемент-классы с тэгом
+            nodes = nodes.stream().filter(node -> (node.getClass().equals(Element.class) && ((Element) node).tagName().equals("td"))).collect(Collectors.toList());
+            PlayerInMapResultsToBD calculatedPlayer = getPlayerResultsInOneMap(playersRight.get(iteratorRight.get()), nodes, currentMap, date);
+            playersRight.set(iteratorRight.get(), calculatedPlayer);
+            iteratorRight.getAndIncrement();
+        });
+        players.add(playersLeft);
+        players.add(playersRight);
         return players;
     }
 
-    private Player getAttribute(Player player, Node node, MapsEnum currentMap, PlayerInMapResults currentPlayerResults){
-        String currentClass = node.attributes().get("class");
-        int ok = 0;
-        switch (currentClass){
-            case "st-player" -> {
-                node.childNodes();
+    private PlayerInMapResultsToBD getPlayerResultsInOneMap(PlayerInMapResultsToBD player, List<Node> nodes, MapsEnum currentMap, String date) {
+        nodes.forEach(node -> {
+            String currentClass = node.attributes().get("class");
+            int ok = 0;
+            switch (currentClass) {
+                case "st-player" -> {
+                    Node nodeWithPlayerInfo = node.childNodes().stream().filter(n -> (n.getClass().equals(Element.class) && ((Element) n).tagName().equals("div"))).collect(Collectors.toList()).get(0);
+                    Node nodePlayer = nodeWithPlayerInfo.childNodes().stream().filter(e -> {
+                        return !(e.attributes().get("href").equals(""));
+                    }).collect(Collectors.toList()).get(0);
+                    String linkPlayer = nodePlayer.attributes().get("href");
+                    //url в формате /stats/players/22218/emi
+                    player.url = CommonUtils.hltvLingTemplateOne(linkPlayer);
+                    List<String> splitedLink = Arrays.stream(linkPlayer.split("/")).collect(Collectors.toList());
+                    //четвертый элемент всегда id - 22218
+                    player.id = splitedLink.get(3);
+                    //пятый элемент всегда name - emi
+                    player.name = splitedLink.get(4);
+                    int i = 0;
+                }
+                case "st-kills" -> { //первый элемент - всегда число киллов,
+                    // второй элемент - нода, у которой в детях хедшоты в формате " (8)"
+                    player.kills = Integer.parseInt(node.childNodes().get(0).toString().replace(" ", ""));
+                    player.headshots = Integer.parseInt(node.childNodes().get(1).childNodes().get(0).toString().replaceAll("[ |(|)]", ""));
+                }
+                case "st-assists" -> { //первый (и единственный) элемент - ассисты, далее - точно так же
+                    player.assists = Integer.parseInt(node.childNodes().get(0).toString().replace(" ", ""));
+                }
+                case "st-deaths" -> {
+                    player.deaths = Integer.parseInt(node.childNodes().get(0).toString().replace(" ", ""));
+                }
+                case "st-kdratio" -> {
+                    player.cast = Float.parseFloat(node.childNodes().get(0).toString().replaceAll("[%| ]", ""));
+                }
+                case "st-adr" -> {
+                    player.adr = Float.parseFloat(node.childNodes().get(0).toString().replace(" ", ""));
+                }
+                case "st-rating" -> {
+                    player.rating20 = Float.parseFloat(node.childNodes().get(0).toString().replace(" ", ""));
+                }
             }
-            case "st-kills" -> { //первый элемент - всегда число киллов, то же самое далее
-                currentPlayerResults.kills = Integer.parseInt(node.childNodes().get(0).toString().replace(" ", ""));
-            }
-            case "st-assists" -> { //первый элемент - всегда число киллов, то же самое далее
-                currentPlayerResults.assists = Integer.parseInt(node.childNodes().get(0).toString().replace(" ", ""));
-            }
-            case "st-deaths" -> { //первый элемент - всегда число киллов, то же самое далее
-                currentPlayerResults.deaths = Integer.parseInt(node.childNodes().get(0).toString().replace(" ", ""));
-            }
-            case "st-kdratio" -> { //первый элемент - всегда число киллов, то же самое далее
-                currentPlayerResults.cast = Long.parseLong(node.childNodes().get(0).toString().replace(" ", ""));
-            }
-            case "st-adr" -> { //первый элемент - всегда число киллов, то же самое далее
-                currentPlayerResults.adr = Long.parseLong(node.childNodes().get(0).toString().replace(" ", ""));
-            }
-            case "st-rating" -> { //первый элемент - всегда число киллов, то же самое далее
-                currentPlayerResults.power = Long.parseLong(node.childNodes().get(0).toString().replace(" ", ""));
-            }
+        });
+        player.map = currentMap;
+        Date dateFinal = new Date();
+        try {
+            dateFinal = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(date);
+        } catch (ParseException p) {
+            String except = "whatever";
         }
+        player.dateOfMatch = dateFinal;
+        player.calculateKD();
         return player;
     }
 
-    private MapsEnum getCurrentMapName(Document doc){
+    private MapsEnum getCurrentMapName(Document doc) {
         AtomicReference<MapsEnum> mapsEnum = new AtomicReference<>();
-        Elements mapName = doc.body().getElementsByClass("match-info-box"); //всегда один элемент должен быть
-        mapName.get(0).childNodes().forEach(e -> { //в childs валяется 14 элементов, один из них - название карты
-            try {
-                TextNode textNode = (TextNode) e;
-            } catch (Exception exception){
-                String wow = "whatever";
-            }
+        Elements mapInfoBox = doc.body().getElementsByClass("match-info-box"); //всегда один элемент должен быть
+        mapInfoBox.get(0).childNodes().forEach(e -> { //в childs валяется 14 элементов, один из них - название карты
+            //получаем название карты брутфорсом
             String value = e.toString().replace(" ", "").toUpperCase();
-            switch (value){
+            switch (value) {
                 case "DUST2" -> mapsEnum.set(MapsEnum.DUST2);
                 case "MIRAGE" -> mapsEnum.set(MapsEnum.MIRAGE);
                 case "INFERNO" -> mapsEnum.set(MapsEnum.INFERNO);
@@ -126,6 +168,18 @@ public class StatsPageParser {
             }
         });
         return mapsEnum.get();
+    }
+
+    private String getCurrentMapDate(Document doc) {
+        AtomicReference<String> result = new AtomicReference<>("");
+        Elements mapInfoBox = doc.body().getElementsByClass("match-info-box"); //всегда один элемент должен быть
+        mapInfoBox.get(0).childNodes().forEach(e -> { //в childs валяется 14 элементов, один из них - название карты
+            if(e.attributes().get("class").equals("small-text")){
+                Node dateNode = e.childNodes().stream().filter(r -> !r.attributes().get("data-unix").equals("")).collect(Collectors.toList()).get(0);
+                result.set(dateNode.childNodes().get(0).toString());
+            }
+        });
+        return result.get();
     }
 
 }

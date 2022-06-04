@@ -18,4 +18,8 @@ public class CommonUtils {
             return "https://www.hltv.org" + notProcessedLink;
         }).collect(Collectors.toList());
     }
+
+    public static String hltvLingTemplateOne(String notProcessedUrl){
+        return "https://www.hltv.org" + notProcessedUrl;
+    }
 }

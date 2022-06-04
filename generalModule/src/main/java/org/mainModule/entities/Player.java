@@ -14,6 +14,8 @@ public class Player {
     public PlayerInMapResults overpassResults;
     public PlayerInMapResults vertigoResults;
     public PlayerInMapResults ancientResults;
+    public PlayerInMapResults cacheResults;
+    public PlayerInMapResults trainResults;
 
     public Player(){
         this.stability = 0;
