@@ -15,6 +15,16 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ResultPageParser {
+    /**
+     *
+     * В этом классе представлены методы для парсинга страницы с результатами матча. В матче может содержаться одна или несколько карт,
+     * потому здесь нет широкого функционала.
+     * На странице вида (https://www.hltv.org/matches/2356569/pain-vs-godsent-esl-challenger-valencia-2022-north-america-closed-qualifier)
+     * находится три строки (или 1, 2, 5) с сыгранными картами. Под каждой картой есть кнопка stats. Она содержит ссылку на результаты розыгрыша карты
+     *
+     * Кратко по логике: берем ссылки на статсы, отслеживая, чтобы сама игра существовала (не тех. победа), затем проваливаемся в StatsPageParser
+     *
+     */
     private final StatsPageParser statsPageParser = new StatsPageParser();
     public void parseMapStats(String resultUrl, int iterator) throws IOException {
         List<String> statsLinks = new ArrayList<>();

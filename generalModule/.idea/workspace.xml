@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76d8e0e0-7367-45a0-8430-81c979666c98" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResultsToBD.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResults.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/common/CommonUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/common/CommonUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/mainModule/entities/PlayerInMapResults.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/mainModule/entities/PlayerInMapResults.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,16 +36,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/kseni/Desktop/generalModule/generalModule",
-    "settings.editor.selected.configurable": "File.Encoding"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/kseni/Desktop/generalModule/generalModule&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="App" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="org.mainModule.App" />
