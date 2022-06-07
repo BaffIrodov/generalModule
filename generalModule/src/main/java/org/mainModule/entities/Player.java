@@ -7,15 +7,15 @@ public class Player {
 
     //игровые характеристики
     public int stability; //стабильность игрока
-    public PlayerInMapResults dust2Results;
-    public PlayerInMapResults mirageResults;
-    public PlayerInMapResults infernoResults;
-    public PlayerInMapResults nukeResults;
-    public PlayerInMapResults overpassResults;
-    public PlayerInMapResults vertigoResults;
-    public PlayerInMapResults ancientResults;
-    public PlayerInMapResults cacheResults;
-    public PlayerInMapResults trainResults;
+    public PlayerOnMapResults dust2Results;
+    public PlayerOnMapResults mirageResults;
+    public PlayerOnMapResults infernoResults;
+    public PlayerOnMapResults nukeResults;
+    public PlayerOnMapResults overpassResults;
+    public PlayerOnMapResults vertigoResults;
+    public PlayerOnMapResults ancientResults;
+    public PlayerOnMapResults cacheResults;
+    public PlayerOnMapResults trainResults;
 
     public Player(){
         this.stability = 0;

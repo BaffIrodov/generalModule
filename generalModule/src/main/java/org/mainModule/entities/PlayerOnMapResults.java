@@ -1,14 +1,6 @@
 package org.mainModule.entities;
 
-import java.util.Date;
-
-//Это для записи в БД
-public class PlayerInMapResultsToBD {
-    public String id;
-    public String url;
-    public String name;
-    public Date dateOfMatch;
-    public MapsEnum map;
+public class PlayerOnMapResults {
     public int kills; //убийства (парсинг: целое число)
     public int assists; //помощь в убийстве (парсинг: строка вида " (8)")
     public int deaths; //смерти (парсинг: целое число)
@@ -18,7 +10,7 @@ public class PlayerInMapResultsToBD {
     public float rating20; //рейтинг 2.0, (парсинг: число в формате 1.23)
     public float cast; //каст - количество раундов, когда игрок сделал хоть что-то для победы, (парсинг: число в формате 72.3%)
 
-    public PlayerInMapResultsToBD(){
+    public PlayerOnMapResults(){
         this.kills = 0;
         this.assists = 0;
         this.deaths = 0;

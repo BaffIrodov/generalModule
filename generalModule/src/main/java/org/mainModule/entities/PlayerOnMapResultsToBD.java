@@ -1,6 +1,15 @@
 package org.mainModule.entities;
 
-public class PlayerInMapResults {
+import java.util.Date;
+
+//Это для записи в БД
+public class PlayerOnMapResultsToBD {
+    public int id; //id игрока
+    public int idStatsMap; //id stats-страницы
+    public String url; //url игрока, вероятно, может быть удалено
+    public String name; //ник игрока
+    public Date dateOfMatch; //дата матча
+    public MapsEnum map; //карта, на которой был сыгран матч
     public int kills; //убийства (парсинг: целое число)
     public int assists; //помощь в убийстве (парсинг: строка вида " (8)")
     public int deaths; //смерти (парсинг: целое число)
@@ -10,7 +19,13 @@ public class PlayerInMapResults {
     public float rating20; //рейтинг 2.0, (парсинг: число в формате 1.23)
     public float cast; //каст - количество раундов, когда игрок сделал хоть что-то для победы, (парсинг: число в формате 72.3%)
 
-    public PlayerInMapResults(){
+    public PlayerOnMapResultsToBD(){
+        this.id = 0;
+        this.idStatsMap = 0;
+        this.url = "";
+        this.name = "";
+        this.dateOfMatch = null;
+        this.map = MapsEnum.ALL;
         this.kills = 0;
         this.assists = 0;
         this.deaths = 0;
@@ -19,6 +34,11 @@ public class PlayerInMapResults {
         this.adr = 0;
         this.rating20 = 0;
         this.cast = 0;
+    }
+
+    //простая проверка того, сготовился ли объект игрока. Все остальные поля могут быть нулевыми - не отличаться от значений конструктора. Эти не могут
+    public boolean validateThisObject(){
+        return this.id != 0 && this.idStatsMap != 0 && this.dateOfMatch != null && this.map != MapsEnum.ALL;
     }
 
     public void calculateKD(){

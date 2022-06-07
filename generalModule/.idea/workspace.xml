@@ -5,10 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76d8e0e0-7367-45a0-8430-81c979666c98" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/RoundHistoryToBD.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerOnMapResults.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResultsToBD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerOnMapResultsToBD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerToBD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerToBD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,6 +101,7 @@
         <watch expression="nodesPlayer.get(1)" />
         <watch expression="((Element)node).attributes" custom="org.jsoup.nodes.Element" />
         <watch expression="node" />
+        <watch expression="wow.get(0).childNodes.get(1)" />
       </configuration>
     </watches-manager>
   </component>

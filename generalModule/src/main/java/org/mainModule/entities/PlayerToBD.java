@@ -7,11 +7,11 @@ public class PlayerToBD {
     public String url;
     public String name;
     public Date dateOfMatch;
-    public PlayerInMapResults dust2Results;
-    public PlayerInMapResults mirageResults;
-    public PlayerInMapResults infernoResults;
-    public PlayerInMapResults nukeResults;
-    public PlayerInMapResults overpassResults;
-    public PlayerInMapResults vertigoResults;
-    public PlayerInMapResults ancientResults;
+    public PlayerOnMapResults dust2Results;
+    public PlayerOnMapResults mirageResults;
+    public PlayerOnMapResults infernoResults;
+    public PlayerOnMapResults nukeResults;
+    public PlayerOnMapResults overpassResults;
+    public PlayerOnMapResults vertigoResults;
+    public PlayerOnMapResults ancientResults;
 }
