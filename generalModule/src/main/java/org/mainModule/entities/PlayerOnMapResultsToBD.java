@@ -5,11 +5,12 @@ import java.util.Date;
 //Это для записи в БД
 public class PlayerOnMapResultsToBD {
     public int id; //id игрока
-    public int idStatsMap; //id stats-страницы
+    public String idStatsMap; //id stats-страницы
     public String url; //url игрока, вероятно, может быть удалено
     public String name; //ник игрока
     public Date dateOfMatch; //дата матча
     public MapsEnum map; //карта, на которой был сыгран матч
+    public String team; //команда, в которой играет человек - left, right
     public int kills; //убийства (парсинг: целое число)
     public int assists; //помощь в убийстве (парсинг: строка вида " (8)")
     public int deaths; //смерти (парсинг: целое число)
@@ -21,11 +22,12 @@ public class PlayerOnMapResultsToBD {
 
     public PlayerOnMapResultsToBD(){
         this.id = 0;
-        this.idStatsMap = 0;
+        this.idStatsMap = "";
         this.url = "";
         this.name = "";
         this.dateOfMatch = null;
         this.map = MapsEnum.ALL;
+        this.team = "";
         this.kills = 0;
         this.assists = 0;
         this.deaths = 0;
@@ -38,7 +40,19 @@ public class PlayerOnMapResultsToBD {
 
     //простая проверка того, сготовился ли объект игрока. Все остальные поля могут быть нулевыми - не отличаться от значений конструктора. Эти не могут
     public boolean validateThisObject(){
-        return this.id != 0 && this.idStatsMap != 0 && this.dateOfMatch != null && this.map != MapsEnum.ALL;
+        return this.id != 0 &&
+                !this.idStatsMap.equals("") &&
+                this.dateOfMatch != null &&
+                this.map != MapsEnum.ALL &&
+                !this.team.equals("");
+    }
+
+    public PlayerOnMapResultsToBD returnValidatedObjectOrNull(){
+        if(validateThisObject()){
+            return this;
+        } else {
+            return null;
+        }
     }
 
     public void calculateKD(){

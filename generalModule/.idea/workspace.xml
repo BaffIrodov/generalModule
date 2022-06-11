@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76d8e0e0-7367-45a0-8430-81c979666c98" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/RoundHistoryToBD.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerOnMapResults.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerInMapResultsToBD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerOnMapResultsToBD.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerToBD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerToBD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/common/CommonUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerOnMapResultsToBD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerOnMapResultsToBD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/RoundHistoryToBD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/entities/RoundHistoryToBD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/MatchesPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/MatchesPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/ResultsPageParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -95,6 +97,25 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/parsers/StatsPageParser.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/entities/RoundHistoryToBD.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/mainModule/entities/PlayerOnMapResultsToBD.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="nodesPlayer.get(1)" />

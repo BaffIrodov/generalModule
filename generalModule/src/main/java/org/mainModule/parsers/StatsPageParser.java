@@ -6,14 +6,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.mainModule.common.CommonUtils;
-import org.mainModule.common.UserAgent;
 import org.mainModule.entities.MapsEnum;
 import org.mainModule.entities.PlayerOnMapResultsToBD;
 import org.mainModule.entities.RoundHistoryToBD;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -34,37 +30,40 @@ public class StatsPageParser {
      */
 
 
-    public void parseMapStats(String statsUrl) throws IOException {
+    public void parseMapStats(String statsUrl) {
         System.out.println(statsUrl);
-        List<List<PlayerOnMapResultsToBD>> listPlayersLeftAndRight = new ArrayList<>();
+        List<PlayerOnMapResultsToBD> listPlayersLeftAndRight = new ArrayList<>();
         RoundHistoryToBD roundHistoryToBD = new RoundHistoryToBD();
         CommonUtils.waiter(300);
-        long now = System.currentTimeMillis();
-        Document doc = Jsoup.connect(statsUrl).userAgent(UserAgent.USER_AGENT_CHROME).get();
-        if (doc.connection().response().statusCode() == 200) {
-            roundHistoryToBD = getFullRoundHistory(doc, idStatsMap, dateOfMatch); //TODO конверт даты выкинуть в отдельный метод
-//            listPlayersLeftAndRight = getAllPlayers(doc);
+        long now = System.currentTimeMillis(); //#OPTIMIZATION 11.06 - фулл парсинг одной страницы занимает 180-220 мс. Хороший результат. Можно улучшить?
+        Document doc = CommonUtils.reliableConnectAndGetDocument(statsUrl);
+        if (doc != null) {
+            Date date = getCurrentMapDate(doc);
+            String idStatsMap = getStatsId(statsUrl);
+            roundHistoryToBD = getFullRoundHistory(doc, idStatsMap, date);
+            listPlayersLeftAndRight = getAllPlayers(doc, idStatsMap, date);
+            if (roundHistoryToBD != null && listPlayersLeftAndRight != null) {
+                //всё хорошо, так и должно быть, запись в БД
+            } else {
+                System.out.println("Валидация не прошла");
+            }
         }
-        System.out.println((System.currentTimeMillis() - now));
-        int i = 0;
+        System.out.println(" Время обработки этого statsMap: " + (System.currentTimeMillis() - now));
     }
 
-    public RoundHistoryToBD getFullRoundHistory(Document doc, int idStatsMap, Date dateOfMatch){
+    public RoundHistoryToBD getFullRoundHistory(Document doc, String idStatsMap, Date dateOfMatch) {
         RoundHistoryToBD result = new RoundHistoryToBD();
         List<String> notProcessedListOfRoundResults = new ArrayList<>();
         List<String> processedListOfRoundResults = new ArrayList<>();
         Elements wow = doc.body().getElementsByClass("standard-box round-history-con");
-        if(wow.size() == 1){
+        if (wow.size() == 1) {
             Element historyElement = wow.get(0);
-            List<Node> usefulNodes = historyElement.childNodes().stream().filter(node -> node instanceof Element).collect(Collectors.toList());
-            usefulNodes.forEach(useful -> {
-                notProcessedListOfRoundResults.addAll(useful.childNodes().stream().filter
-                        (e -> !e.attributes().get("title").equals(""))
-                        .map(r -> r.attributes().get("title")).collect(Collectors.toList()));
-            });
+            getNotProcessedList(historyElement, notProcessedListOfRoundResults);
             processedListOfRoundResults = convertNotProcessedListOfRoundResults(notProcessedListOfRoundResults);
-        } else if(wow.size() == 2){
+        } else if (wow.size() == 2) {
             Element historyElementMainTime = wow.get(0);
+            getNotProcessedList(historyElementMainTime, notProcessedListOfRoundResults);
+            processedListOfRoundResults = convertNotProcessedListOfRoundResults(notProcessedListOfRoundResults);
             Element historyElementOverTime = wow.get(1); //TODO нужно учитывать овертаймы в расчете? Они рандомные, вряд ли что-то могут сказать о типичной игре
         } else {
             //never happen (30+ rounds of overtime?)
@@ -72,27 +71,35 @@ public class StatsPageParser {
         result.idStatsMap = idStatsMap;
         result.dateOfMatch = dateOfMatch;
         result.roundSequence = processedListOfRoundResults;
-        result.validateThisObject(); //TODO по этому условию нужно отвалидировать результат и выдавать рантайм эксепт по несвалидированному кейсу
-        return result;
+        return result.returnValidatedObjectOrNull();
+    }
+
+    private void getNotProcessedList(Element historyElement, List<String> notProcessedListOfRoundResults){
+        List<Node> usefulNodes = historyElement.childNodes().stream().filter(node -> node instanceof Element).collect(Collectors.toList());
+        usefulNodes.forEach(useful -> {
+            notProcessedListOfRoundResults.addAll(useful.childNodes().stream().filter
+                            (e -> !e.attributes().get("title").equals(""))
+                    .map(r -> r.attributes().get("title")).collect(Collectors.toList()));
+        });
     }
 
     //в этот лист попадают названия команд и лист перемешан
-    private List<String> convertNotProcessedListOfRoundResults(List<String> notProcessedListOfRoundResults){
+    private List<String> convertNotProcessedListOfRoundResults(List<String> notProcessedListOfRoundResults) {
         Map<Integer, String> mapOrderRoundToResultRound = new HashMap<>();
         notProcessedListOfRoundResults = notProcessedListOfRoundResults.stream().filter(e -> {
-            Boolean isValidatedElement = true;
+            boolean isValidatedElement = true;
             List<String> dividedList = Arrays.stream(e.split("-")).collect(Collectors.toList()); //у всех нужных элементов формат "15-2"
-            if(dividedList.size() == 2) {
+            if (dividedList.size() == 2) {
                 try {
                     Integer.parseInt(dividedList.get(0));
                     Integer.parseInt(dividedList.get(1));
-                } catch (NumberFormatException exception){
+                } catch (NumberFormatException exception) {
                     isValidatedElement = false;
                 }
             } else {
                 isValidatedElement = false;
             }
-            if(isValidatedElement){
+            if (isValidatedElement) {
                 mapOrderRoundToResultRound.put(dividedList.stream().map(Integer::parseInt).mapToInt(Integer::intValue).sum(), e);
             }
             return isValidatedElement;
@@ -101,11 +108,10 @@ public class StatsPageParser {
         return result;
     }
 
-    public List<List<PlayerOnMapResultsToBD>> getAllPlayers(Document doc) {
-        List<List<PlayerOnMapResultsToBD>> players = new ArrayList<>();
+    public List<PlayerOnMapResultsToBD> getAllPlayers(Document doc, String idStatsMap, Date date) {
+        List<PlayerOnMapResultsToBD> players = new ArrayList<>();
         //получаем текущую карту
         MapsEnum currentMap = getCurrentMapName(doc);
-        String date = getCurrentMapDate(doc);
         //получаем все элементы, принадлежащие таблицам с игроками и их результатами
         Elements table = doc.body().getElementsByClass("stats-table");
         //всего таблицы две - одна сверху, вторая ниже. В каждой находятся по 5 человек из каждой команды
@@ -132,31 +138,34 @@ public class StatsPageParser {
             playersRight.add(new PlayerOnMapResultsToBD());
         }
         AtomicInteger iteratorLeft = new AtomicInteger();
-        leftTeam.stream().forEach(currentPlayer -> {
+        leftTeam.forEach(currentPlayer -> {
             //получаем все ноды каждого игрока, нод будет 19, но в них входят textElement`ы, их надо отфильтровать
             List<Node> nodes = currentPlayer.childNodes();
             //фильтрация нод - нам нужны только элемент-классы с тэгом
             nodes = nodes.stream().filter(node -> (node.getClass().equals(Element.class) && ((Element) node).tagName().equals("td"))).collect(Collectors.toList());
-            PlayerOnMapResultsToBD calculatedPlayer = getPlayerResultsInOneMap(playersLeft.get(iteratorLeft.get()), nodes, currentMap, date);
+            PlayerOnMapResultsToBD calculatedPlayer = getPlayerResultsInOneMap(playersLeft.get(iteratorLeft.get()), nodes,
+                    currentMap, idStatsMap, date, "left");
             playersLeft.set(iteratorLeft.get(), calculatedPlayer);
             iteratorLeft.getAndIncrement();
         });
         AtomicInteger iteratorRight = new AtomicInteger();
-        rightTeam.stream().forEach(currentPlayer -> {
+        rightTeam.forEach(currentPlayer -> {
             //получаем все ноды каждого игрока, нод будет 19, но в них входят textElement`ы, их надо отфильтровать
             List<Node> nodes = currentPlayer.childNodes();
             //фильтрация нод - нам нужны только элемент-классы с тэгом
             nodes = nodes.stream().filter(node -> (node.getClass().equals(Element.class) && ((Element) node).tagName().equals("td"))).collect(Collectors.toList());
-            PlayerOnMapResultsToBD calculatedPlayer = getPlayerResultsInOneMap(playersRight.get(iteratorRight.get()), nodes, currentMap, date);
+            PlayerOnMapResultsToBD calculatedPlayer = getPlayerResultsInOneMap(playersRight.get(iteratorRight.get()), nodes,
+                    currentMap, idStatsMap, date, "right");
             playersRight.set(iteratorRight.get(), calculatedPlayer);
             iteratorRight.getAndIncrement();
         });
-        players.add(playersLeft);
-        players.add(playersRight);
-        return players;
+        players.addAll(playersLeft);
+        players.addAll(playersRight);
+        return returnValidatedListPlayersOrNull(players);
     }
 
-    private PlayerOnMapResultsToBD getPlayerResultsInOneMap(PlayerOnMapResultsToBD player, List<Node> nodes, MapsEnum currentMap, String date) {
+    private PlayerOnMapResultsToBD getPlayerResultsInOneMap(PlayerOnMapResultsToBD player, List<Node> nodes,
+                                                            MapsEnum currentMap, String idStatsMap, Date dateOfMatch, String team) {
         nodes.forEach(node -> {
             String currentClass = node.attributes().get("class");
             switch (currentClass) {
@@ -176,7 +185,7 @@ public class StatsPageParser {
                     int i = 0;
                 }
                 case "st-kills" -> { //первый элемент - всегда число киллов,
-                    // второй элемент - нода, у которой в детях хедшоты в формате " (8)"
+                    // второй элемент - нода, у которой в детях хедшоты в формате " (8)", поэтому регуляркой ищем пробел, левую и правую скобки
                     player.kills = Integer.parseInt(node.childNodes().get(0).toString().replace(" ", ""));
                     player.headshots = Integer.parseInt(node.childNodes().get(1).childNodes().get(0).toString().replaceAll("[ |(|)]", ""));
                 }
@@ -198,16 +207,11 @@ public class StatsPageParser {
             }
         });
         player.map = currentMap;
-        Date dateFinal = new Date();
-        try {
-            dateFinal = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(date);
-        } catch (ParseException p) {
-            String except = "whatever";
-        }
-        player.dateOfMatch = dateFinal;
+        player.team = team;
+        player.idStatsMap = idStatsMap;
+        player.dateOfMatch = dateOfMatch;
         player.calculateKD();
-        player.validateThisObject(); //TODO по этому условию нужно отвалидировать результат и выдавать рантайм эксепт по несвалидированному кейсу
-        return player;
+        return player.returnValidatedObjectOrNull();
     }
 
     private MapsEnum getCurrentMapName(Document doc) {
@@ -231,7 +235,7 @@ public class StatsPageParser {
         return mapsEnum.get();
     }
 
-    private String getCurrentMapDate(Document doc) {
+    private Date getCurrentMapDate(Document doc) {
         AtomicReference<String> result = new AtomicReference<>("");
         Elements mapInfoBox = doc.body().getElementsByClass("match-info-box"); //всегда один элемент должен быть
         mapInfoBox.get(0).childNodes().forEach(e -> { //в childs валяется 14 элементов, один из них - название карты
@@ -240,7 +244,28 @@ public class StatsPageParser {
                 result.set(dateNode.childNodes().get(0).toString());
             }
         });
-        return result.get();
+        Date convertedResult = CommonUtils.standardParserDate(result.get());
+        return convertedResult;
+    }
+
+    private String getStatsId(String link) {
+        String[] splitedLink = link.split("/");
+        //link всегда имеет вид - https://www.hltv.org/stats/matches/mapstatsid/139187/kappa-bar-vs-lakeshow
+        //Получаются такие элементы: "https:", "", "www.hltv.org", "stats", "matches", "mapstatsid", "139187", "kappa-bar-vs-lakeshow"
+        return splitedLink[6];
+
+    }
+
+    private List<PlayerOnMapResultsToBD> returnValidatedListPlayersOrNull(List<PlayerOnMapResultsToBD> players) {
+        boolean alright = true;
+        for (PlayerOnMapResultsToBD player : players) {
+            if (player == null) alright = false;
+        }
+        if (alright) {
+            return players;
+        } else {
+            return null;
+        }
     }
 
 }

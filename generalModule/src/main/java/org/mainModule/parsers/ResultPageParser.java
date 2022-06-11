@@ -6,9 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.mainModule.common.CommonUtils;
-import org.mainModule.common.UserAgent;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,12 +24,12 @@ public class ResultPageParser {
      *
      */
     private final StatsPageParser statsPageParser = new StatsPageParser();
-    public void parseMapStats(String resultUrl, int iterator) throws IOException {
+    public void parseMapStats(String resultUrl, int iterator){
         List<String> statsLinks = new ArrayList<>();
         CommonUtils.waiter(300);
         long now = System.currentTimeMillis();
-        Document doc = Jsoup.connect(resultUrl).userAgent(UserAgent.USER_AGENT_CHROME).get();
-        if (doc.connection().response().statusCode() == 200) {
+        Document doc = CommonUtils.reliableConnectAndGetDocument(resultUrl);
+        if (doc != null) {
             statsLinks = getAllStatsLinks(doc);
             for(String link : statsLinks){
                 statsPageParser.parseMapStats(link);
