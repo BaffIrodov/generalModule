@@ -48,7 +48,7 @@ public class StatsPageParser {
                 System.out.println("Валидация не прошла");
             }
         }
-        System.out.println(" Время обработки этого statsMap: " + (System.currentTimeMillis() - now));
+        System.out.println("Время обработки этого statsMap: " + (System.currentTimeMillis() - now));
     }
 
     public RoundHistoryToBD getFullRoundHistory(Document doc, String idStatsMap, Date dateOfMatch) {
