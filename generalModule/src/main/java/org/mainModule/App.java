@@ -11,6 +11,6 @@ public class App
 
     public static void main( String[] args ){
         matchesPageParser.parseMatches();
-        mainPageResults.parseResults(1);
+        //mainPageResults.parseResults(1);
     }
 }
