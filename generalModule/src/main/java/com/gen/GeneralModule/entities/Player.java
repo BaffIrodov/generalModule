@@ -1,6 +1,6 @@
 package com.gen.GeneralModule.entities;
 
-import com.gen.GeneralModule.dtos.PlayerOnMapResults;
+import com.gen.GeneralModule.dtos.PlayerOnMapResultsDto;
 
 import java.util.Date;
 
@@ -9,11 +9,11 @@ public class Player {
     public String url;
     public String name;
     public Date dateOfMatch;
-    public PlayerOnMapResults dust2Results;
-    public PlayerOnMapResults mirageResults;
-    public PlayerOnMapResults infernoResults;
-    public PlayerOnMapResults nukeResults;
-    public PlayerOnMapResults overpassResults;
-    public PlayerOnMapResults vertigoResults;
-    public PlayerOnMapResults ancientResults;
+    public PlayerOnMapResultsDto dust2Results;
+    public PlayerOnMapResultsDto mirageResults;
+    public PlayerOnMapResultsDto infernoResults;
+    public PlayerOnMapResultsDto nukeResults;
+    public PlayerOnMapResultsDto overpassResults;
+    public PlayerOnMapResultsDto vertigoResults;
+    public PlayerOnMapResultsDto ancientResults;
 }

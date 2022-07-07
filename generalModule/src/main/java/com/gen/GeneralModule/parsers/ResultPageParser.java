@@ -1,7 +1,6 @@
 package com.gen.GeneralModule.parsers;
 
 import com.gen.GeneralModule.common.CommonUtils;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;

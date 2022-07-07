@@ -1,13 +1,13 @@
 package com.gen.GeneralModule.parsers;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.select.Elements;
 import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.common.MapsEnum;
 import com.gen.GeneralModule.entities.PlayerOnMapResults;
 import com.gen.GeneralModule.entities.RoundHistory;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

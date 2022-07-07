@@ -1,6 +1,6 @@
 package com.gen.GeneralModule.dtos;
 
-public class PlayerOnMapResults {
+public class PlayerOnMapResultsDto {
     public int kills; //убийства (парсинг: целое число)
     public int assists; //помощь в убийстве (парсинг: строка вида " (8)")
     public int deaths; //смерти (парсинг: целое число)
@@ -10,7 +10,7 @@ public class PlayerOnMapResults {
     public float rating20; //рейтинг 2.0, (парсинг: число в формате 1.23)
     public float cast; //каст - количество раундов, когда игрок сделал хоть что-то для победы, (парсинг: число в формате 72.3%)
 
-    public PlayerOnMapResults(){
+    public PlayerOnMapResultsDto(){
         this.kills = 0;
         this.assists = 0;
         this.deaths = 0;

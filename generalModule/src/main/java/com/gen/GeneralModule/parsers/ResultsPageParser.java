@@ -1,16 +1,14 @@
 package com.gen.GeneralModule.parsers;
 
+import com.gen.GeneralModule.common.CommonUtils;
 import lombok.extern.log4j.Log4j2;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import com.gen.GeneralModule.common.CommonUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Log4j2
