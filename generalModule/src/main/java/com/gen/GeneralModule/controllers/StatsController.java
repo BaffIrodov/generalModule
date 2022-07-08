@@ -1,6 +1,9 @@
 package com.gen.GeneralModule.controllers;
 
+import com.gen.GeneralModule.services.StatsParserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -8,5 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/stats")
 public class StatsController {
+    @Autowired
+    StatsParserService statsParserService;
 
+    @GetMapping("/write-players")
+    public void writePlayers() {
+        statsParserService.startParser();
+    }
 }
