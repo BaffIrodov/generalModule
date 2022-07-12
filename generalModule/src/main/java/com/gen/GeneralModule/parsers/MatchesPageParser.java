@@ -15,7 +15,7 @@ public class MatchesPageParser {
     List<String> listOfLinks = new ArrayList<>();
     private final MatchPageParser matchPlayer = new MatchPageParser();
 
-    public void parseMatches() {
+    public List<String> parseMatches() {
         long now = System.currentTimeMillis();
         Document doc = CommonUtils.reliableConnectAndGetDocument("https://www.hltv.org/matches");
         if (doc != null) {
@@ -28,7 +28,8 @@ public class MatchesPageParser {
         System.out.println("Запрос будущих матчей: " + (System.currentTimeMillis() - now));
         System.out.println("Всего возможных матчей: " + listOfLinks.size());
         //parseAllPlayers(listOfLinks.subList(0, 1));
-        parseAllPlayers(listOfLinks);
+        //parseAllPlayers(listOfLinks);
+        return listOfLinks;
     }
 
     private void parseAllPlayers(List<String> listOfLinks) {

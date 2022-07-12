@@ -53,3 +53,9 @@ CREATE SEQUENCE "sq_results_link_id"
     START 1
     CACHE 1;
 
+DROP TABLE IF EXISTS matches_link;
+CREATE TABLE IF NOT EXISTS matches_link
+(
+    "id" int8 not null,
+    "match_url" VARCHAR(200) not null
+    );
