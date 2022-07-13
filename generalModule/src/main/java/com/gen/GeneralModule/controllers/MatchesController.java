@@ -20,21 +20,16 @@ public class MatchesController {
     private MatchesPageParser matchesPageParser;
 
     @PostMapping("/write-links")
-    public Integer writeAllLinks() {
+    public List<MatchesLink> writeAllLinks() {
         List<String> allLinks = matchesPageParser.parseMatches();
         List<MatchesLink> matchesLinks = new ArrayList<>();
-        MatchesLink matchesLink = new MatchesLink();
-        for(int i=0; i<allLinks.size(); i++){
-            matchesLink.id = i;
-            matchesLink.matchUrl = allLinks.get(i);
-            matchesLinks.add(matchesLink);
-        }
-        /*allLinks.forEach(link -> {
+        allLinks.forEach(link -> {
             MatchesLink matchesLink = new MatchesLink();
+            matchesLink.id = Integer.parseInt(link.replaceAll(".*/matches/", "").replaceAll("/.*", ""));
             matchesLink.matchUrl = link;
             matchesLinks.add(matchesLink);
-        });*/
+        });
         matchesParserService.saveAll(matchesLinks);
-        return matchesLinks.size();
+        return matchesLinks;
     }
 }
