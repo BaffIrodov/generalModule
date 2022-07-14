@@ -15,7 +15,8 @@ public class StatsController {
     StatsParserService statsParserService;
 
     @GetMapping("/write-players")
-    public void writePlayers() {
+    public Integer writePlayers() {
         statsParserService.startParser();
+        return 1;
     }
 }

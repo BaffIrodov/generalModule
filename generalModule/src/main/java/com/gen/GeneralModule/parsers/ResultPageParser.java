@@ -1,6 +1,7 @@
 package com.gen.GeneralModule.parsers;
 
 import com.gen.GeneralModule.common.CommonUtils;
+import com.gen.GeneralModule.entities.PlayerOnMapResults;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -25,19 +26,18 @@ public class ResultPageParser {
      *
      */
     private final StatsPageParser statsPageParser = new StatsPageParser();
-    public void parseMapStats(String resultUrl, int iterator){
+    public List<List<PlayerOnMapResults>> parseMapStats(String resultUrl){
         List<String> statsLinks = new ArrayList<>();
+        List<List<PlayerOnMapResults>> allPlayersFromResult = new ArrayList<>();
         CommonUtils.waiter(300);
-        long now = System.currentTimeMillis();
         Document doc = CommonUtils.reliableConnectAndGetDocument(resultUrl);
         if (doc != null) {
             statsLinks = getAllStatsLinks(doc);
             for(String link : statsLinks){
-                statsPageParser.parseMapStats(link);
+                allPlayersFromResult.add(statsPageParser.parseMapStats(link));
             }
         }
-        System.out.print("Обработано " + iterator + " из 100 игр" +
-                "Время обработки одного матча результатов: " + (System.currentTimeMillis() - now) + "\r");
+        return allPlayersFromResult;
     }
 
     //получаем ссылки на все странички, на которых приведена полная детализация по карте

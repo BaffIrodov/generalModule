@@ -32,8 +32,7 @@ public class StatsPageParser {
      */
 
     @Transactional
-    public PlayerOnMapResults parseMapStats(String statsUrl) {
-        System.out.println(statsUrl);
+    public List<PlayerOnMapResults> parseMapStats(String statsUrl) {
         List<PlayerOnMapResults> listPlayersLeftAndRight = new ArrayList<>();
         RoundHistory roundHistoryToBD = new RoundHistory();
         CommonUtils.waiter(300);
@@ -50,8 +49,7 @@ public class StatsPageParser {
                 System.out.println("Валидация не прошла");
             }
         }
-        return listPlayersLeftAndRight.get(1);
-//        System.out.println("Время обработки этого statsMap: " + (System.currentTimeMillis() - now));
+        return listPlayersLeftAndRight;
     }
 
     public RoundHistory getFullRoundHistory(Document doc, String idStatsMap, Date dateOfMatch) {
