@@ -20,7 +20,7 @@ public class MatchesController {
     private MatchesPageParser matchesPageParser;
 
     @PostMapping("/write-links")
-    public List<MatchesLink> writeAllLinks() {
+    public List<String> writeAllLinks() {
         List<String> allLinks = matchesPageParser.parseMatches();
         List<MatchesLink> matchesLinks = new ArrayList<>();
         allLinks.forEach(link -> {
@@ -30,6 +30,6 @@ public class MatchesController {
             matchesLinks.add(matchesLink);
         });
         matchesParserService.saveAll(matchesLinks);
-        return matchesLinks;
+        return allLinks;
     }
 }
