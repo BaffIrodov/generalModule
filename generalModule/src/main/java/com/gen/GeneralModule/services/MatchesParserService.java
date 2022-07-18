@@ -20,4 +20,9 @@ public class MatchesParserService {
     public void deleteAll() {
         matchesLinkRepository.deleteAll();
     }
+
+    public void deleteById(Integer id) {
+        matchesLinkRepository.deleteById(id);
+    }
+
 }
