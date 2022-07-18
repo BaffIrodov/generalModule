@@ -114,18 +114,22 @@ public class StatsPageParser {
         //получаем текущую карту
         MapsEnum currentMap = getCurrentMapName(doc);
         //получаем все элементы, принадлежащие таблицам с игроками и их результатами
-        Elements table = doc.body().getElementsByClass("stats-table");
+        Elements table = doc.body().getElementsByClass("stats-table totalstats ");
         //всего таблицы две - одна сверху, вторая ниже. В каждой находятся по 5 человек из каждой команды
         //далее получаем строчки, принадлежащие команде
         List<List<Node>> teamElement = table.stream().map(
-                e -> e.childNodes().stream().filter(r -> (r.getClass().equals(Element.class) && ((Element) r).tagName().equals("tbody"))).collect(Collectors.toList())
-        ).collect(Collectors.toList());
+                e -> e.childNodes().stream().filter(r -> (
+                        r.getClass().equals(Element.class) && ((Element) r).tagName().equals("tbody")
+                )).collect(Collectors.toList())
+        ).toList();
         //строчки преобразуются в лист из элементов, принадлежащих игрокам. Здесь есть один лишний уровень вложенности листов
         List<List<List<Node>>> teams = teamElement.stream().map(
-                t -> t.stream().map(e -> e.childNodes().stream().filter(q -> (q.getClass().equals(Element.class) && ((Element) q).tagName().equals("tr"))).collect(Collectors.toList())
-                ).collect(Collectors.toList())).collect(Collectors.toList());
+                t -> t.stream().map(e -> e.childNodes().stream().filter(q -> (
+                        q.getClass().equals(Element.class) && ((Element) q).tagName().equals("tr")
+                        )).collect(Collectors.toList())
+                ).collect(Collectors.toList())).toList();
         //отрезаем лишний уровень
-        List<List<Node>> teamsConverted = teams.stream().flatMap(List::stream).collect(Collectors.toList());
+        List<List<Node>> teamsConverted = teams.stream().flatMap(List::stream).toList();
         //получаем список элементов, которые принадлежат игрокам каждой команды
         List<Node> leftTeam = teamsConverted.get(0);
         List<Node> rightTeam = teamsConverted.get(1);
@@ -174,15 +178,14 @@ public class StatsPageParser {
                     Node nodeWithPlayerInfo = node.childNodes().stream().filter(n -> (n.getClass().equals(Element.class) && ((Element) n).tagName().equals("div"))).collect(Collectors.toList()).get(0);
                     Node nodePlayer = nodeWithPlayerInfo.childNodes().stream().filter(e -> {
                         return !(e.attributes().get("href").equals(""));
-                    }).collect(Collectors.toList()).get(0);
+                    }).toList().get(0);
                     String linkPlayer = nodePlayer.attributes().get("href");
                     //url в формате /stats/players/22218/emi
                     player.url = CommonUtils.hltvLingTemplateOne(linkPlayer);
-                    List<String> splitedLink = Arrays.stream(linkPlayer.split("/")).collect(Collectors.toList());
                     //четвертый элемент всегда id - 22218
-                    player.id = Integer.parseInt(splitedLink.get(3));
+                    player.playerId = Integer.parseInt(CommonUtils.standardIdParsingByPlace(3, linkPlayer));
                     //пятый элемент всегда name - emi
-                    player.playerName = splitedLink.get(4);
+                    player.playerName = CommonUtils.standardIdParsingByPlace(4, linkPlayer);;
                     int i = 0;
                 }
                 case "st-kills" -> { //первый элемент - всегда число киллов,
@@ -197,7 +200,12 @@ public class StatsPageParser {
                     player.deaths = Integer.parseInt(node.childNodes().get(0).toString().replace(" ", ""));
                 }
                 case "st-kdratio" -> {
-                    player.cast20 = Float.parseFloat(node.childNodes().get(0).toString().replaceAll("[%| ]", ""));
+                    if(node.childNodes().get(0).toString().equals("-"))
+                    {
+                        player.cast20 = 0;
+                    } else {
+                        player.cast20 = Float.parseFloat(node.childNodes().get(0).toString().replaceAll("[%| ]", ""));
+                    }
                 }
                 case "st-adr" -> {
                     player.adr = Float.parseFloat(node.childNodes().get(0).toString().replace(" ", ""));
@@ -245,22 +253,22 @@ public class StatsPageParser {
                 result.set(dateNode.childNodes().get(0).toString());
             }
         });
-        Date convertedResult = CommonUtils.standardParserDate(result.get());
-        return convertedResult;
+        return CommonUtils.standardParserDate(result.get());
     }
 
     private String getStatsId(String link) {
-        String[] splitedLink = link.split("/");
         //link всегда имеет вид - https://www.hltv.org/stats/matches/mapstatsid/139187/kappa-bar-vs-lakeshow
         //Получаются такие элементы: "https:", "", "www.hltv.org", "stats", "matches", "mapstatsid", "139187", "kappa-bar-vs-lakeshow"
-        return splitedLink[6];
-
+        return CommonUtils.standardIdParsingByPlace(6, link);
     }
 
     private List<PlayerOnMapResults> returnValidatedListPlayersOrNull(List<PlayerOnMapResults> players) {
         boolean alright = true;
         for (PlayerOnMapResults player : players) {
-            if (player == null) alright = false;
+            if (player == null) {
+                alright = false;
+                break;
+            }
         }
         if (alright) {
             return players;

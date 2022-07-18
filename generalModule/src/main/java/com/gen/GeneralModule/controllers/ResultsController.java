@@ -1,9 +1,11 @@
 package com.gen.GeneralModule.controllers;
 
+import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.entities.ResultsLink;
 import com.gen.GeneralModule.parsers.ResultsPageParser;
 import com.gen.GeneralModule.services.ResultsParserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -22,15 +24,7 @@ public class ResultsController {
     @PostMapping("/write-links")
     public Integer writeAllLinks(@RequestBody Integer pageNumber){
         List<String> allLinks = resultsPageParser.parseResultsGetAllLinks(pageNumber);
-        List<ResultsLink> resultsLinks = new ArrayList<>();
-        allLinks.forEach(link -> {
-            ResultsLink resultsLink = new ResultsLink();
-            resultsLink.matchUrl = link;
-            resultsLink.processed = false;
-            resultsLink.archive = false;
-            resultsLinks.add(resultsLink);
-        });
-        resultsParserService.saveAll(resultsLinks);
+        resultsParserService.parseAndSaveLinks(allLinks);
         return pageNumber;
     }
 }

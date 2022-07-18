@@ -12,7 +12,7 @@ public class MatchesLink {
     @Id
     //@SequenceGenerator(name = "sq_matches_link", sequenceName = "sq_matches_link_id", allocationSize = 0)
     //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_matches_link")
-    public int id;
+    public int matchId;
     public String matchUrl;
     public String leftTeam;
     public String rightTeam;

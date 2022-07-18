@@ -41,9 +41,9 @@ public class MatchPageParser {
                     // поэтому приходится пользоваться размерностью листа. Пример подобного - "проблемный матч".
                 } else {
                     if (leftTeam.size() < 5) {
-                        leftTeam.add(e.childNodes().get(0).attributes().get("href").replaceAll("/player/", "").replaceAll("/.*", ""));
+                        leftTeam.add(CommonUtils.standardIdParsingBySlice("/player/", e.childNodes().get(0).attributes().get("href")));
                     } else {
-                        rightTeam.add(e.childNodes().get(0).attributes().get("href").replaceAll("/player/", "").replaceAll("/.*", ""));
+                        rightTeam.add(CommonUtils.standardIdParsingBySlice("/player/", e.childNodes().get(0).attributes().get("href")));
                     }
                 }
             });

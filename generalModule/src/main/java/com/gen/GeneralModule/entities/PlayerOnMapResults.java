@@ -4,9 +4,7 @@ import com.gen.GeneralModule.common.MapsEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 //Это для записи в БД
@@ -16,8 +14,12 @@ import java.util.Date;
 @AllArgsConstructor
 public class PlayerOnMapResults {
     @Id
+    @SequenceGenerator(name = "sq_player_on_map_results", sequenceName = "sq_player_on_map_results_id", allocationSize = 0)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_player_on_map_results")
     @Column(name = "id", nullable = false)
-    public int id; //id игрока
+    public int id; //id записи
+
+    public int playerId; //id игрока
     public String idStatsMap; //id stats-страницы
     public String url; //url игрока, вероятно, может быть удалено
     public String playerName; //ник игрока
@@ -34,7 +36,7 @@ public class PlayerOnMapResults {
     public float cast20; //каст - количество раундов, когда игрок сделал хоть что-то для победы, (парсинг: число в формате 72.3%)
 
     public PlayerOnMapResults(){
-        this.id = 0;
+        this.playerId = 0;
         this.idStatsMap = "";
         this.url = "";
         this.playerName = "";
@@ -53,7 +55,7 @@ public class PlayerOnMapResults {
 
     //простая проверка того, сготовился ли объект игрока. Все остальные поля могут быть нулевыми - не отличаться от значений конструктора. Эти не могут
     public boolean validateThisObject(){
-        return this.id != 0 &&
+        return this.playerId != 0 &&
                 !this.idStatsMap.equals("") &&
                 this.dateOfMatch != null &&
                 this.playedMap != MapsEnum.ALL &&

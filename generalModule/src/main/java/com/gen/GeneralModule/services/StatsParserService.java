@@ -1,5 +1,6 @@
 package com.gen.GeneralModule.services;
 
+import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.entities.PlayerOnMapResults;
 import com.gen.GeneralModule.entities.QMatchesLink;
 import com.gen.GeneralModule.entities.QResultsLink;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -43,14 +45,24 @@ public class StatsParserService {
 
     public void startParser() {
         List<String> links = queryFactory
-                .from(resultsLink).select(resultsLink.matchUrl)
+                .from(resultsLink).select(resultsLink.resultUrl)
                 .where(resultsLink.archive.eq(false)).fetch();
         for (String link : links) {
             List<List<PlayerOnMapResults>> result = resultPageParser.parseMapStats(link);
             result.forEach(stats -> {
                 playerRepository.saveAll(stats);
-                //TODO после обработки - result link становится processed-true
+                ResultsLink res = resultsLinkRepository
+                        .findById(Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link)))
+                        .orElse(null);
+                res.processed = true;
+                resultsLinkRepository.save(res);
+                int i = 0;
             });
         }
+    }
+
+    public Long getAvailableCount() {
+        Long count = queryFactory.from(resultsLink).where(resultsLink.processed.eq(false)).stream().count();
+        return count;
     }
 }

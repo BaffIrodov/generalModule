@@ -57,4 +57,13 @@ public class CommonUtils {
         }
         return doc;
     }
+
+    public static String standardIdParsingBySlice(String strBeforeId, String processedString) {
+        return (processedString.replaceAll(".*" + strBeforeId, "").replaceAll("/.*", ""));
+    }
+
+    public static String standardIdParsingByPlace(Integer idPosition, String processedString) {
+        String[] splittedString = processedString.split("/");
+        return splittedString[idPosition];
+    }
 }

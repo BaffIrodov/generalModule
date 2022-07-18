@@ -19,4 +19,9 @@ public class StatsController {
         statsParserService.startParser();
         return 1;
     }
+
+    @GetMapping("/available-count")
+    public Long getAvailableCountForParsing() {
+        return statsParserService.getAvailableCount();
+    }
 }

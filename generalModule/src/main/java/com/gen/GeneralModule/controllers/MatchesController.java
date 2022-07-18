@@ -1,5 +1,6 @@
 package com.gen.GeneralModule.controllers;
 
+import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.dtos.MatchesDto;
 import com.gen.GeneralModule.entities.MatchesLink;
 import com.gen.GeneralModule.parsers.MatchPageParser;
@@ -30,14 +31,14 @@ public class MatchesController {
         List<MatchesDto> matchesDto = new ArrayList<>();
         allLinks.forEach(link -> {
             MatchesLink matchesLink = new MatchesLink();
-            matchesLink.id = Integer.parseInt(link.replaceAll(".*/matches/", "").replaceAll("/.*", ""));
+            matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
             matchesLink.matchUrl = link;
             List<String> teamsNames = matchPageParser.getTeamsNames(link);
             matchesLink.leftTeam = teamsNames.get(0);
             matchesLink.rightTeam = teamsNames.get(1);
             matchesLinks.add(matchesLink);
             MatchesDto matchesDtoN = new MatchesDto();
-            matchesDtoN.id = matchesLink.id;
+            matchesDtoN.id = matchesLink.matchId;
             matchesDtoN.matchesUrl = matchesLink.matchUrl;
             matchesDtoN.leftTeam = matchesLink.leftTeam;
             matchesDtoN.rightTeam = matchesLink.rightTeam;
