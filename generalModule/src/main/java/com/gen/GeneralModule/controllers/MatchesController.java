@@ -25,6 +25,7 @@ public class MatchesController {
 
     @PostMapping("/write-links")
     public List<MatchesDto> writeAllLinks() {
+        matchesParserService.deleteAll();
         List<String> allLinks = matchesPageParser.parseMatches();
         List<MatchesLink> matchesLinks = new ArrayList<>();
         List<MatchesDto> matchesDto = new ArrayList<>();
@@ -35,7 +36,9 @@ public class MatchesController {
             List<String> teamsNames = matchPageParser.getTeamsNames(link);
             matchesLink.leftTeam = teamsNames.get(0);
             matchesLink.rightTeam = teamsNames.get(1);
+            //matchPageParser.getMatchFormat(link);
             matchesLinks.add(matchesLink);
+
             MatchesDto matchesDtoN = new MatchesDto();
             matchesDtoN.id = matchesLink.id;
             matchesDtoN.matchesUrl = matchesLink.matchUrl;

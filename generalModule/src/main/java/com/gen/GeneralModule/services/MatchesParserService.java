@@ -16,4 +16,8 @@ public class MatchesParserService {
     public List<MatchesLink> saveAll(List<MatchesLink> matchesLink) {
         return matchesLinkRepository.saveAll(matchesLink);
     }
+
+    public void deleteAll() {
+        matchesLinkRepository.deleteAll();
+    }
 }

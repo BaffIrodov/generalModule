@@ -61,11 +61,3 @@ CREATE TABLE IF NOT EXISTS matches_link
     "left_team" VARCHAR(200) not null,
     "right_team" VARCHAR(200) not null
     );
-
-DROP SEQUENCE IF EXISTS "sq_matches_link_id";
-/*CREATE SEQUENCE "sq_matches_link_id"
-    INCREMENT 1
-    MINVALUE  1
-    MAXVALUE 9223372036854775807
-    START 1
-    CACHE 1;*/
