@@ -2,6 +2,8 @@ package com.gen.GeneralModule.parsers;
 
 import com.gen.GeneralModule.common.CommonUtils;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -57,11 +59,23 @@ public class MatchPageParser {
         Document doc = CommonUtils.reliableConnectAndGetDocument(link);
         List<String> namesLeftAndRightTeams = new ArrayList<>();
         if (doc != null) {
-            Elements elementsWithNames = doc.body().getElementsByClass("team1-gradient");
-            namesLeftAndRightTeams.add(elementsWithNames.get(0).childNodes().get(0).childNodes().get(0).attributes().get("alt"));
-            elementsWithNames = doc.body().getElementsByClass("team2-gradient");
-            namesLeftAndRightTeams.add(elementsWithNames.get(0).childNodes().get(0).childNodes().get(0).attributes().get("alt"));
+            // Забираем названия команд из самой верхней части страницы с матчами.
+            // Там названия прописаны не в атрибуте чайлднода, а являются обычной строкой.
+            Elements elementsWithNames = doc.body().getElementsByClass("teamName");
+            namesLeftAndRightTeams.add(((TextNode) elementsWithNames.get(0).childNodes().get(0)).getWholeText());
+            namesLeftAndRightTeams.add(((TextNode) elementsWithNames.get(1).childNodes().get(0)).getWholeText());
         }
         return namesLeftAndRightTeams;
+    }
+
+    public String getMatchFormat(String link) {
+        Document doc = CommonUtils.reliableConnectAndGetDocument(link);
+        String format = "";
+        if (doc != null) {
+            Elements elementsWithFormat = doc.body().getElementsByClass("padding preformatted-text");
+            format = ((TextNode) elementsWithFormat.get(0).childNodes().get(0)).getWholeText();
+            format = format.replaceAll(" [(].*","").replaceAll("\n.*", "");
+        }
+        return format;
     }
 }
