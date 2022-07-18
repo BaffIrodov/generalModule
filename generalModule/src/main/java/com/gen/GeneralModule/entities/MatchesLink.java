@@ -14,4 +14,6 @@ public class MatchesLink {
     //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_matches_link")
     public int id;
     public String matchUrl;
+    public String leftTeam;
+    public String rightTeam;
 }

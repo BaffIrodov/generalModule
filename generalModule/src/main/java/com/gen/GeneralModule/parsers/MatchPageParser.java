@@ -47,10 +47,21 @@ public class MatchPageParser {
                     }
                 }
             });
-            System.out.println("");
         }
         players.add(leftTeam);
         players.add(rightTeam);
         return players;
+    }
+
+    public List<String> getTeamsNames(String link) {
+        Document doc = CommonUtils.reliableConnectAndGetDocument(link);
+        List<String> namesLeftAndRightTeams = new ArrayList<>();
+        if (doc != null) {
+            Elements elementsWithNames = doc.body().getElementsByClass("team1-gradient");
+            namesLeftAndRightTeams.add(elementsWithNames.get(0).childNodes().get(0).childNodes().get(0).attributes().get("alt"));
+            elementsWithNames = doc.body().getElementsByClass("team2-gradient");
+            namesLeftAndRightTeams.add(elementsWithNames.get(0).childNodes().get(0).childNodes().get(0).attributes().get("alt"));
+        }
+        return namesLeftAndRightTeams;
     }
 }

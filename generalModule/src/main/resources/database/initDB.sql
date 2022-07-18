@@ -57,7 +57,9 @@ DROP TABLE IF EXISTS matches_link;
 CREATE TABLE IF NOT EXISTS matches_link
 (
     "id" int8 not null,
-    "match_url" VARCHAR(200) not null
+    "match_url" VARCHAR(200) not null,
+    "left_team" VARCHAR(200) not null,
+    "right_team" VARCHAR(200) not null
     );
 
 DROP SEQUENCE IF EXISTS "sq_matches_link_id";

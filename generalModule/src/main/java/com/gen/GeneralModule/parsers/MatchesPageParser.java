@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Component
 public class MatchesPageParser {
     List<String> listOfLinks = new ArrayList<>();
-    private final MatchPageParser matchPlayer = new MatchPageParser();
+    private final MatchPageParser matchParser = new MatchPageParser();
 
     public List<String> parseMatches() {
         listOfLinks.clear();
@@ -34,7 +34,7 @@ public class MatchesPageParser {
     }
 
     private void parseAllPlayers(List<String> listOfLinks) {
-        listOfLinks.forEach(matchPlayer::parseMatch);
+        listOfLinks.forEach(matchParser::parseMatch);
     }
 
     private List<String> getMatchesHrefs(Elements elementsWithHrefs) {
