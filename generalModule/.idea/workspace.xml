@@ -6,19 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="c369a914-eb99-41e6-a996-06d0e30bee93" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/CommonUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/MatchesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/MatchesController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/ResultsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/ResultsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/StatsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/StatsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/MatchesLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/MatchesLink.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/PlayerOnMapResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/PlayerOnMapResults.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/ResultsLink.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/ResultsLink.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/MatchPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/MatchPageParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/ResultsParserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/ResultsParserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/StatsParserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/StatsParserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/database/initDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/initDB.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/database/testFillDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/testFillDB.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,6 +141,7 @@
       <workItem from="1657817637790" duration="2055000" />
       <workItem from="1657824679405" duration="2794000" />
       <workItem from="1658147235136" duration="11649000" />
+      <workItem from="1658263725953" duration="2209000" />
     </task>
     <servers />
   </component>
@@ -168,15 +160,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/StatsParserService.java</url>
-          <line>58</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="SpringBootApplicationConfigurationType">
         <watch expression="resultsLinks" />

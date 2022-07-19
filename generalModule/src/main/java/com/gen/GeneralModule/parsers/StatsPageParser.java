@@ -75,7 +75,7 @@ public class StatsPageParser {
         return result.returnValidatedObjectOrNull();
     }
 
-    private void getNotProcessedList(Element historyElement, List<String> notProcessedListOfRoundResults){
+    private void getNotProcessedList(Element historyElement, List<String> notProcessedListOfRoundResults) {
         List<Node> usefulNodes = historyElement.childNodes().stream().filter(node -> node instanceof Element).collect(Collectors.toList());
         usefulNodes.forEach(useful -> {
             notProcessedListOfRoundResults.addAll(useful.childNodes().stream().filter
@@ -125,7 +125,7 @@ public class StatsPageParser {
         //строчки преобразуются в лист из элементов, принадлежащих игрокам. Здесь есть один лишний уровень вложенности листов
         List<List<List<Node>>> teams = teamElement.stream().map(
                 t -> t.stream().map(e -> e.childNodes().stream().filter(q -> (
-                        q.getClass().equals(Element.class) && ((Element) q).tagName().equals("tr")
+                                q.getClass().equals(Element.class) && ((Element) q).tagName().equals("tr")
                         )).collect(Collectors.toList())
                 ).collect(Collectors.toList())).toList();
         //отрезаем лишний уровень
@@ -148,9 +148,12 @@ public class StatsPageParser {
             List<Node> nodes = currentPlayer.childNodes();
             //фильтрация нод - нам нужны только элемент-классы с тэгом
             nodes = nodes.stream().filter(node -> (node.getClass().equals(Element.class) && ((Element) node).tagName().equals("td"))).collect(Collectors.toList());
-            PlayerOnMapResults calculatedPlayer = getPlayerResultsInOneMap(playersLeft.get(iteratorLeft.get()), nodes,
-                    currentMap, idStatsMap, date, "left");
-            playersLeft.set(iteratorLeft.get(), calculatedPlayer);
+            //на случай замены в игре - отследить достоверно, кого точно заменили нельзя, поэтому просто отрезаем последнего
+            if (iteratorLeft.intValue() < 5) {
+                PlayerOnMapResults calculatedPlayer = getPlayerResultsInOneMap(playersLeft.get(iteratorLeft.get()), nodes,
+                        currentMap, idStatsMap, date, "left");
+                playersLeft.set(iteratorLeft.get(), calculatedPlayer);
+            }
             iteratorLeft.getAndIncrement();
         });
         AtomicInteger iteratorRight = new AtomicInteger();
@@ -159,9 +162,12 @@ public class StatsPageParser {
             List<Node> nodes = currentPlayer.childNodes();
             //фильтрация нод - нам нужны только элемент-классы с тэгом
             nodes = nodes.stream().filter(node -> (node.getClass().equals(Element.class) && ((Element) node).tagName().equals("td"))).collect(Collectors.toList());
-            PlayerOnMapResults calculatedPlayer = getPlayerResultsInOneMap(playersRight.get(iteratorRight.get()), nodes,
-                    currentMap, idStatsMap, date, "right");
-            playersRight.set(iteratorRight.get(), calculatedPlayer);
+            //на случай замены в игре - отследить достоверно, кого точно заменили нельзя, поэтому просто отрезаем последнего
+            if (iteratorRight.intValue() < 5) {
+                PlayerOnMapResults calculatedPlayer = getPlayerResultsInOneMap(playersRight.get(iteratorRight.get()), nodes,
+                        currentMap, idStatsMap, date, "right");
+                playersRight.set(iteratorRight.get(), calculatedPlayer);
+            }
             iteratorRight.getAndIncrement();
         });
         players.addAll(playersLeft);
@@ -185,7 +191,8 @@ public class StatsPageParser {
                     //четвертый элемент всегда id - 22218
                     player.playerId = Integer.parseInt(CommonUtils.standardIdParsingByPlace(3, linkPlayer));
                     //пятый элемент всегда name - emi
-                    player.playerName = CommonUtils.standardIdParsingByPlace(4, linkPlayer);;
+                    player.playerName = CommonUtils.standardIdParsingByPlace(4, linkPlayer);
+                    ;
                     int i = 0;
                 }
                 case "st-kills" -> { //первый элемент - всегда число киллов,
@@ -200,8 +207,7 @@ public class StatsPageParser {
                     player.deaths = Integer.parseInt(node.childNodes().get(0).toString().replace(" ", ""));
                 }
                 case "st-kdratio" -> {
-                    if(node.childNodes().get(0).toString().equals("-"))
-                    {
+                    if (node.childNodes().get(0).toString().equals("-")) {
                         player.cast20 = 0;
                     } else {
                         player.cast20 = Float.parseFloat(node.childNodes().get(0).toString().replaceAll("[%| ]", ""));

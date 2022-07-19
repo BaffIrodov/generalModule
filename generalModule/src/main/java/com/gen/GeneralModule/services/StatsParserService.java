@@ -13,6 +13,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -51,14 +52,19 @@ public class StatsParserService {
             List<List<PlayerOnMapResults>> result = resultPageParser.parseMapStats(link);
             result.forEach(stats -> {
                 playerRepository.saveAll(stats);
-                ResultsLink res = resultsLinkRepository
-                        .findById(Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link)))
-                        .orElse(null);
-                res.processed = true;
-                resultsLinkRepository.save(res);
-                int i = 0;
             });
+            setLinkProcessed(link);
         }
+    }
+
+    private void setLinkProcessed(String link) {
+        Integer id = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
+        ResultsLink res = resultsLinkRepository
+                .findById(id)
+                .orElse(null);
+        resultsLinkRepository.deleteById(id);
+        res.processed = true;
+        resultsLinkRepository.save(res);
     }
 
     public Long getAvailableCount() {
