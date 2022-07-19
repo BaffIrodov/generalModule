@@ -14,4 +14,8 @@ public class MatchesLink {
     public String matchUrl;
     public String leftTeam;
     public String rightTeam;
+    public String matchFormat;
+    public String matchMapsNames;
+    public String leftTeamOdds;
+    public String rightTeamOdds;
 }

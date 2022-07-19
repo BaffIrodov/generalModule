@@ -70,5 +70,9 @@ CREATE TABLE IF NOT EXISTS matches_link
     "match_id" int8 not null,
     "match_url" VARCHAR(200) not null,
     "left_team" VARCHAR(200) not null,
-    "right_team" VARCHAR(200) not null
+    "right_team" VARCHAR(200) not null,
+    "match_format" VARCHAR(200) not null,
+    "match_maps_names" VARCHAR(200),
+    "left_team_odds" VARCHAR(200),
+    "right_team_odds" VARCHAR(200)
     );

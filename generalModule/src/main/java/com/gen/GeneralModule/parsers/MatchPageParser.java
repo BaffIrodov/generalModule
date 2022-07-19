@@ -2,6 +2,7 @@ package com.gen.GeneralModule.parsers;
 
 import com.gen.GeneralModule.common.CommonUtils;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
@@ -55,8 +56,7 @@ public class MatchPageParser {
         return players;
     }
 
-    public List<String> getTeamsNames(String link) {
-        Document doc = CommonUtils.reliableConnectAndGetDocument(link);
+    public List<String> getTeamsNames(Document doc) {
         List<String> namesLeftAndRightTeams = new ArrayList<>();
         if (doc != null) {
             // Забираем названия команд из самой верхней части страницы с матчами.
@@ -68,14 +68,42 @@ public class MatchPageParser {
         return namesLeftAndRightTeams;
     }
 
-    public String getMatchFormat(String link) {
-        Document doc = CommonUtils.reliableConnectAndGetDocument(link);
+    public String getMatchFormat(Document doc) {
         String format = "";
         if (doc != null) {
             Elements elementsWithFormat = doc.body().getElementsByClass("padding preformatted-text");
             format = ((TextNode) elementsWithFormat.get(0).childNodes().get(0)).getWholeText();
-            format = format.replaceAll(" [(].*","").replaceAll("\n.*", "");
+            format = format.replaceAll(" [(].*", "").replaceAll("\n.*", "");
         }
         return format;
+    }
+
+    public List<String> getMatchMapsNames(Document doc) {
+        List<String> mapsNames = new ArrayList<>();
+        if (doc != null) {
+            Elements elementsWithMapsNames = doc.body().getElementsByClass("map-name-holder");
+            for (Element element : elementsWithMapsNames) {
+                mapsNames.add(element.childNodes().get(0).attributes().get("alt"));
+            }
+        }
+        return mapsNames;
+    }
+
+    public List<String> getTeamsOdds(Document doc) {
+        List<String> odds = new ArrayList<>();
+        String leftTeam = "";
+        String rightTeam = "";
+        if (doc != null) {
+            Elements elementsWithOdds = doc.body().getElementsByClass("odds-cell border-left");
+            for(int i=0; i<(elementsWithOdds.size()-1); i+=3){
+                leftTeam = String.join(" ", leftTeam,
+                        ((TextNode) elementsWithOdds.get(i).childNodes().get(0).childNodes().get(0)).getWholeText());
+                rightTeam = String.join(" ", rightTeam,
+                        ((TextNode) elementsWithOdds.get(i+2).childNodes().get(0).childNodes().get(0)).getWholeText());
+            }
+            odds.add(leftTeam);
+            odds.add(rightTeam);
+        }
+        return odds;
     }
 }
