@@ -25,6 +25,7 @@ public class PlayerOnMapResults {
     public String playerName; //ник игрока
     public Date dateOfMatch; //дата матча
     public MapsEnum playedMap; //карта, на которой был сыгран матч
+    public String playedMapString; //карта в удобном виде
     public String team; //команда, в которой играет человек - left, right
     public int kills; //убийства (парсинг: целое число)
     public int assists; //помощь в убийстве (парсинг: строка вида " (8)")
@@ -42,6 +43,7 @@ public class PlayerOnMapResults {
         this.playerName = "";
         this.dateOfMatch = null;
         this.playedMap = MapsEnum.ALL;
+        this.playedMapString = MapsEnum.ALL.toString();
         this.team = "";
         this.kills = 0;
         this.assists = 0;
@@ -59,6 +61,7 @@ public class PlayerOnMapResults {
                 !this.idStatsMap.equals("") &&
                 this.dateOfMatch != null &&
                 this.playedMap != MapsEnum.ALL &&
+                this.playedMapString != "ALL" &&
                 !this.team.equals("");
     }
 

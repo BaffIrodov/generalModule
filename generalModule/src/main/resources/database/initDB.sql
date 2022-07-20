@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS player_on_map_results
     "player_name" VARCHAR(200),
     "date_of_match" date,
     "played_map" VARCHAR(200),
+    "played_map_string" VARCHAR(200),
     "team" VARCHAR(200),
     "kills" int8,
     "assists" int8,
