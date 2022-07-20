@@ -1,6 +1,7 @@
 package com.gen.GeneralModule.services;
 
 import com.gen.GeneralModule.common.CommonUtils;
+import com.gen.GeneralModule.dtos.requestResponseDtos.StatsRequestDto;
 import com.gen.GeneralModule.entities.PlayerOnMapResults;
 import com.gen.GeneralModule.entities.QMatchesLink;
 import com.gen.GeneralModule.entities.QResultsLink;
@@ -44,16 +45,22 @@ public class StatsParserService {
         return playerRepository.save(player);
     }
 
-    public void startParser() {
+    public void startParser(StatsRequestDto request) {
+        int index = 0;
         List<String> links = queryFactory
                 .from(resultsLink).select(resultsLink.resultUrl)
                 .where(resultsLink.archive.eq(false)).fetch();
         for (String link : links) {
-            List<List<PlayerOnMapResults>> result = resultPageParser.parseMapStats(link);
-            result.forEach(stats -> {
-                playerRepository.saveAll(stats);
-            });
-            setLinkProcessed(link);
+            if(index < request.batchSize) {
+                List<List<PlayerOnMapResults>> result = resultPageParser.parseMapStats(link);
+                result.forEach(stats -> {
+                    playerRepository.saveAll(stats);
+                });
+                setLinkProcessed(link);
+                index++;
+            } else {
+                break;
+            }
         }
     }
 
