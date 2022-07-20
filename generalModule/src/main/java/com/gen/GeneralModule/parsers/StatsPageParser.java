@@ -214,7 +214,11 @@ public class StatsPageParser {
                     }
                 }
                 case "st-adr" -> {
-                    player.adr = Float.parseFloat(node.childNodes().get(0).toString().replace(" ", ""));
+                    if (node.childNodes().get(0).toString().equals("-")) {
+                        player.adr = 0;
+                    } else {
+                        player.adr = Float.parseFloat(node.childNodes().get(0).toString().replace(" ", ""));
+                    }
                 }
                 case "st-rating" -> {
                     player.rating20 = Float.parseFloat(node.childNodes().get(0).toString().replace(" ", ""));
