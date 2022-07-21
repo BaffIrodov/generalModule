@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS stats_response
     "id" int8 not null,
     "batch_size" int8,
     "batch_time" int8,
-    "request_date" date
+    "request_date" timestamp
     );
 
 DROP SEQUENCE IF EXISTS "sq_stats_response_id";

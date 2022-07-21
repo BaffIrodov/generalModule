@@ -7,10 +7,10 @@ import com.gen.GeneralModule.repositories.StatsResponseRepository;
 import com.gen.GeneralModule.services.StatsParserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -38,6 +38,11 @@ public class StatsController {
     @GetMapping("/available-count")
     public Long getAvailableCountForParsing() {
         return statsParserService.getAvailableCount();
+    }
+
+    @GetMapping("/response-analytics")
+    public List<StatsResponse> getResponseAnalytics() {
+        return statsParserService.getResponseAnalytics();
     }
 
     private StatsResponseDto fillResponse(StatsResponseDto dto, Integer batchSize, Integer batchTime) {

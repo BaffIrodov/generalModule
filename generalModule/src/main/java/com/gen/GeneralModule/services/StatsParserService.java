@@ -2,10 +2,7 @@ package com.gen.GeneralModule.services;
 
 import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.dtos.requestResponseDtos.StatsRequestDto;
-import com.gen.GeneralModule.entities.PlayerOnMapResults;
-import com.gen.GeneralModule.entities.QMatchesLink;
-import com.gen.GeneralModule.entities.QResultsLink;
-import com.gen.GeneralModule.entities.ResultsLink;
+import com.gen.GeneralModule.entities.*;
 import com.gen.GeneralModule.parsers.ResultPageParser;
 import com.gen.GeneralModule.parsers.StatsPageParser;
 import com.gen.GeneralModule.repositories.PlayerRepository;
@@ -39,6 +36,7 @@ public class StatsParserService {
     private ResultPageParser resultPageParser;
 
     private static final QResultsLink resultsLink= new QResultsLink("resultsLink");
+    private static final QStatsResponse statsResponse= new QStatsResponse("statsResponse");
 
 
     public PlayerOnMapResults save(PlayerOnMapResults player) {
@@ -49,7 +47,7 @@ public class StatsParserService {
         int index = 0;
         List<String> links = queryFactory
                 .from(resultsLink).select(resultsLink.resultUrl)
-                .where(resultsLink.archive.eq(false)).fetch();
+                .where(resultsLink.processed.eq(false)).fetch();
         for (String link : links) {
             if(index < request.batchSize) {
                 List<List<PlayerOnMapResults>> result = resultPageParser.parseMapStats(link);
@@ -77,5 +75,10 @@ public class StatsParserService {
     public Long getAvailableCount() {
         Long count = queryFactory.from(resultsLink).where(resultsLink.processed.eq(false)).stream().count();
         return count;
+    }
+
+    public List<StatsResponse> getResponseAnalytics() {
+        List<StatsResponse> result = (List<StatsResponse>) queryFactory.from(statsResponse).fetch();
+        return result;
     }
 }
