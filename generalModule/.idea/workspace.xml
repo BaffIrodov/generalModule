@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c369a914-eb99-41e6-a996-06d0e30bee93" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/DebugController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/DebugService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/StatsResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/repositories/StatsResponseRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/StatsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/StatsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/initDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/initDB.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

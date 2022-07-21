@@ -10,7 +10,6 @@ import java.util.Date;
 //Это для записи в БД
 
 @Entity
-@Data
 @AllArgsConstructor
 public class PlayerOnMapResults {
     @Id

@@ -2,6 +2,8 @@ package com.gen.GeneralModule.controllers;
 
 import com.gen.GeneralModule.dtos.requestResponseDtos.StatsRequestDto;
 import com.gen.GeneralModule.dtos.requestResponseDtos.StatsResponseDto;
+import com.gen.GeneralModule.entities.StatsResponse;
+import com.gen.GeneralModule.repositories.StatsResponseRepository;
 import com.gen.GeneralModule.services.StatsParserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class StatsController {
     @Autowired
     StatsParserService statsParserService;
 
+    @Autowired
+    StatsResponseRepository statsResponseRepository;
+
     @PostMapping("/write-players")
     public StatsResponseDto writePlayers(@RequestBody StatsRequestDto request) {
         StatsResponseDto dto = new StatsResponseDto();
@@ -26,6 +31,7 @@ public class StatsController {
         statsParserService.startParser(request);
         log.info("Write players done in: " + (System.currentTimeMillis() - now));
         fillResponse(dto, request.batchSize, (int)(System.currentTimeMillis() - now));
+        fillAndSaveResponseEntity(dto);
         return dto;
     }
 
@@ -39,5 +45,13 @@ public class StatsController {
         dto.batchTime = batchTime;
         dto.requestDate = new Date();
         return dto;
+    }
+
+    private void fillAndSaveResponseEntity(StatsResponseDto dto) {
+        StatsResponse statsResponse = new StatsResponse();
+        statsResponse.batchSize = dto.batchSize;
+        statsResponse.batchTime = dto.batchTime;
+        statsResponse.requestDate = dto.requestDate;
+        statsResponseRepository.save(statsResponse);
     }
 }

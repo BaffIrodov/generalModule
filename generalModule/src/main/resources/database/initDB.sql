@@ -85,3 +85,20 @@ CREATE TABLE IF NOT EXISTS round_history
     "date_of_match" timestamp not null,
     "round_sequence" VARCHAR(200) not null
     );
+
+DROP TABLE IF EXISTS stats_response;
+CREATE TABLE IF NOT EXISTS stats_response
+(
+    "id" int8 not null,
+    "batch_size" int8,
+    "batch_time" int8,
+    "request_date" date
+    );
+
+DROP SEQUENCE IF EXISTS "sq_stats_response_id";
+CREATE SEQUENCE "sq_stats_response_id"
+    INCREMENT 1
+    MINVALUE  1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1;
