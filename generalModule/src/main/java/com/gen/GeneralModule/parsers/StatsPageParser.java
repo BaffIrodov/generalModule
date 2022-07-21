@@ -71,8 +71,19 @@ public class StatsPageParser {
         }
         result.idStatsMap = idStatsMap;
         result.dateOfMatch = dateOfMatch;
-        result.roundSequence = processedListOfRoundResults;
-        return result.returnValidatedObjectOrNull();
+        // Преобразование массива с результатами в строку победителей
+        StringBuilder roundResults = new StringBuilder();
+        int leftScore = 0;
+        for (String roundResult : processedListOfRoundResults) {
+            if ((roundResult.charAt(0) - '0') > leftScore) {
+                roundResults.append("L");
+            } else {
+                roundResults.append("R");
+            }
+            leftScore = roundResult.charAt(0) - '0';
+        }
+        result.roundSequence = roundResults.toString();
+        return returnValidatedObjectOrNull(result);
     }
 
     private void getNotProcessedList(Element historyElement, List<String> notProcessedListOfRoundResults) {
@@ -283,6 +294,20 @@ public class StatsPageParser {
         }
         if (alright) {
             return players;
+        } else {
+            return null;
+        }
+    }
+
+    public boolean validateThisObject(RoundHistory result) {
+        return !result.idStatsMap.equals("") &&
+                result.dateOfMatch != null &&
+                result.roundSequence.length() > 0;
+    }
+
+    public RoundHistory returnValidatedObjectOrNull(RoundHistory result) {
+        if (validateThisObject(result)) {
+            return result;
         } else {
             return null;
         }

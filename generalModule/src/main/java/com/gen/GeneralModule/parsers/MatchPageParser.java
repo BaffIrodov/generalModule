@@ -71,6 +71,9 @@ public class MatchPageParser {
     public String getMatchFormat(Document doc) {
         String format = "";
         if (doc != null) {
+            // Так же, как и в случае с названиями команд формат матча записан обычной строкой в отдельном
+            // блоке на сайте. Поэтому добираемся до строки и вырезаем ей с помощью регулярного выражения,
+            // так как в этом блоке есть и другая информация.
             Elements elementsWithFormat = doc.body().getElementsByClass("padding preformatted-text");
             format = ((TextNode) elementsWithFormat.get(0).childNodes().get(0)).getWholeText();
             format = format.replaceAll(" [(].*", "").replaceAll("\n.*", "");
@@ -81,6 +84,8 @@ public class MatchPageParser {
     public List<String> getMatchMapsNames(Document doc) {
         List<String> mapsNames = new ArrayList<>();
         if (doc != null) {
+            // Названия карт располагаются в элементах с одинаковыми классами, поэтому мы перебираем их в цикле.
+            // Сами названия находятся в 0 чайлдноде в атрибуте по имени alt.
             Elements elementsWithMapsNames = doc.body().getElementsByClass("map-name-holder");
             for (Element element : elementsWithMapsNames) {
                 mapsNames.add(element.childNodes().get(0).attributes().get("alt"));
@@ -94,6 +99,12 @@ public class MatchPageParser {
         String leftTeam = "";
         String rightTeam = "";
         if (doc != null) {
+            // Коэффициенты располагаются на сайте в табличке с тремя столбцами. Первый столбец - левая команда,
+            // второй столбец - всегда пустой, третий столбец - правая команда. Так как ячейки таблицы с
+            // одинаковыми классами, то мы берём все ячейки и шагаем по ним в цикле. Берём коэф для левой команды
+            // и засовываем в левый список, следующую пустую ячейку пропускаем, берём коэф для правой команды
+            // и засовываем в правый список. Так делаем пока не пройдём по всем ячейкам с классом odds-cell border-left.
+            // Затем в общий список добавляем в начале левый, а потом правый списки.
             Elements elementsWithOdds = doc.body().getElementsByClass("odds-cell border-left");
             for(int i=0; i<(elementsWithOdds.size()-1); i+=3){
                 leftTeam = String.join(" ", leftTeam,

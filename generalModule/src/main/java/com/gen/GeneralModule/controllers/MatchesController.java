@@ -28,12 +28,12 @@ public class MatchesController {
     @PostMapping("/write-links")
     public List<MatchesDto> writeAllLinks() {
         matchesParserService.deleteAll();
-        long now = System.currentTimeMillis();
 
         List<String> allLinks = matchesPageParser.parseMatches();
         List<MatchesLink> matchesLinks = new ArrayList<>();
         List<MatchesDto> matchesDto = new ArrayList<>();
         allLinks.forEach(link -> {
+            long now = System.currentTimeMillis();
             MatchesLink matchesLink = new MatchesLink();
             matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
             matchesLink.matchUrl = link;
@@ -59,10 +59,10 @@ public class MatchesController {
             matchesDtoN.leftTeamOdds = matchesLink.leftTeamOdds;
             matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
             matchesDto.add(matchesDtoN);
+            matchesDtoN.matchTime = (int) (System.currentTimeMillis() - now);
         });
         matchesParserService.saveAll(matchesLinks);
-
-        System.out.println("Время записи данных: " + (System.currentTimeMillis() - now));
+        //System.out.println("Время записи данных: " + ());
         return matchesDto;
     }
 }

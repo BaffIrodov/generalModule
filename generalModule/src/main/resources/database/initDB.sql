@@ -77,3 +77,11 @@ CREATE TABLE IF NOT EXISTS matches_link
     "left_team_odds" VARCHAR(200),
     "right_team_odds" VARCHAR(200)
     );
+
+DROP TABLE IF EXISTS round_history;
+CREATE TABLE IF NOT EXISTS round_history
+(
+    "id_stats_map" int8 not null,
+    "date_of_match" timestamp not null,
+    "round_sequence" VARCHAR(200) not null
+    );

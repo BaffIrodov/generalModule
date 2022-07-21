@@ -1,15 +1,24 @@
 package com.gen.GeneralModule.entities;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Data
+@NoArgsConstructor
 public class RoundHistory {
+    @Id
     public String idStatsMap; //id stats-страницы
     public Date dateOfMatch; //дата матча
-    public List<String> roundSequence; //последовательность раундов - (L, L, L, R, R) - первая тима выигрывает 3, вторая выигрывает 2 раунда
+    public String roundSequence; //последовательность раундов - (L, L, L, R, R) - первая тима выигрывает 3, вторая выигрывает 2 раунда
 
-    public RoundHistory(){
+    /*public RoundHistory(){
         this.idStatsMap = "";
         this.dateOfMatch = null;
         this.roundSequence = new ArrayList<>();
@@ -27,5 +36,5 @@ public class RoundHistory {
         } else {
             return null;
         }
-    }
+    }*/
 }

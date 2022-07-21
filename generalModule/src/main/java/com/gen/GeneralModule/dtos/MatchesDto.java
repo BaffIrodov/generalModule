@@ -11,4 +11,5 @@ public class MatchesDto {
     public List<String> matchMapsNames;
     public String leftTeamOdds;
     public String rightTeamOdds;
+    public Integer matchTime;
 }
