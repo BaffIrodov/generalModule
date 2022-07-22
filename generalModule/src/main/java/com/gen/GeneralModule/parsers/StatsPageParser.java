@@ -4,10 +4,13 @@ import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.common.MapsEnum;
 import com.gen.GeneralModule.entities.PlayerOnMapResults;
 import com.gen.GeneralModule.entities.RoundHistory;
+import com.gen.GeneralModule.repositories.RoundHistoryRepository;
+import com.gen.GeneralModule.services.StatsParserService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +34,9 @@ public class StatsPageParser {
      * парсим две таблицы, из таблиц извлекаем информацию, маппим в экземпляры игроков, игроков сохраняем в бд (07.06.22)
      */
 
+    @Autowired
+    StatsParserService statsParserService;
+
     @Transactional
     public List<PlayerOnMapResults> parseMapStats(String statsUrl) {
         List<PlayerOnMapResults> listPlayersLeftAndRight = new ArrayList<>();
@@ -45,6 +51,7 @@ public class StatsPageParser {
             listPlayersLeftAndRight = getAllPlayers(doc, idStatsMap, date);
             if (roundHistoryToBD != null && listPlayersLeftAndRight != null) {
                 //всё хорошо, так и должно быть, запись в БД
+                //statsParserService.saveRoundHistory(roundHistoryToBD);
             } else {
                 System.out.println("Валидация не прошла");
             }
@@ -72,7 +79,7 @@ public class StatsPageParser {
         result.idStatsMap = idStatsMap;
         result.dateOfMatch = dateOfMatch;
         // Преобразование массива с результатами в строку победителей
-        StringBuilder roundResults = new StringBuilder();
+        /*StringBuilder roundResults = new StringBuilder();
         int leftScore = 0;
         for (String roundResult : processedListOfRoundResults) {
             if ((roundResult.charAt(0) - '0') > leftScore) {
@@ -82,7 +89,8 @@ public class StatsPageParser {
             }
             leftScore = roundResult.charAt(0) - '0';
         }
-        result.roundSequence = roundResults.toString();
+        result.roundSequence = roundResults.toString();*/
+        result.roundSequence = String.join(" ", processedListOfRoundResults);
         return returnValidatedObjectOrNull(result);
     }
 

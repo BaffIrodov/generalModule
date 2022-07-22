@@ -7,6 +7,7 @@ import com.gen.GeneralModule.parsers.ResultPageParser;
 import com.gen.GeneralModule.parsers.StatsPageParser;
 import com.gen.GeneralModule.repositories.PlayerRepository;
 import com.gen.GeneralModule.repositories.ResultsLinkRepository;
+import com.gen.GeneralModule.repositories.RoundHistoryRepository;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.relational.core.sql.In;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,14 +31,17 @@ public class StatsParserService {
     @Autowired
     private ResultsLinkRepository resultsLinkRepository;
 
-    @Autowired
-    private StatsPageParser statsPageParser;
+    /*@Autowired
+    private StatsPageParser statsPageParser;*/
 
     @Autowired
     private ResultPageParser resultPageParser;
 
-    private static final QResultsLink resultsLink= new QResultsLink("resultsLink");
-    private static final QStatsResponse statsResponse= new QStatsResponse("statsResponse");
+    @Autowired
+    private RoundHistoryRepository roundHistoryRepository;
+
+    private static final QResultsLink resultsLink = new QResultsLink("resultsLink");
+    private static final QStatsResponse statsResponse = new QStatsResponse("statsResponse");
 
 
     public PlayerOnMapResults save(PlayerOnMapResults player) {
@@ -49,7 +54,7 @@ public class StatsParserService {
                 .from(resultsLink).select(resultsLink.resultUrl)
                 .where(resultsLink.processed.eq(false)).fetch();
         for (String link : links) {
-            if(index < request.batchSize) {
+            if (index < request.batchSize) {
                 List<List<PlayerOnMapResults>> result = resultPageParser.parseMapStats(link);
                 result.forEach(stats -> {
                     playerRepository.saveAll(stats);
@@ -80,5 +85,9 @@ public class StatsParserService {
     public List<StatsResponse> getResponseAnalytics() {
         List<StatsResponse> result = (List<StatsResponse>) queryFactory.from(statsResponse).fetch();
         return result;
+    }
+
+    public RoundHistory saveRoundHistory(RoundHistory roundHistory) {
+        return roundHistoryRepository.save(roundHistory);
     }
 }

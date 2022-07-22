@@ -2,6 +2,7 @@ package com.gen.GeneralModule.controllers;
 
 import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.dtos.MatchesDto;
+import com.gen.GeneralModule.dtos.MatchesWithTimeDto;
 import com.gen.GeneralModule.entities.MatchesLink;
 import com.gen.GeneralModule.parsers.MatchPageParser;
 import com.gen.GeneralModule.parsers.MatchesPageParser;
@@ -26,13 +27,17 @@ public class MatchesController {
     private MatchPageParser matchPageParser = new MatchPageParser();
 
     @PostMapping("/write-links")
-    public List<MatchesDto> writeAllLinks() {
+    public MatchesWithTimeDto writeAllLinks() {
         matchesParserService.deleteAll();
-
+        long full = System.currentTimeMillis();
         List<String> allLinks = matchesPageParser.parseMatches();
         List<MatchesLink> matchesLinks = new ArrayList<>();
         List<MatchesDto> matchesDto = new ArrayList<>();
+        MatchesWithTimeDto matchesWithTimeDto = new MatchesWithTimeDto();
         allLinks.forEach(link -> {
+            // Искусственное замедление
+            CommonUtils.waiter(400);
+
             long now = System.currentTimeMillis();
             MatchesLink matchesLink = new MatchesLink();
             matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
@@ -60,9 +65,12 @@ public class MatchesController {
             matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
             matchesDto.add(matchesDtoN);
             matchesDtoN.matchTime = (int) (System.currentTimeMillis() - now);
+            System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
         });
         matchesParserService.saveAll(matchesLinks);
-        //System.out.println("Время записи данных: " + ());
-        return matchesDto;
+        matchesWithTimeDto.matches = matchesDto;
+        matchesWithTimeDto.fullTime = (int) (System.currentTimeMillis() - full);
+        System.out.println("Полное время: " + matchesWithTimeDto.fullTime);
+        return matchesWithTimeDto;
     }
 }
