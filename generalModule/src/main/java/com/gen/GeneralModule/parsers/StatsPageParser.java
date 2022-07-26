@@ -34,49 +34,51 @@ public class StatsPageParser {
      * парсим две таблицы, из таблиц извлекаем информацию, маппим в экземпляры игроков, игроков сохраняем в бд (07.06.22)
      */
 
-    @Autowired
-    StatsParserService statsParserService;
+//    @Autowired
+//    private StatsParserService statsParserService;
 
     @Transactional
-    public List<PlayerOnMapResults> parseMapStats(String statsUrl) {
+    public Map<List<PlayerOnMapResults>, RoundHistory> parseMapStats(String statsUrl) {
         List<PlayerOnMapResults> listPlayersLeftAndRight = new ArrayList<>();
-        RoundHistory roundHistoryToBD = new RoundHistory();
-        CommonUtils.waiter(300);
+        Map<List<PlayerOnMapResults>, RoundHistory> resultMap = new HashMap<>();
+        RoundHistory roundHistory = new RoundHistory();
+        CommonUtils.waiter(400);
         long now = System.currentTimeMillis(); //#OPTIMIZATION 11.06 - фулл парсинг одной страницы занимает 180-220 мс. Хороший результат. Можно улучшить?
         Document doc = CommonUtils.reliableConnectAndGetDocument(statsUrl);
         if (doc != null) {
             Date date = getCurrentMapDate(doc);
             String idStatsMap = getStatsId(statsUrl);
-            roundHistoryToBD = getFullRoundHistory(doc, idStatsMap, date);
+            roundHistory = getFullRoundHistory(doc, idStatsMap, date);
             listPlayersLeftAndRight = getAllPlayers(doc, idStatsMap, date);
-            if (roundHistoryToBD != null && listPlayersLeftAndRight != null) {
+//            if (roundHistory != null && listPlayersLeftAndRight != null) {
                 //всё хорошо, так и должно быть, запись в БД
-                //statsParserService.saveRoundHistory(roundHistoryToBD);
-            } else {
-                System.out.println("Валидация не прошла");
-            }
+//                statsParserService.saveRoundHistory(roundHistory);
+//            } else {
+//                System.out.println("Валидация не прошла");
+//            }
         }
-        return listPlayersLeftAndRight;
+        resultMap.put(listPlayersLeftAndRight, roundHistory);
+        return resultMap;
     }
 
     public RoundHistory getFullRoundHistory(Document doc, String idStatsMap, Date dateOfMatch) {
         RoundHistory result = new RoundHistory();
         List<String> notProcessedListOfRoundResults = new ArrayList<>();
         List<String> processedListOfRoundResults = new ArrayList<>();
-        Elements wow = doc.body().getElementsByClass("standard-box round-history-con");
-        if (wow.size() == 1) {
-            Element historyElement = wow.get(0);
+        Elements elements = doc.body().getElementsByClass("standard-box round-history-con");
+        if (elements.size() == 1) {
+            Element historyElement = elements.get(0);
             getNotProcessedList(historyElement, notProcessedListOfRoundResults);
             processedListOfRoundResults = convertNotProcessedListOfRoundResults(notProcessedListOfRoundResults);
-        } else if (wow.size() == 2) {
-            Element historyElementMainTime = wow.get(0);
+        } else if (elements.size() == 2) {
+            Element historyElementMainTime = elements.get(0);
             getNotProcessedList(historyElementMainTime, notProcessedListOfRoundResults);
             processedListOfRoundResults = convertNotProcessedListOfRoundResults(notProcessedListOfRoundResults);
-            Element historyElementOverTime = wow.get(1); //TODO нужно учитывать овертаймы в расчете? Они рандомные, вряд ли что-то могут сказать о типичной игре
+//            Element historyElementOverTime = elements.get(1); овертаймы
         } else {
             //never happen (30+ rounds of overtime?)
         }
-        result.idStatsMap = idStatsMap;
+        result.idStatsMap = Integer.parseInt(idStatsMap);
         result.dateOfMatch = dateOfMatch;
         // Преобразование массива с результатами в строку победителей
         /*StringBuilder roundResults = new StringBuilder();

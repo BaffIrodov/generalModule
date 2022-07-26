@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StatsParserService {
@@ -31,8 +33,8 @@ public class StatsParserService {
     @Autowired
     private ResultsLinkRepository resultsLinkRepository;
 
-    /*@Autowired
-    private StatsPageParser statsPageParser;*/
+//    @Autowired
+//    private StatsPageParser statsPageParser;
 
     @Autowired
     private ResultPageParser resultPageParser;
@@ -55,10 +57,13 @@ public class StatsParserService {
                 .where(resultsLink.processed.eq(false)).fetch();
         for (String link : links) {
             if (index < request.batchSize) {
-                List<List<PlayerOnMapResults>> result = resultPageParser.parseMapStats(link);
+                Map<List<PlayerOnMapResults>, RoundHistory> resultMap = resultPageParser.parseMapStats(link);
+                List<List<PlayerOnMapResults>> result = resultMap.keySet().stream().toList();
+                List<RoundHistory> resultValues = resultMap.values().stream().toList();
                 result.forEach(stats -> {
                     playerRepository.saveAll(stats);
                 });
+                resultValues.forEach(this::saveRoundHistory);
                 setLinkProcessed(link);
                 index++;
             } else {

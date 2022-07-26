@@ -2,15 +2,15 @@ package com.gen.GeneralModule.parsers;
 
 import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.entities.PlayerOnMapResults;
+import com.gen.GeneralModule.entities.RoundHistory;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,19 +25,22 @@ public class ResultPageParser {
      * Кратко по логике: берем ссылки на статсы, отслеживая, чтобы сама игра существовала (не тех. победа), затем проваливаемся в StatsPageParser
      *
      */
-    private final StatsPageParser statsPageParser = new StatsPageParser();
-    public List<List<PlayerOnMapResults>> parseMapStats(String resultUrl){
+    @Autowired
+    private StatsPageParser statsPageParser;
+    public Map<List<PlayerOnMapResults>, RoundHistory> parseMapStats(String resultUrl){
         List<String> statsLinks = new ArrayList<>();
+        Map<List<PlayerOnMapResults>, RoundHistory> map = new HashMap<>();
         List<List<PlayerOnMapResults>> allPlayersFromResult = new ArrayList<>();
-        CommonUtils.waiter(300);
+        CommonUtils.waiter(400);
         Document doc = CommonUtils.reliableConnectAndGetDocument(resultUrl);
         if (doc != null) {
             statsLinks = getAllStatsLinks(doc);
             for(String link : statsLinks){
-                allPlayersFromResult.add(statsPageParser.parseMapStats(link));
+                Map<List<PlayerOnMapResults>, RoundHistory> wow = statsPageParser.parseMapStats(link);
+                map.putAll(wow);
             }
         }
-        return allPlayersFromResult;
+        return map;
     }
 
     //получаем ссылки на все странички, на которых приведена полная детализация по карте
