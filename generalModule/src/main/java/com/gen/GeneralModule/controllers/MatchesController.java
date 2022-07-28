@@ -31,6 +31,7 @@ public class MatchesController {
         matchesParserService.deleteAll();
         long full = System.currentTimeMillis();
         List<String> allLinks = matchesPageParser.parseMatches();
+        //allLinks = allLinks.subList(0, 9);
         List<MatchesLink> matchesLinks = new ArrayList<>();
         List<MatchesDto> matchesDto = new ArrayList<>();
         MatchesWithTimeDto matchesWithTimeDto = new MatchesWithTimeDto();
@@ -65,7 +66,7 @@ public class MatchesController {
             matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
             matchesDto.add(matchesDtoN);
             matchesDtoN.matchTime = (int) (System.currentTimeMillis() - now);
-            System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
+            //System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
         });
         matchesParserService.saveAll(matchesLinks);
         matchesWithTimeDto.matches = matchesDto;
