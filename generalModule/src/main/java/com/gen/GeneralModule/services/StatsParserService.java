@@ -4,25 +4,20 @@ import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.dtos.requestResponseDtos.StatsRequestDto;
 import com.gen.GeneralModule.entities.*;
 import com.gen.GeneralModule.parsers.ResultPageParser;
-import com.gen.GeneralModule.parsers.StatsPageParser;
 import com.gen.GeneralModule.repositories.PlayerRepository;
 import com.gen.GeneralModule.repositories.ResultsLinkRepository;
 import com.gen.GeneralModule.repositories.RoundHistoryRepository;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.relational.core.sql.In;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
+@Log4j2
 public class StatsParserService {
     @Autowired
     private PlayerRepository playerRepository;
@@ -52,6 +47,7 @@ public class StatsParserService {
 
     public void startParser(StatsRequestDto request) {
         int index = 0;
+        AtomicInteger mapsCount = new AtomicInteger();
         List<String> links = queryFactory
                 .from(resultsLink).select(resultsLink.resultUrl)
                 .where(resultsLink.processed.eq(false)).fetch();
@@ -61,6 +57,7 @@ public class StatsParserService {
                 List<List<PlayerOnMapResults>> result = resultMap.keySet().stream().toList();
                 List<RoundHistory> resultValues = resultMap.values().stream().toList();
                 result.forEach(stats -> {
+                    mapsCount.getAndIncrement();
                     playerRepository.saveAll(stats);
                 });
                 resultValues.forEach(this::saveRoundHistory);
@@ -70,6 +67,7 @@ public class StatsParserService {
                 break;
             }
         }
+        log.info("Количество карт: " + mapsCount.toString());
     }
 
     private void setLinkProcessed(String link) {

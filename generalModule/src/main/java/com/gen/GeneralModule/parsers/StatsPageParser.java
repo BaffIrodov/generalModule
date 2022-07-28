@@ -292,7 +292,7 @@ public class StatsPageParser {
         player.playedMap = currentMap;
         player.playedMapString = currentMap.toString();
         player.team = team;
-        player.idStatsMap = idStatsMap;
+        player.idStatsMap = Integer.parseInt(idStatsMap);
         player.dateOfMatch = dateOfMatch;
         player.calculateKD();
         return player.returnValidatedObjectOrNull();

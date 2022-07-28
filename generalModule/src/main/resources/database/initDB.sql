@@ -1,29 +1,10 @@
 DROP TABLE IF EXISTS player;
-CREATE TABLE IF NOT EXISTS player
-(
-    "id" int8 not null,
-    "player_id" int8 not null,
-    "id_stats_map" VARCHAR(200) not null,
-    "url" VARCHAR(200),
-    "player_name" VARCHAR(200),
-    "date_of_match" date,
-    "played_map" VARCHAR(200),
-    "team" VARCHAR(200),
-    "kills" int8,
-    "assists" int8,
-    "deaths" int8,
-    "kd" float8,
-    "headshots" int8,
-    "adr" float8,
-    "rating20" float8,
-    "cast20" float8
-    );
 DROP TABLE IF EXISTS player_on_map_results;
 CREATE TABLE IF NOT EXISTS player_on_map_results
 (
     "id" int8 not null,
     "player_id" int8 not null,
-    "id_stats_map" VARCHAR(200) not null,
+    "id_stats_map" int8 not null,
     "url" VARCHAR(200),
     "player_name" VARCHAR(200),
     "date_of_match" date,

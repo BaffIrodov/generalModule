@@ -15,11 +15,10 @@ public class PlayerOnMapResults {
     @Id
     @SequenceGenerator(name = "sq_player_on_map_results", sequenceName = "sq_player_on_map_results_id", allocationSize = 0)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sq_player_on_map_results")
-    @Column(name = "id", nullable = false)
     public int id; //id записи
 
     public int playerId; //id игрока
-    public String idStatsMap; //id stats-страницы
+    public int idStatsMap; //id stats-страницы
     public String url; //url игрока, вероятно, может быть удалено
     public String playerName; //ник игрока
     public Date dateOfMatch; //дата матча
@@ -37,7 +36,7 @@ public class PlayerOnMapResults {
 
     public PlayerOnMapResults(){
         this.playerId = 0;
-        this.idStatsMap = "";
+        this.idStatsMap = 0;
         this.url = "";
         this.playerName = "";
         this.dateOfMatch = null;
@@ -57,7 +56,7 @@ public class PlayerOnMapResults {
     //простая проверка того, сготовился ли объект игрока. Все остальные поля могут быть нулевыми - не отличаться от значений конструктора. Эти не могут
     public boolean validateThisObject(){
         return this.playerId != 0 &&
-                !this.idStatsMap.equals("") &&
+                this.idStatsMap != 0 &&
                 this.dateOfMatch != null &&
                 this.playedMap != MapsEnum.ALL &&
                 this.playedMapString != "ALL" &&
