@@ -62,10 +62,19 @@ CREATE TABLE IF NOT EXISTS matches_link
 DROP TABLE IF EXISTS round_history;
 CREATE TABLE IF NOT EXISTS round_history
 (
+    "id" int8 not null,
     "id_stats_map" int8 not null,
     "date_of_match" timestamp not null,
     "round_sequence" VARCHAR(200) not null
     );
+
+DROP SEQUENCE IF EXISTS "sq_round_history_id";
+CREATE SEQUENCE "sq_round_history_id"
+    INCREMENT 1
+    MINVALUE  1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1;
 
 DROP TABLE IF EXISTS stats_response;
 CREATE TABLE IF NOT EXISTS stats_response
