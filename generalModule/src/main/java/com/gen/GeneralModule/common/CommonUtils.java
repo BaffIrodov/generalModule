@@ -6,8 +6,10 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 //This comment
@@ -42,9 +44,12 @@ public class CommonUtils {
 
     public static Document reliableConnectAndGetDocument(String url){ //если отваливается сервак или сеть у компа, то делаем повторный запрос
         Document doc = null;
+        UserAgent userAgent = new UserAgent();
         for(int i = 0; i < 5; i++) {
             try {
-                doc = Jsoup.connect(url).userAgent(UserAgent.USER_AGENT_CHROME).get();
+                System.setProperty("http.proxyHost", getRandomProxyHost());
+                System.setProperty("http.proxyPort", getRandomProxyPort());
+                doc = Jsoup.connect(url).userAgent(userAgent.getUserAgentChrome()).get();
             } catch (IOException exception) {
                 System.out.println("IOException в запросе по адресу: " + url);
             }
@@ -58,7 +63,24 @@ public class CommonUtils {
         return doc;
     }
 
-    public static String standardIdParsingBySlice(String strBeforeId, String processedString) {
+    private static String getRandomProxyHost() {
+        Random random = new Random();
+        List<Integer> randomNumbers = new ArrayList<>();
+        for(int i = 0; i < 4; i++) randomNumbers.add(random.nextInt(1,255));
+        List<String> randomNumbersToString = new ArrayList<>();
+        for(Integer number: randomNumbers) {
+            randomNumbersToString.add(number.toString());
+        }
+        return String.join(".", randomNumbersToString);
+    }
+
+    private static String getRandomProxyPort() {
+        Random random = new Random();
+        Integer res = random.nextInt(1000, 2000);
+        return res.toString();
+    }
+
+        public static String standardIdParsingBySlice(String strBeforeId, String processedString) {
         return (processedString.replaceAll(".*" + strBeforeId, "").replaceAll("/.*", ""));
     }
 

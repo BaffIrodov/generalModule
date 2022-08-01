@@ -16,7 +16,7 @@ public class MatchPageParser {
         // не получается забрать игроков и он выводит лист с двумя пустыми листами.
         Document doc = CommonUtils.reliableConnectAndGetDocument(link);
         long now = System.currentTimeMillis();
-        CommonUtils.waiter(400); // Искусственное замедление, которое позволяет зайти на все матчи. На 350 та же ошибка 1015
+        CommonUtils.waiter(50); // Искусственное замедление, которое позволяет зайти на все матчи. На 350 та же ошибка 1015
         List<List<String>> listPlayersLeftAndRight = getAllPlayers(doc);
         System.out.println(link);
         System.out.println("Время: " + (System.currentTimeMillis() - now));

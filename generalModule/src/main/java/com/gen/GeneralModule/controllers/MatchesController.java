@@ -36,7 +36,7 @@ public class MatchesController {
         MatchesWithTimeDto matchesWithTimeDto = new MatchesWithTimeDto();
         allLinks.forEach(link -> {
             // Искусственное замедление
-            CommonUtils.waiter(400);
+            CommonUtils.waiter(50);
 
             long now = System.currentTimeMillis();
             MatchesLink matchesLink = new MatchesLink();

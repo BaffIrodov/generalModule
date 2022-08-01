@@ -42,7 +42,7 @@ public class StatsPageParser {
         List<PlayerOnMapResults> listPlayersLeftAndRight = new ArrayList<>();
         Map<List<PlayerOnMapResults>, RoundHistory> resultMap = new HashMap<>();
         RoundHistory roundHistory = new RoundHistory();
-        CommonUtils.waiter(400);
+        CommonUtils.waiter(50);
         long now = System.currentTimeMillis(); //#OPTIMIZATION 11.06 - фулл парсинг одной страницы занимает 180-220 мс. Хороший результат. Можно улучшить?
         Document doc = CommonUtils.reliableConnectAndGetDocument(statsUrl);
         if (doc != null) {
