@@ -10,5 +10,6 @@ public enum MapsEnum {
     VERTIGO,
     ANCIENT,
     CACHE,
-    TRAIN
+    TRAIN,
+    TUSCAN
 }

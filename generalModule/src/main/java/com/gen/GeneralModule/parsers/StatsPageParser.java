@@ -314,6 +314,7 @@ public class StatsPageParser {
                 case "ANCIENT" -> mapsEnum.set(MapsEnum.ANCIENT);
                 case "CACHE" -> mapsEnum.set(MapsEnum.CACHE);
                 case "TRAIN" -> mapsEnum.set(MapsEnum.TRAIN);
+                case "TUSCAN" -> mapsEnum.set(MapsEnum.TUSCAN);
             }
         });
         return mapsEnum.get();

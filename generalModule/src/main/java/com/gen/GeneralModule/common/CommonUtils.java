@@ -45,7 +45,7 @@ public class CommonUtils {
     public static Document reliableConnectAndGetDocument(String url){ //если отваливается сервак или сеть у компа, то делаем повторный запрос
         Document doc = null;
         UserAgent userAgent = new UserAgent();
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 7; i++) {
             try {
                 System.setProperty("http.proxyHost", getRandomProxyHost());
                 System.setProperty("http.proxyPort", getRandomProxyPort());
@@ -58,6 +58,10 @@ public class CommonUtils {
             } else {
                 System.out.println("Коннект статус код не равен 200");
                 waiter(1000 * i+1); //делаем запросы с увеличивающимся таймаутом. Покрываем 15 секунд (11.06.22)
+                if(i >= 4) {
+                    System.out.println("Врубаю долгое ожидание");
+                    waiter(180 * 1000); //на две минуты передышка, бан должен пройти
+                }
             }
         }
         return doc;
