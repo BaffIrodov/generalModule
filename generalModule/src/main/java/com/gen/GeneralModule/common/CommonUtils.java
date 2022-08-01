@@ -76,7 +76,7 @@ public class CommonUtils {
 
     private static String getRandomProxyPort() {
         Random random = new Random();
-        Integer res = random.nextInt(1000, 2000);
+        Integer res = random.nextInt(1000, 10000);
         return res.toString();
     }
 
