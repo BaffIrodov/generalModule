@@ -31,7 +31,7 @@ public class ResultPageParser {
         List<String> statsLinks = new ArrayList<>();
         Map<List<PlayerOnMapResults>, RoundHistory> map = new HashMap<>();
         List<List<PlayerOnMapResults>> allPlayersFromResult = new ArrayList<>();
-        CommonUtils.waiter(50);
+        CommonUtils.waiter(400);
         Document doc = CommonUtils.reliableConnectAndGetDocument(resultUrl);
         if (doc != null) {
             statsLinks = getAllStatsLinks(doc);
