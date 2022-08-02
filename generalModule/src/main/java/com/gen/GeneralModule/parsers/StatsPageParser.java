@@ -4,13 +4,10 @@ import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.common.MapsEnum;
 import com.gen.GeneralModule.entities.PlayerOnMapResults;
 import com.gen.GeneralModule.entities.RoundHistory;
-import com.gen.GeneralModule.repositories.RoundHistoryRepository;
-import com.gen.GeneralModule.services.StatsParserService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,78 +57,6 @@ public class StatsPageParser {
         resultMap.put(listPlayersLeftAndRight, roundHistory);
         return resultMap;
     }
-
-//    public RoundHistory getFullRoundHistory(Document doc, String idStatsMap, Date dateOfMatch) {
-//        RoundHistory result = new RoundHistory();
-//        List<String> notProcessedListOfRoundResults = new ArrayList<>();
-//        //List<String> processedListOfRoundResults = new ArrayList<>();
-//        String processedListOfRoundResults = "";
-//        Elements elements = doc.body().getElementsByClass("standard-box round-history-con");
-//        if (elements.size() == 1) {
-//            Element historyElement = elements.get(0);
-//            getNotProcessedList(historyElement, notProcessedListOfRoundResults);
-//            processedListOfRoundResults = convertNotProcessedListOfRoundResults(notProcessedListOfRoundResults);
-//        } else if (elements.size() == 2) {
-//            Element historyElementMainTime = elements.get(0);
-//            getNotProcessedList(historyElementMainTime, notProcessedListOfRoundResults);
-//            processedListOfRoundResults = convertNotProcessedListOfRoundResults(notProcessedListOfRoundResults);
-////            Element historyElementOverTime = elements.get(1); овертаймы
-//        } else {
-//            //never happen (30+ rounds of overtime?)
-//        }
-//        result.idStatsMap = Integer.parseInt(idStatsMap);
-//        result.dateOfMatch = dateOfMatch;
-//        result.roundSequence = processedListOfRoundResults;
-//        //result.roundSequence = String.join(" ", processedListOfRoundResults);
-//        return returnValidatedObjectOrNull(result);
-//    }
-
-//    private void getNotProcessedList(Element historyElement, List<String> notProcessedListOfRoundResults) {
-//        List<Node> usefulNodes = historyElement.childNodes().stream().filter(node -> node instanceof Element).collect(Collectors.toList());
-//        usefulNodes.forEach(useful -> {
-//            notProcessedListOfRoundResults.addAll(useful.childNodes().stream().filter
-//                            (e -> !e.attributes().get("title").equals(""))
-//                    .map(r -> r.attributes().get("title")).collect(Collectors.toList()));
-//        });
-//    }
-
-    //в этот лист попадают названия команд и лист перемешан
-//    private String convertNotProcessedListOfRoundResults(List<String> notProcessedListOfRoundResults) {
-//        Map<Integer, String> mapOrderRoundToResultRound = new HashMap<>();
-//        notProcessedListOfRoundResults = notProcessedListOfRoundResults.stream().filter(e -> {
-//            boolean isValidatedElement = true;
-//            List<String> dividedList = Arrays.stream(e.split("-")).collect(Collectors.toList()); //у всех нужных элементов формат "15-2"
-//            if (dividedList.size() == 2) {
-//                try {
-//                    Integer.parseInt(dividedList.get(0));
-//                    Integer.parseInt(dividedList.get(1));
-//                } catch (NumberFormatException exception) {
-//                    isValidatedElement = false;
-//                }
-//            } else {
-//                isValidatedElement = false;
-//            }
-//            if (isValidatedElement) {
-//                mapOrderRoundToResultRound.put(dividedList.stream().map(Integer::parseInt).mapToInt(Integer::intValue).sum(), e);
-//            }
-//            return isValidatedElement;
-//        }).collect(Collectors.toList());
-//        // Преобразование массива с результатами в строку победителей
-//        String roundResults = "";
-//        int previousLeftScore = 0;
-//        int currentLeftScore;
-//        for (String roundResult : mapOrderRoundToResultRound.values()) {
-//            currentLeftScore = Integer.parseInt(roundResult.split("-")[0]);
-//            if (currentLeftScore > previousLeftScore) {
-//                roundResults += "L";
-//                previousLeftScore = currentLeftScore;
-//            } else {
-//                roundResults += "R";
-//            }
-//        }
-//        //List<String> result = new ArrayList<>(mapOrderRoundToResultRound.values());
-//        return roundResults;
-//    }
 
     public RoundHistory getFullRoundHistoryNew(Document doc, String idStatsMap, Date dateOfMatch) {
         RoundHistory result = new RoundHistory();
