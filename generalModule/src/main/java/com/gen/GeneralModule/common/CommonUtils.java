@@ -60,7 +60,7 @@ public class CommonUtils {
                 waiter(1000 * i+1); //делаем запросы с увеличивающимся таймаутом. Покрываем 15 секунд (11.06.22)
                 if(i >= 4) {
                     System.out.println("Врубаю долгое ожидание");
-                    waiter(180 * 1000); //на две минуты передышка, бан должен пройти
+                    waiter(120 * 1000); //на две минуты передышка, бан должен пройти
                 }
             }
         }
@@ -80,7 +80,7 @@ public class CommonUtils {
 
     private static String getRandomProxyPort() {
         Random random = new Random();
-        Integer res = random.nextInt(1000, 10000);
+        Integer res = random.nextInt(1000, 2000);
         return res.toString();
     }
 

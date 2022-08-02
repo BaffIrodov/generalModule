@@ -7,10 +7,6 @@
     <list default="true" id="c369a914-eb99-41e6-a996-06d0e30bee93" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/CommonUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/MapsEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/MapsEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/MatchesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/MatchesController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/MatchPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/MatchPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +141,8 @@
       <workItem from="1658263725953" duration="2809000" />
       <workItem from="1658345001325" duration="5735000" />
       <workItem from="1658952420209" duration="3141000" />
-      <workItem from="1659379262871" duration="8814000" />
+      <workItem from="1659379262871" duration="8819000" />
+      <workItem from="1659462085948" duration="3604000" />
     </task>
     <servers />
   </component>
