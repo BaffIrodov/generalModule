@@ -39,20 +39,12 @@ public class StatsPageParser {
         Map<List<PlayerOnMapResults>, RoundHistory> resultMap = new HashMap<>();
         RoundHistory roundHistory = new RoundHistory();
         CommonUtils.waiter(50);
-        long now = System.currentTimeMillis(); //#OPTIMIZATION 11.06 - фулл парсинг одной страницы занимает 180-220 мс. Хороший результат. Можно улучшить?
         Document doc = CommonUtils.reliableConnectAndGetDocument(statsUrl);
         if (doc != null) {
             Date date = getCurrentMapDate(doc);
             String idStatsMap = getStatsId(statsUrl);
             roundHistory = getFullRoundHistoryNew(doc, idStatsMap, date);
-
             listPlayersLeftAndRight = getAllPlayers(doc, idStatsMap, date);
-//            if (roundHistory != null && listPlayersLeftAndRight != null) {
-            //всё хорошо, так и должно быть, запись в БД
-//                statsParserService.saveRoundHistory(roundHistory);
-//            } else {
-//                System.out.println("Валидация не прошла");
-//            }
         }
         resultMap.put(listPlayersLeftAndRight, roundHistory);
         return resultMap;

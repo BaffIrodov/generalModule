@@ -29,18 +29,18 @@ public class ResultPageParser {
     private StatsPageParser statsPageParser;
     public Map<List<PlayerOnMapResults>, RoundHistory> parseMapStats(String resultUrl){
         List<String> statsLinks = new ArrayList<>();
-        Map<List<PlayerOnMapResults>, RoundHistory> map = new HashMap<>();
+        Map<List<PlayerOnMapResults>, RoundHistory> resultMap = new HashMap<>();
         List<List<PlayerOnMapResults>> allPlayersFromResult = new ArrayList<>();
-        CommonUtils.waiter(400);
+        CommonUtils.waiter(50);
         Document doc = CommonUtils.reliableConnectAndGetDocument(resultUrl);
         if (doc != null) {
             statsLinks = getAllStatsLinks(doc);
             for(String link : statsLinks){
-                Map<List<PlayerOnMapResults>, RoundHistory> wow = statsPageParser.parseMapStats(link);
-                map.putAll(wow);
+                Map<List<PlayerOnMapResults>, RoundHistory> parsingResult = statsPageParser.parseMapStats(link);
+                resultMap.putAll(parsingResult);
             }
         }
-        return map;
+        return resultMap;
     }
 
     //получаем ссылки на все странички, на которых приведена полная детализация по карте

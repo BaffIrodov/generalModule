@@ -82,6 +82,7 @@ public class StatsParserService {
 
     public Long getAvailableCount() {
         Long count = queryFactory.from(resultsLink).where(resultsLink.processed.eq(false)).stream().count();
+        Long count = queryFactory.from(resultsLink).where(resultsLink.).stream().count();
         return count;
     }
 
