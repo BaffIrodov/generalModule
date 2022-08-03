@@ -1,7 +1,9 @@
 package com.gen.GeneralModule.common;
 
+import com.gen.GeneralModule.services.ErrorsService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -14,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 //This comment
 public class CommonUtils {
+    static ErrorsService errorsService = new ErrorsService();
+
     public static void waiter(int timeoutInMS){
         try {
             TimeUnit.MILLISECONDS.sleep(timeoutInMS);
@@ -51,6 +55,7 @@ public class CommonUtils {
                 System.setProperty("http.proxyPort", getRandomProxyPort());
                 doc = Jsoup.connect(url).userAgent(userAgent.getUserAgentChrome()).get();
             } catch (IOException exception) {
+                errorsService.saveError(exception, url);
                 System.out.println("IOException в запросе по адресу: " + url);
             }
             if(doc != null && doc.connection().response().statusCode() == 200) {

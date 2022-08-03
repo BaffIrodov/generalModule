@@ -28,9 +28,6 @@ public class StatsParserService {
     @Autowired
     private ResultsLinkRepository resultsLinkRepository;
 
-//    @Autowired
-//    private StatsPageParser statsPageParser;
-
     @Autowired
     private ResultPageParser resultPageParser;
 

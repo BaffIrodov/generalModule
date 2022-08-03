@@ -5,8 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c369a914-eb99-41e6-a996-06d0e30bee93" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/ErrorsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/repositories/ErrorsRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/ErrorsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/CommonUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/MatchesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/MatchesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/repositories/MatchesLinkRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/repositories/MatchesLinkRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/StatsParserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/StatsParserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +94,8 @@
       <recent name="C:\Users\serge\Desktop\Spring\GeneralModule\src\main\resources\static\css" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.gen.GeneralModule.controllers" />
+      <recent name="com.gen.GeneralModule.services" />
       <recent name="com.gen.GeneralModule.repositories" />
       <recent name="com.gen.GeneralModule.model" />
     </key>
