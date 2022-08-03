@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -35,6 +37,7 @@ public class MatchesController {
         List<MatchesLink> matchesLinks = new ArrayList<>();
         List<MatchesDto> matchesDto = new ArrayList<>();
         MatchesWithTimeDto matchesWithTimeDto = new MatchesWithTimeDto();
+        //Random rand = new Random();
         allLinks.forEach(link -> {
             // Искусственное замедление
             CommonUtils.waiter(400);
@@ -47,6 +50,22 @@ public class MatchesController {
             List<String> teamsNames = matchPageParser.getTeamsNames(doc);
             matchesLink.leftTeam = teamsNames.get(0);
             matchesLink.rightTeam = teamsNames.get(1);
+
+            //Моделирование случайной ошибки
+//            if (rand.nextInt(0,2) == 0){
+//                teamsNames.clear();
+//            }
+//            StackTraceElement[] error;
+//            try{
+//                matchesLink.leftTeam = teamsNames.get(0);
+//                matchesLink.rightTeam = teamsNames.get(1);
+//                System.out.println("Всё хорошо");
+//            } catch (Exception e){
+//                error = e.getStackTrace();
+//                List<StackTraceElement> erorrList = new ArrayList<>(Arrays.asList(error));
+//                System.out.println("Ошибочка!\n"+error);
+//                //e.printStackTrace();
+//            }
             matchesLink.matchFormat = matchPageParser.getMatchFormat(doc);
             List<String> mapsNames = matchPageParser.getMatchMapsNames(doc);
             matchesLink.matchMapsNames = String.join("\n", mapsNames);

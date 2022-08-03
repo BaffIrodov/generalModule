@@ -92,3 +92,22 @@ CREATE SEQUENCE "sq_stats_response_id"
     MAXVALUE 9223372036854775807
     START 1
     CACHE 1;
+
+DROP TABLE IF EXISTS errors;
+CREATE TABLE IF NOT EXISTS errors
+(
+    "id" int8 not null,
+    "class_and_line" VARCHAR(200) not null,
+    "description_error" VARCHAR(200) not null,
+    "verification_error" BOOLEAN,
+    "payload" VARCHAR(200),
+    "date_time" timestamp
+);
+
+DROP SEQUENCE IF EXISTS "sq_errors_id";
+CREATE SEQUENCE "sq_errors_id"
+    INCREMENT 1
+    MINVALUE  1
+    MAXVALUE 9223372036854775807
+    START 1
+    CACHE 1;
