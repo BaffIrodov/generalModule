@@ -6,6 +6,7 @@ import com.gen.GeneralModule.dtos.MatchesWithTimeDto;
 import com.gen.GeneralModule.entities.MatchesLink;
 import com.gen.GeneralModule.parsers.MatchPageParser;
 import com.gen.GeneralModule.parsers.MatchesPageParser;
+import com.gen.GeneralModule.services.ErrorsService;
 import com.gen.GeneralModule.services.MatchesParserService;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import java.util.Random;
 public class MatchesController {
     @Autowired
     private MatchesParserService matchesParserService;
+    //@Autowired
+    //ErrorsService errServ;
 
     @Autowired
     private MatchesPageParser matchesPageParser;
@@ -52,19 +55,21 @@ public class MatchesController {
             matchesLink.rightTeam = teamsNames.get(1);
 
             //Моделирование случайной ошибки
-//            if (rand.nextInt(0,2) == 0){
-//                teamsNames.clear();
+//            if (rand.nextInt(0, 2) != 0) {
+//                teamsNames.add("");
 //            }
 //            StackTraceElement[] error;
-//            try{
+//            try {
 //                matchesLink.leftTeam = teamsNames.get(0);
 //                matchesLink.rightTeam = teamsNames.get(1);
+//                teamsNames.get(2);
 //                System.out.println("Всё хорошо");
-//            } catch (Exception e){
+//            } catch (Exception e) {
 //                error = e.getStackTrace();
-//                List<StackTraceElement> erorrList = new ArrayList<>(Arrays.asList(error));
-//                System.out.println("Ошибочка!\n"+error);
-//                //e.printStackTrace();
+//                StackTraceElement element = Arrays.stream(error).filter(el -> el.getFileName().contains("MatchesController")).toList().get(0);
+//                String description = element.getFileName() + ": " + element.getLineNumber();
+//                errServ.saveError(e, link);
+//                System.out.println("Ошибочка! " + description);
 //            }
             matchesLink.matchFormat = matchPageParser.getMatchFormat(doc);
             List<String> mapsNames = matchPageParser.getMatchMapsNames(doc);
