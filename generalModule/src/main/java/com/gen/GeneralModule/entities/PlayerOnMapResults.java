@@ -25,6 +25,7 @@ public class PlayerOnMapResults {
     public MapsEnum playedMap; //карта, на которой был сыгран матч
     public String playedMapString; //карта в удобном виде
     public String team; //команда, в которой играет человек - left, right
+    public String teamWinner; //команда, которая выиграла
     public int kills; //убийства (парсинг: целое число)
     public int assists; //помощь в убийстве (парсинг: строка вида " (8)")
     public int deaths; //смерти (парсинг: целое число)

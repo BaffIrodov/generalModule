@@ -93,6 +93,7 @@ public class StatsPageParser {
     public List<PlayerOnMapResults> getAllPlayers(Document doc, String idStatsMap, Date date) {
         List<PlayerOnMapResults> players = new ArrayList<>();
         //получаем текущую карту
+        String winnerTeam = getWinner(doc);
         MapsEnum currentMap = getCurrentMapName(doc);
         //получаем все элементы, принадлежащие таблицам с игроками и их результатами
         Elements table = doc.body().getElementsByClass("stats-table totalstats ");
@@ -132,7 +133,7 @@ public class StatsPageParser {
             //на случай замены в игре - отследить достоверно, кого точно заменили нельзя, поэтому просто отрезаем последнего
             if (iteratorLeft.intValue() < 5) {
                 PlayerOnMapResults calculatedPlayer = getPlayerResultsInOneMap(playersLeft.get(iteratorLeft.get()), nodes,
-                        currentMap, idStatsMap, date, "left");
+                        currentMap, idStatsMap, date, winnerTeam, "left");
                 playersLeft.set(iteratorLeft.get(), calculatedPlayer);
             }
             iteratorLeft.getAndIncrement();
@@ -146,7 +147,7 @@ public class StatsPageParser {
             //на случай замены в игре - отследить достоверно, кого точно заменили нельзя, поэтому просто отрезаем последнего
             if (iteratorRight.intValue() < 5) {
                 PlayerOnMapResults calculatedPlayer = getPlayerResultsInOneMap(playersRight.get(iteratorRight.get()), nodes,
-                        currentMap, idStatsMap, date, "right");
+                        currentMap, idStatsMap, date, winnerTeam, "right");
                 playersRight.set(iteratorRight.get(), calculatedPlayer);
             }
             iteratorRight.getAndIncrement();
@@ -157,7 +158,8 @@ public class StatsPageParser {
     }
 
     private PlayerOnMapResults getPlayerResultsInOneMap(PlayerOnMapResults player, List<Node> nodes,
-                                                        MapsEnum currentMap, String idStatsMap, Date dateOfMatch, String team) {
+                                                        MapsEnum currentMap, String idStatsMap, Date dateOfMatch,
+                                                        String winnerTeam, String team) {
         nodes.forEach(node -> {
             String currentClass = node.attributes().get("class");
             switch (currentClass) {
@@ -207,12 +209,30 @@ public class StatsPageParser {
             }
         });
         player.playedMap = currentMap;
+        player.teamWinner = winnerTeam;
         player.playedMapString = currentMap.toString();
         player.team = team;
         player.idStatsMap = Integer.parseInt(idStatsMap);
         player.dateOfMatch = dateOfMatch;
         player.calculateKD();
         return player.returnValidatedObjectOrNull();
+    }
+
+    private String getWinner(Document doc) {
+        AtomicReference<String> result = new AtomicReference<>("");
+        Elements mapInfoBox = doc.body().getElementsByClass("match-info-box"); //всегда один элемент должен быть
+        mapInfoBox.get(0).childNodes().forEach(e -> {
+            if(e.attributes().get("class").toString().equals("team-left")) {
+                e.childNodes().forEach(r -> {
+                    if(r.toString().contains("bold won")){
+                        result.set("left");
+                    } else if (r.toString().contains("bold lost")) {
+                        result.set("right");
+                    }
+                });
+            }
+        });
+        return result.get();
     }
 
     private MapsEnum getCurrentMapName(Document doc) {
