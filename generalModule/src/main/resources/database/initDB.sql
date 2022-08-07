@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS player;
 DROP TABLE IF EXISTS player_on_map_results;
 CREATE TABLE IF NOT EXISTS player_on_map_results
 (
