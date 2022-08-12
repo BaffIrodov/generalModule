@@ -6,10 +6,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class MatchPageParser {
     public void parseMatch(String link) {
         // Периодически вываливается ошибка с подключением, потому что ограничена скорость (error 1015), из-за этого
