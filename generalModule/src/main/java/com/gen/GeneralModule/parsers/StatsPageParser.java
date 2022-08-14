@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -43,22 +44,22 @@ public class StatsPageParser {
         if (doc != null) {
             Date date = getCurrentMapDate(doc);
             String idStatsMap = getStatsId(statsUrl);
-            roundHistory = getFullRoundHistoryNew(doc, idStatsMap, date);
+            roundHistory = getFullRoundHistory(doc, idStatsMap, date);
             listPlayersLeftAndRight = getAllPlayers(doc, idStatsMap, date);
         }
         resultMap.put(listPlayersLeftAndRight, roundHistory);
         return resultMap;
     }
 
-    public RoundHistory getFullRoundHistoryNew(Document doc, String idStatsMap, Date dateOfMatch) {
+    public RoundHistory getFullRoundHistory(Document doc, String idStatsMap, Date dateOfMatch) {
         RoundHistory result = new RoundHistory();
         String roundSequence = "";
         Elements elements = doc.body().getElementsByClass("round-history-team-row");
         List<Boolean> leftTeamRow = getRoundHistoryTeamRow(elements.get(0));
         List<Boolean> rightTeamRow = getRoundHistoryTeamRow(elements.get(1));
-//        if (elements.size() > 2) {
-//            // Овертаймы
-//        }
+        Boolean leftTeamIsTerrorists = thisTeamIsTerrorists(elements.get(0));
+        //в теории может произойти 15 0 и не будет понятно, кто где
+        Boolean rightTeamIsTerrorists = thisTeamIsTerrorists(elements.get(1));
         for (int i = 0; i < leftTeamRow.size(); i++) {
             if (leftTeamRow.get(i) != rightTeamRow.get(i)) {
                 if (leftTeamRow.get(i)) {
@@ -73,7 +74,25 @@ public class StatsPageParser {
         result.idStatsMap = Integer.parseInt(idStatsMap);
         result.dateOfMatch = dateOfMatch;
         result.roundSequence = roundSequence;
+        if(leftTeamIsTerrorists) {
+            result.leftTeamIsTerroristsInFirstHalf = true;
+        } else if(rightTeamIsTerrorists) {
+            result.leftTeamIsTerroristsInFirstHalf = false;
+        }
         return returnValidatedObjectOrNull(result);
+    }
+
+    private Boolean thisTeamIsTerrorists(Element historyRow) {
+        Boolean result = false;
+        int index = 0;
+        for(Node e : historyRow.childNodes()) {
+            index++;
+            if (index < 15 && (e.attributes().get("src").contains("/t_win") || e.attributes().get("src").contains("/bomb_exploded"))) {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     private List<Boolean> getRoundHistoryTeamRow(Element historyRow) {

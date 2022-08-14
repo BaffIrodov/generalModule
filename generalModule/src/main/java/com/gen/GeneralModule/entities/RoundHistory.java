@@ -19,6 +19,7 @@ public class RoundHistory {
     public Integer idStatsMap; //id stats-страницы
     public Date dateOfMatch; //дата матча
     public String roundSequence; //последовательность раундов - (L, L, L, R, R) - первая тима выигрывает 3, вторая выигрывает 2 раунда
+    public Boolean leftTeamIsTerroristsInFirstHalf; //левая команда - терры в первой половине
 
 //    public RoundHistory(){
 //        this.idStatsMap = "";

@@ -65,7 +65,8 @@ CREATE TABLE IF NOT EXISTS round_history
     "id" int8 not null,
     "id_stats_map" int8 not null,
     "date_of_match" timestamp not null,
-    "round_sequence" VARCHAR(200) not null
+    "round_sequence" VARCHAR(200) not null,
+    "left_team_is_terrorists_in_first_half" BOOLEAN
     );
 
 DROP SEQUENCE IF EXISTS "sq_round_history_id";

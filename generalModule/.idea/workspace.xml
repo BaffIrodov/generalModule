@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c369a914-eb99-41e6-a996-06d0e30bee93" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/RoundHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/RoundHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/initDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/initDB.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/testFillDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/testFillDB.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,6 +152,7 @@
       <workItem from="1659734464130" duration="2003000" />
       <workItem from="1659736661925" duration="540000" />
       <workItem from="1659737224472" duration="759000" />
+      <workItem from="1660502933846" duration="1527000" />
     </task>
     <servers />
   </component>
@@ -166,21 +171,25 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="SpringBootApplicationConfigurationType">
-        <watch expression="resultsLinks" />
-        <watch expression="elementsWithNamesNames" />
-        <watch expression="elementsWithNamesNames" />
-        <watch expression="elementsWithNamesNames" />
-        <watch expression="pl" />
-        <watch expression="userAgents.get(randIndex)" />
-      </configuration>
-    </watches-manager>
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java</url>
+          <line>81</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java</url>
+          <line>90</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/generalModule$GeneralModuleApplication.ic" NAME="GeneralModuleApplication Coverage Results" MODIFIED="1659737161148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/GeneralModule$GeneralModuleApplication.ic" NAME="GeneralModuleApplication Coverage Results" MODIFIED="1656529842262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.gen.GeneralModule.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/generalModule$GeneralModuleApplication.ic" NAME="GeneralModuleApplication Coverage Results" MODIFIED="1659737161148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
