@@ -26,4 +26,22 @@ public class ResultsPageParserTests {
         Elements elementsWithHrefs = doc.body().getElementsByClass("result-con");
         Assertions.assertNotEquals(null, elementsWithHrefs);
     }
+
+    // ѕроверка страницы с матчем. ≈сли нет кнопки "stats" под картой, то должно быть 0 ссылок на статсы.
+    // ≈сли их не ноль, то провер€ем, что всего карт на странице должно быть 1, 3 или 5 и что ссылки
+    // ссылки на статсы не должны быть пустыми.
+    @Test
+    public void statsLinks(Document doc) {
+        List<String> statsLinks = resultPageParser.getAllStatsLinks(doc);
+        Elements map = doc.body().getElementsByClass("results-stats");
+        if (map.size() == 0) {
+            Assertions.assertEquals(0, statsLinks.size());
+        } else {
+            map = doc.body().getElementsByClass("mapholder");
+            Assertions.assertTrue(map.size() == 1 || map.size() == 3 || map.size() == 5);
+            Assertions.assertFalse(statsLinks.contains(""));
+            Assertions.assertFalse(statsLinks.contains(null));
+            Assertions.assertNotEquals(0, statsLinks.size());
+        }
+    }
 }

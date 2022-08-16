@@ -44,6 +44,7 @@ public class MatchesPageParserTests {
         });
     }
 
+    // Проверяем названия команд, что они не пустые и должно быть только два названия.
     @Test
     public void matchTeamNames(Document doc) {
         List<String> teamNames = matchPageParser.getTeamsNames(doc);
@@ -52,12 +53,14 @@ public class MatchesPageParserTests {
         Assertions.assertFalse(teamNames.contains(null));
     }
 
+    // Проверяем формат матча, что в нём должна быть цифра 1, 3 или 5 в конце строки.
     @Test
     public void matchFormat(Document doc) {
         String format = matchPageParser.getMatchFormat(doc);
         Assertions.assertTrue(format.matches(".*[135]$"));
     }
 
+    // Проверяем названия карт.
     @Test
     public void matchMapNames(Document doc) {
         List<String> mapNames = matchPageParser.getMatchMapsNames(doc);
@@ -65,6 +68,7 @@ public class MatchesPageParserTests {
         Assertions.assertFalse(mapNames.contains(null));
     }
 
+    // Проверяем коэффициенты.
     @Test
     public void matchTeamOdds(Document doc) {
         List<String> teamOdds = matchPageParser.getTeamsOdds(doc);
