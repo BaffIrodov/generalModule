@@ -4,6 +4,7 @@ import com.gen.GeneralModule.services.ErrorsService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -15,10 +16,12 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 //This comment
+@Component
 public class CommonUtils {
-    static ErrorsService errorsService = new ErrorsService();
+    @Autowired
+    private ErrorsService errorsService;
 
-    public static void waiter(int timeoutInMS){
+    public void waiter(int timeoutInMS){
         try {
             TimeUnit.MILLISECONDS.sleep(timeoutInMS);
         } catch (InterruptedException e){
@@ -26,17 +29,17 @@ public class CommonUtils {
         }
     }
 
-    public static List<String> hltvLinkTemplate(List<String> notProcessedList){
+    public List<String> hltvLinkTemplate(List<String> notProcessedList){
         return notProcessedList.stream().map(notProcessedLink -> {
             return "https://www.hltv.org" + notProcessedLink;
         }).collect(Collectors.toList());
     }
 
-    public static String hltvLingTemplateOne(String notProcessedUrl){
+    public String hltvLingTemplateOne(String notProcessedUrl){
         return "https://www.hltv.org" + notProcessedUrl;
     }
 
-    public static Date standardParserDate(String date){ //на хлтв будут встречаться только такие даты (всегда ли?)
+    public Date standardParserDate(String date){ //на хлтв будут встречаться только такие даты (всегда ли?)
         Date dateFinal = new Date();
         try {
             dateFinal = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(date);
@@ -46,7 +49,7 @@ public class CommonUtils {
         return dateFinal;
     }
 
-    public static Document reliableConnectAndGetDocument(String url){ //если отваливается сервак или сеть у компа, то делаем повторный запрос
+    public Document reliableConnectAndGetDocument(String url){ //если отваливается сервак или сеть у компа, то делаем повторный запрос
         Document doc = null;
         UserAgent userAgent = new UserAgent();
         for(int i = 0; i < 7; i++) {
@@ -55,7 +58,9 @@ public class CommonUtils {
                 System.setProperty("http.proxyPort", getRandomProxyPort());
                 doc = Jsoup.connect(url).userAgent(userAgent.getUserAgentChrome()).get();
             } catch (IOException exception) {
-                errorsService.saveError(exception, url);
+                if(i >= 4) {
+                    errorsService.saveError(exception, url);
+                }
                 System.out.println("IOException в запросе по адресу: " + url);
             }
             if(doc != null && doc.connection().response().statusCode() == 200) {
@@ -65,7 +70,7 @@ public class CommonUtils {
                 waiter(1000 * i+1); //делаем запросы с увеличивающимся таймаутом. Покрываем 15 секунд (11.06.22)
                 if(i >= 4) {
                     System.out.println("Врубаю долгое ожидание");
-                    waiter(120 * 1000); //на две минуты передышка, бан должен пройти
+                    waiter(180 * 1000); //на три минуты передышка, бан должен пройти
                 }
             }
         }

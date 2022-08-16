@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -28,12 +29,14 @@ public class ResultsPageParser {
 
     private int offset = 0;
     List<String> listOfLinks = new ArrayList<>();
-    private final ResultPageParser resultPageParser = new ResultPageParser();
+
+    @Autowired
+    private CommonUtils commonUtils;
 
     public List<String> parseResultsGetAllLinks(int targetResultsPageCount) {
         long now = System.currentTimeMillis();
         List<String> links = new ArrayList<>();
-        Document doc = CommonUtils.reliableConnectAndGetDocument("https://www.hltv.org/results"); //первое подключение, не требует targetResultsPageCount
+        Document doc = commonUtils.reliableConnectAndGetDocument("https://www.hltv.org/results"); //первое подключение, не требует targetResultsPageCount
         if (doc != null) {
             links.addAll(getAllResultsHrefs(doc));
         }
@@ -41,7 +44,7 @@ public class ResultsPageParser {
         if (targetResultsPageCount != 0) {
             for (int i = 0; i < targetResultsPageCount; i++) {
                 now = System.currentTimeMillis();
-                doc = CommonUtils.reliableConnectAndGetDocument(getNextResultsUrl());
+                doc = commonUtils.reliableConnectAndGetDocument(getNextResultsUrl());
                 if (doc != null) {
                     links.addAll(getAllResultsHrefs(doc));
                 }
@@ -54,7 +57,7 @@ public class ResultsPageParser {
     public void parseResultsOld(int targetResultsPageCount) {
         long now = System.currentTimeMillis();
         List<String> links = new ArrayList<>();
-        Document doc = CommonUtils.reliableConnectAndGetDocument("https://www.hltv.org/results"); //первое подключение, не требует targetResultsPageCount
+        Document doc = commonUtils.reliableConnectAndGetDocument("https://www.hltv.org/results"); //первое подключение, не требует targetResultsPageCount
         if (doc != null) {
             parseAllResultsLinks(doc);
         }
@@ -62,7 +65,7 @@ public class ResultsPageParser {
         if (targetResultsPageCount != 0) {
             for (int i = 0; i < targetResultsPageCount; i++) {
                 now = System.currentTimeMillis();
-                doc = CommonUtils.reliableConnectAndGetDocument(getNextResultsUrl());
+                doc = commonUtils.reliableConnectAndGetDocument(getNextResultsUrl());
                 if (doc != null) {
                     parseAllResultsLinks(doc);
                 }
@@ -74,10 +77,6 @@ public class ResultsPageParser {
     private List<String> parseAllResultsLinks(Document doc) {
         listOfLinks = getAllResultsHrefs(doc);
         return listOfLinks;
-//        listOfLinks.forEach(link -> { 040722 выпилено
-//            iterator.getAndIncrement();
-//            resultPageParser.parseMapStats(link, iterator.get());
-//        });
     }
 
     private List<String> getAllResultsHrefs(Document doc) {
@@ -91,7 +90,7 @@ public class ResultsPageParser {
             //ссылка такого образца /matches/2356525/eternal-fire-vs-saw-esl-pro-league-season-16-conference-play-in
             return element.childNodes().get(0).attributes().get("href");
         }).collect(Collectors.toList());
-        return CommonUtils.hltvLinkTemplate(listOfLinks);
+        return commonUtils.hltvLinkTemplate(listOfLinks);
     }
 
     private Elements skipTheseResults(Elements elements, int skipOffset) {

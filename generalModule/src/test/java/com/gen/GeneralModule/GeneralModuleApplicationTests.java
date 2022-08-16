@@ -5,6 +5,7 @@ import com.gen.GeneralModule.parsers.MatchesPageParser;
 import com.gen.GeneralModule.parsers.ResultsPageParser;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import parsers.MatchesPageParserTests;
 import parsers.ResultsPageParserTests;
@@ -13,6 +14,10 @@ import java.util.List;
 
 @SpringBootTest
 class GeneralModuleApplicationTests {
+
+    @Autowired
+    private CommonUtils commonUtils;
+
     MatchesPageParserTests matchesPageParserTests = new MatchesPageParserTests();
     ResultsPageParserTests resultsPageParserTests = new ResultsPageParserTests();
 
@@ -20,7 +25,7 @@ class GeneralModuleApplicationTests {
     void matchesPageParserTest() {
         MatchesPageParser matchesPageParser = new MatchesPageParser();
         List<String> links = matchesPageParser.parseMatches();
-        Document doc = CommonUtils.reliableConnectAndGetDocument(links.get(0));
+        Document doc = commonUtils.reliableConnectAndGetDocument(links.get(0));
 
         matchesPageParserTests.matchLinks(links, doc);
         matchesPageParserTests.matchPlayersNumberAndNotNull(doc);
@@ -35,7 +40,7 @@ class GeneralModuleApplicationTests {
     void resultsPageParserTest() {
         ResultsPageParser resultsPageParser = new ResultsPageParser();
         List<String> links = resultsPageParser.parseResultsGetAllLinks(0);
-        Document doc = CommonUtils.reliableConnectAndGetDocument(links.get(0));
+        Document doc = commonUtils.reliableConnectAndGetDocument(links.get(0));
 
         resultsPageParserTests.resultLinks(links, doc);
 

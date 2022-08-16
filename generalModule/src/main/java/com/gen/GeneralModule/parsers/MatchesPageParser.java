@@ -3,6 +3,7 @@ package com.gen.GeneralModule.parsers;
 import com.gen.GeneralModule.common.CommonUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,12 +14,14 @@ import java.util.stream.Collectors;
 @Component
 public class MatchesPageParser {
     List<String> listOfLinks = new ArrayList<>();
-    private final MatchPageParser matchParser = new MatchPageParser();
+
+    @Autowired
+    private CommonUtils commonUtils;
 
     public List<String> parseMatches() {
         listOfLinks.clear();
         long now = System.currentTimeMillis();
-        Document doc = CommonUtils.reliableConnectAndGetDocument("https://www.hltv.org/matches");
+        Document doc = commonUtils.reliableConnectAndGetDocument("https://www.hltv.org/matches");
         if (doc != null) {
             Elements elementsWithHrefs = doc.body().getElementsByClass("liveMatch");
             listOfLinks.addAll(getMatchesHrefs(elementsWithHrefs));
@@ -33,9 +36,9 @@ public class MatchesPageParser {
         return listOfLinks;
     }
 
-    private void parseAllPlayers(List<String> listOfLinks) {
-        listOfLinks.forEach(matchParser::parseMatch);
-    }
+//    private void parseAllPlayers(List<String> listOfLinks) {
+//        listOfLinks.forEach(matchParser::parseMatch);
+//    }
 
     private List<String> getMatchesHrefs(Elements elementsWithHrefs) {
         // Элемент в childNodes содержит две или одну ноду. Две если известны соперники и есть кнопка ставок. Одна в обратном случае.

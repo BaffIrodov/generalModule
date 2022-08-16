@@ -27,12 +27,16 @@ public class ResultPageParser {
      */
     @Autowired
     private StatsPageParser statsPageParser;
+
+    @Autowired
+    private CommonUtils commonUtils;
+
     public Map<List<PlayerOnMapResults>, RoundHistory> parseMapStats(String resultUrl){
         List<String> statsLinks = new ArrayList<>();
         Map<List<PlayerOnMapResults>, RoundHistory> resultMap = new HashMap<>();
         List<List<PlayerOnMapResults>> allPlayersFromResult = new ArrayList<>();
-        CommonUtils.waiter(50);
-        Document doc = CommonUtils.reliableConnectAndGetDocument(resultUrl);
+        commonUtils.waiter(300);
+        Document doc = commonUtils.reliableConnectAndGetDocument(resultUrl);
         if (doc != null) {
             statsLinks = getAllStatsLinks(doc);
             for(String link : statsLinks){
@@ -53,7 +57,7 @@ public class ResultPageParser {
         //------
         statsLinks = statsLinks.stream().filter(Objects::nonNull).collect(Collectors.toList());
         // Если лист нулевой - то дальше парсинг и не пойдет - в статсы
-        return CommonUtils.hltvLinkTemplate(statsLinks);
+        return commonUtils.hltvLinkTemplate(statsLinks);
     }
 
     //бесполезно

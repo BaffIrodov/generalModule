@@ -8,11 +8,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -32,15 +32,16 @@ public class StatsPageParser {
      * парсим две таблицы, из таблиц извлекаем информацию, маппим в экземпляры игроков, игроков сохраняем в бд (07.06.22)
      */
 
-//    @Autowired
-//    private StatsParserService statsParserService;
+    @Autowired
+    CommonUtils commonUtils;
+
     @Transactional
     public Map<List<PlayerOnMapResults>, RoundHistory> parseMapStats(String statsUrl) {
         List<PlayerOnMapResults> listPlayersLeftAndRight = new ArrayList<>();
         Map<List<PlayerOnMapResults>, RoundHistory> resultMap = new HashMap<>();
         RoundHistory roundHistory = new RoundHistory();
-        CommonUtils.waiter(50);
-        Document doc = CommonUtils.reliableConnectAndGetDocument(statsUrl);
+        commonUtils.waiter(300);
+        Document doc = commonUtils.reliableConnectAndGetDocument(statsUrl);
         if (doc != null) {
             Date date = getCurrentMapDate(doc);
             String idStatsMap = getStatsId(statsUrl);
@@ -189,11 +190,11 @@ public class StatsPageParser {
                     }).toList().get(0);
                     String linkPlayer = nodePlayer.attributes().get("href");
                     //url в формате /stats/players/22218/emi
-                    player.url = CommonUtils.hltvLingTemplateOne(linkPlayer);
+                    player.url = commonUtils.hltvLingTemplateOne(linkPlayer);
                     //четвертый элемент всегда id - 22218
-                    player.playerId = Integer.parseInt(CommonUtils.standardIdParsingByPlace(3, linkPlayer));
+                    player.playerId = Integer.parseInt(commonUtils.standardIdParsingByPlace(3, linkPlayer));
                     //пятый элемент всегда name - emi
-                    player.playerName = CommonUtils.standardIdParsingByPlace(4, linkPlayer);
+                    player.playerName = commonUtils.standardIdParsingByPlace(4, linkPlayer);
                     ;
                     int i = 0;
                 }
@@ -285,13 +286,13 @@ public class StatsPageParser {
                 result.set(dateNode.childNodes().get(0).toString());
             }
         });
-        return CommonUtils.standardParserDate(result.get());
+        return commonUtils.standardParserDate(result.get());
     }
 
     private String getStatsId(String link) {
         //link всегда имеет вид - https://www.hltv.org/stats/matches/mapstatsid/139187/kappa-bar-vs-lakeshow
         //Получаются такие элементы: "https:", "", "www.hltv.org", "stats", "matches", "mapstatsid", "139187", "kappa-bar-vs-lakeshow"
-        return CommonUtils.standardIdParsingByPlace(6, link);
+        return commonUtils.standardIdParsingByPlace(6, link);
     }
 
     private List<PlayerOnMapResults> returnValidatedListPlayersOrNull(List<PlayerOnMapResults> players) {

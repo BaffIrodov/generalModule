@@ -6,6 +6,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,12 +14,14 @@ import java.util.List;
 
 @Component
 public class MatchPageParser {
+    @Autowired
+    private CommonUtils commonUtils;
     public void parseMatch(String link) {
         // Периодически вываливается ошибка с подключением, потому что ограничена скорость (error 1015), из-за этого
         // не получается забрать игроков и он выводит лист с двумя пустыми листами.
-        Document doc = CommonUtils.reliableConnectAndGetDocument(link);
+        Document doc = commonUtils.reliableConnectAndGetDocument(link);
         long now = System.currentTimeMillis();
-        CommonUtils.waiter(400); // Искусственное замедление, которое позволяет зайти на все матчи. На 350 та же ошибка 1015
+        commonUtils.waiter(400); // Искусственное замедление, которое позволяет зайти на все матчи. На 350 та же ошибка 1015
         List<List<String>> listPlayersLeftAndRight = getAllPlayers(doc);
         System.out.println(link);
         System.out.println("Время: " + (System.currentTimeMillis() - now));

@@ -22,8 +22,18 @@ public class ErrorsController {
         return errorsService.getAllErrors();
     }
 
+    @GetMapping("/search-archive")
+    public List<Errors> getArchiveErrors() {
+        return errorsService.getArchiveErrors();
+    }
+
     @GetMapping("/search-not-verified")
     public List<Errors> getNotVerifiedErrors() {
         return errorsService.getNotVerifiedErrors();
+    }
+
+    @PostMapping("/set-processed")
+    public void setListProcessed(@RequestBody List<Errors> list) {
+        errorsService.verifyPosition(list);
     }
 }

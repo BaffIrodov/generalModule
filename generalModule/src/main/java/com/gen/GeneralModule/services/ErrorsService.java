@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -30,6 +31,12 @@ public class ErrorsService {
                 .orderBy(errors.dateTime.desc()).fetch();
     }
 
+    public List<Errors> getArchiveErrors() {
+        return queryFactory.from(errors).select(errors)
+                .where(errors.verificationError.eq(true))
+                .orderBy(errors.dateTime.desc()).fetch();
+    }
+
     public List<Errors> getNotVerifiedErrors() {
         return queryFactory.from(errors).select(errors)
                 .where(errors.verificationError.eq(false))
@@ -42,6 +49,13 @@ public class ErrorsService {
             error.verificationError = true;
         } else {
             log.error("Нет error с таким id");
+        }
+    }
+
+    public void verifyPosition(List<Errors> errors){
+        for(Errors error : errors) {
+            error.verificationError = !error.verificationError;
+            errorsRepository.saveAndFlush(error);
         }
     }
 

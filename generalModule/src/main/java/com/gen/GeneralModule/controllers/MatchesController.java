@@ -23,54 +23,35 @@ import java.util.Random;
 public class MatchesController {
     @Autowired
     private MatchesParserService matchesParserService;
-    //@Autowired
-    //ErrorsService errServ;
 
     @Autowired
     private MatchesPageParser matchesPageParser;
+
+    @Autowired
+    private CommonUtils commonUtils;
 
     private MatchPageParser matchPageParser = new MatchPageParser();
 
     @PostMapping("/write-links")
     public MatchesWithTimeDto writeAllLinks() {
         matchesParserService.deleteAll();
-        long full = System.currentTimeMillis();
+        long fullTime = System.currentTimeMillis();
         List<String> allLinks = matchesPageParser.parseMatches();
-        //allLinks = allLinks.subList(0, 9);
         List<MatchesLink> matchesLinks = new ArrayList<>();
-        List<MatchesDto> matchesDto = new ArrayList<>();
+        List<MatchesDto> listMatchesDto = new ArrayList<>();
         MatchesWithTimeDto matchesWithTimeDto = new MatchesWithTimeDto();
         //Random rand = new Random();
         allLinks.forEach(link -> {
             // Искусственное замедление
-            CommonUtils.waiter(400);
-
+            commonUtils.waiter(400);
             long now = System.currentTimeMillis();
             MatchesLink matchesLink = new MatchesLink();
             matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
             matchesLink.matchUrl = link;
-            Document doc = CommonUtils.reliableConnectAndGetDocument(link);
+            Document doc = commonUtils.reliableConnectAndGetDocument(link);
             List<String> teamsNames = matchPageParser.getTeamsNames(doc);
             matchesLink.leftTeam = teamsNames.get(0);
             matchesLink.rightTeam = teamsNames.get(1);
-
-            //Моделирование случайной ошибки
-//            if (rand.nextInt(0, 2) != 0) {
-//                teamsNames.add("");
-//            }
-//            StackTraceElement[] error;
-//            try {
-//                matchesLink.leftTeam = teamsNames.get(0);
-//                matchesLink.rightTeam = teamsNames.get(1);
-//                teamsNames.get(2);
-//                System.out.println("Всё хорошо");
-//            } catch (Exception e) {
-//                error = e.getStackTrace();
-//                StackTraceElement element = Arrays.stream(error).filter(el -> el.getFileName().contains("MatchesController")).toList().get(0);
-//                String description = element.getFileName() + ": " + element.getLineNumber();
-//                errServ.saveError(e, link);
-//                System.out.println("Ошибочка! " + description);
-//            }
             matchesLink.matchFormat = matchPageParser.getMatchFormat(doc);
             List<String> mapsNames = matchPageParser.getMatchMapsNames(doc);
             matchesLink.matchMapsNames = String.join("\n", mapsNames);
@@ -79,23 +60,28 @@ public class MatchesController {
             matchesLink.rightTeamOdds = teamsOdds.get(1);
             matchesLinks.add(matchesLink);
 
-            MatchesDto matchesDtoN = new MatchesDto();
-            matchesDtoN.id = matchesLink.matchId;
-            matchesDtoN.matchesUrl = matchesLink.matchUrl;
-            matchesDtoN.leftTeam = matchesLink.leftTeam;
-            matchesDtoN.rightTeam = matchesLink.rightTeam;
-            matchesDtoN.matchFormat = matchesLink.matchFormat;
-            matchesDtoN.matchMapsNames = mapsNames;
-            matchesDtoN.leftTeamOdds = matchesLink.leftTeamOdds;
-            matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
-            matchesDto.add(matchesDtoN);
-            matchesDtoN.matchTime = (int) (System.currentTimeMillis() - now);
+            MatchesDto matchesDto = constructDto(matchesLink, mapsNames, now);
+            listMatchesDto.add(matchesDto);
             //System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
         });
         matchesParserService.saveAll(matchesLinks);
-        matchesWithTimeDto.matches = matchesDto;
-        matchesWithTimeDto.fullTime = (int) (System.currentTimeMillis() - full);
+        matchesWithTimeDto.matches = listMatchesDto;
+        matchesWithTimeDto.fullTime = (int) (System.currentTimeMillis() - fullTime);
         System.out.println("Полное время: " + matchesWithTimeDto.fullTime);
         return matchesWithTimeDto;
+    }
+
+    private MatchesDto constructDto(MatchesLink matchesLink, List<String> mapsNames, long now) {
+        MatchesDto matchesDtoN = new MatchesDto();
+        matchesDtoN.id = matchesLink.matchId;
+        matchesDtoN.matchesUrl = matchesLink.matchUrl;
+        matchesDtoN.leftTeam = matchesLink.leftTeam;
+        matchesDtoN.rightTeam = matchesLink.rightTeam;
+        matchesDtoN.matchFormat = matchesLink.matchFormat;
+        matchesDtoN.matchMapsNames = mapsNames;
+        matchesDtoN.leftTeamOdds = matchesLink.leftTeamOdds;
+        matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
+        matchesDtoN.matchTime = (int) (System.currentTimeMillis() - now);
+        return matchesDtoN;
     }
 }

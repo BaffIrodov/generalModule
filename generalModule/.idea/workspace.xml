@@ -6,11 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="c369a914-eb99-41e6-a996-06d0e30bee93" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/RoundHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/RoundHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/common/CommonUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/ErrorsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/ErrorsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/MatchesController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/MatchesController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/Errors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/entities/Errors.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/MatchPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/MatchPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/MatchesPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/MatchesPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/ResultPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/ResultPageParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/ResultsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/ResultsPageParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/database/initDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/initDB.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/ErrorsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/ErrorsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/database/testFillDB.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/testFillDB.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/gen/GeneralModule/GeneralModuleApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/gen/GeneralModule/GeneralModuleApplicationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +159,8 @@
       <workItem from="1659734464130" duration="2003000" />
       <workItem from="1659736661925" duration="540000" />
       <workItem from="1659737224472" duration="759000" />
-      <workItem from="1660502933846" duration="1527000" />
+      <workItem from="1660502933846" duration="3365000" />
+      <workItem from="1660671059062" duration="7258000" />
     </task>
     <servers />
   </component>
@@ -169,22 +177,6 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java</url>
-          <line>81</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/parsers/StatsPageParser.java</url>
-          <line>90</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/generalModule$GeneralModuleApplication.ic" NAME="GeneralModuleApplication Coverage Results" MODIFIED="1659737161148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
