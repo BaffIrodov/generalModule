@@ -14,9 +14,7 @@ import java.util.stream.Collectors;
 @Component
 public class MatchesPageParser {
     List<String> listOfLinks = new ArrayList<>();
-
-    @Autowired
-    private CommonUtils commonUtils;
+    private CommonUtils commonUtils = new CommonUtils();
 
     public List<String> parseMatches() {
         listOfLinks.clear();

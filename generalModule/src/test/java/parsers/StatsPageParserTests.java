@@ -11,10 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StatsPageParserTests {
 
@@ -98,5 +95,13 @@ public class StatsPageParserTests {
             winner = "left";
         }
         Assertions.assertEquals(player.teamWinner, winner);
+    }
+
+    // Проверка названия карты.
+    @Test
+    public void currentMapName(PlayerOnMapResults player) {
+        List<String> maps = Arrays.asList("DUST2", "MIRAGE", "INFERNO", "NUKE", "OVERPASS", "VERTIGO",
+                "ANCIENT", "CACHE", "TRAIN", "TUSCAN");
+        Assertions.assertTrue(maps.contains(player.playedMapString));
     }
 }

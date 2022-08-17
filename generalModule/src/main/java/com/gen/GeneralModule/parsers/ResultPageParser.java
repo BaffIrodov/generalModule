@@ -28,8 +28,7 @@ public class ResultPageParser {
     @Autowired
     private StatsPageParser statsPageParser;
 
-    @Autowired
-    private CommonUtils commonUtils;
+    private CommonUtils commonUtils = new CommonUtils();
 
     public Map<List<PlayerOnMapResults>, RoundHistory> parseMapStats(String resultUrl){
         List<String> statsLinks = new ArrayList<>();

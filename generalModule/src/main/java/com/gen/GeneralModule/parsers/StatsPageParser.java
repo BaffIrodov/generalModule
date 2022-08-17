@@ -32,8 +32,7 @@ public class StatsPageParser {
      * парсим две таблицы, из таблиц извлекаем информацию, маппим в экземпляры игроков, игроков сохраняем в бд (07.06.22)
      */
 
-    @Autowired
-    CommonUtils commonUtils;
+    private CommonUtils commonUtils = new CommonUtils();
 
     @Transactional
     public Map<List<PlayerOnMapResults>, RoundHistory> parseMapStats(String statsUrl) {

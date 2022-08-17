@@ -76,6 +76,7 @@ class GeneralModuleApplicationTests {
         statsPageParserTests.teamIsTerrorist(doc);
         statsPageParserTests.allPlayers(players);
         statsPageParserTests.winner(doc, players.get(0));
+        statsPageParserTests.currentMapName(players.get(0));
     }
 
 }

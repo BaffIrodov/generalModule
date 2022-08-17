@@ -30,8 +30,7 @@ public class ResultsPageParser {
     private int offset = 0;
     List<String> listOfLinks = new ArrayList<>();
 
-    @Autowired
-    private CommonUtils commonUtils;
+    private CommonUtils commonUtils = new CommonUtils();
 
     public List<String> parseResultsGetAllLinks(int targetResultsPageCount) {
         long now = System.currentTimeMillis();
