@@ -30,7 +30,7 @@ public class StatsController {
         long now = System.currentTimeMillis();
         statsParserService.startParser(request);
         log.info("Write players done in: " + (System.currentTimeMillis() - now));
-        fillResponse(dto, request.batchSize, (int)(System.currentTimeMillis() - now));
+        fillResponse(dto, request.batchSize, (int) (System.currentTimeMillis() - now));
         fillAndSaveResponseEntity(dto);
         return dto;
     }
@@ -41,7 +41,9 @@ public class StatsController {
     }
 
     @GetMapping("/total-count")
-    public Long getTotalCountForParsing() { return statsParserService.getTotalCount(); }
+    public Long getTotalCountForParsing() {
+        return statsParserService.getAvailableCount();
+    }
 
     @GetMapping("/response-analytics")
     public List<StatsResponse> getResponseAnalytics() {
