@@ -40,6 +40,9 @@ public class StatsController {
         return statsParserService.getAvailableCount();
     }
 
+    @GetMapping("/total-count")
+    public Long getTotalCountForParsing() { return statsParserService.getTotalCount(); }
+
     @GetMapping("/response-analytics")
     public List<StatsResponse> getResponseAnalytics() {
         return statsParserService.getResponseAnalytics();

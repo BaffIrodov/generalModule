@@ -82,6 +82,11 @@ public class StatsParserService {
         return count;
     }
 
+    public Long getTotalCount() {
+        Long count = queryFactory.from(resultsLink).stream().count();
+        return count;
+    }
+
     public List<StatsResponse> getResponseAnalytics() {
         List<StatsResponse> result = (List<StatsResponse>) queryFactory.from(statsResponse).fetch();
         return result;

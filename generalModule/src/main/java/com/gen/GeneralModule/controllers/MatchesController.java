@@ -40,7 +40,6 @@ public class MatchesController {
         List<MatchesLink> matchesLinks = new ArrayList<>();
         List<MatchesDto> listMatchesDto = new ArrayList<>();
         MatchesWithTimeDto matchesWithTimeDto = new MatchesWithTimeDto();
-        //Random rand = new Random();
         allLinks.forEach(link -> {
             // Искусственное замедление
             commonUtils.waiter(400);

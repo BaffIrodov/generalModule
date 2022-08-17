@@ -58,10 +58,10 @@ class GeneralModuleApplicationTests {
     void statsPageParserTest() {
         ResultsPageParser resultsPageParser = new ResultsPageParser();
         List<String> matchLinks = resultsPageParser.parseResultsGetAllLinks(0);
-        Document doc = CommonUtils.reliableConnectAndGetDocument(matchLinks.get(0));
+        Document doc = commonUtils.reliableConnectAndGetDocument(matchLinks.get(0));
         ResultPageParser resultPageParser = new ResultPageParser();
         List<String> statsLinks = resultPageParser.getAllStatsLinks(doc);
-        doc = CommonUtils.reliableConnectAndGetDocument(statsLinks.get(0));
+        doc = commonUtils.reliableConnectAndGetDocument(statsLinks.get(0));
 
         statsPageParserTests.statsLinks(statsLinks, doc);
         statsPageParserTests.webElementsExist(doc);
