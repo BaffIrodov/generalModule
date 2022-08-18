@@ -37,6 +37,7 @@ public class MatchesController {
         matchesParserService.deleteAll();
         long fullTime = System.currentTimeMillis();
         List<String> allLinks = matchesPageParser.parseMatches();
+        allLinks = allLinks.subList(0, 5);
         List<MatchesLink> matchesLinks = new ArrayList<>();
         List<MatchesDto> listMatchesDto = new ArrayList<>();
         MatchesWithTimeDto matchesWithTimeDto = new MatchesWithTimeDto();
@@ -82,5 +83,15 @@ public class MatchesController {
         matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
         matchesDtoN.matchTime = (int) (System.currentTimeMillis() - now);
         return matchesDtoN;
+    }
+
+    @GetMapping("/total-matches-count")
+    public Integer getTotalMatchesCountForParsing() {
+        return matchesPageParser.parseMatches().size();
+    }
+
+    @GetMapping("/processed-matches-count")
+    public Long getProcessedMatchesCount() {
+        return matchesParserService.getProcessedMatchesCount();
     }
 }
