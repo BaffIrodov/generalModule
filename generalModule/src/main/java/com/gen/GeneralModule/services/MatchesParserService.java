@@ -1,7 +1,7 @@
 package com.gen.GeneralModule.services;
 
 import com.gen.GeneralModule.entities.MatchesLink;
-import com.gen.GeneralModule.entities.QResultsLink;
+import com.gen.GeneralModule.entities.QMatchesLink;
 import com.gen.GeneralModule.repositories.MatchesLinkRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +18,14 @@ public class MatchesParserService {
     @Autowired
     private JPAQueryFactory queryFactory;
 
-    private static final QResultsLink matchesLink = new QResultsLink("matchesLink");
+    private static final QMatchesLink matchesLink = new QMatchesLink("matchesLink");
 
     public List<MatchesLink> saveAll(List<MatchesLink> matchesLink) {
         return matchesLinkRepository.saveAll(matchesLink);
+    }
+
+    public MatchesLink save(MatchesLink matchesLink) {
+        return matchesLinkRepository.save(matchesLink);
     }
 
     public void deleteAll() {

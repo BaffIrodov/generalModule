@@ -13,11 +13,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class MatchesPageParser {
-    List<String> listOfLinks = new ArrayList<>();
+    //List<String> listOfLinks = new ArrayList<>();
     private CommonUtils commonUtils = new CommonUtils();
 
     public List<String> parseMatches() {
-        listOfLinks.clear();
+        List<String> listOfLinks = new ArrayList<>();
+        //listOfLinks.clear();
         long now = System.currentTimeMillis();
         Document doc = commonUtils.reliableConnectAndGetDocument("https://www.hltv.org/matches");
         if (doc != null) {

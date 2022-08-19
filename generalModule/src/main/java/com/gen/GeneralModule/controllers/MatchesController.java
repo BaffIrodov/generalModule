@@ -32,12 +32,12 @@ public class MatchesController {
 
     private MatchPageParser matchPageParser = new MatchPageParser();
 
-    @PostMapping("/write-links")
+    @GetMapping("/write-links")
     public MatchesWithTimeDto writeAllLinks() {
         matchesParserService.deleteAll();
         long fullTime = System.currentTimeMillis();
         List<String> allLinks = matchesPageParser.parseMatches();
-        allLinks = allLinks.subList(0, 5);
+        //allLinks = allLinks.subList(0, 20);
         List<MatchesLink> matchesLinks = new ArrayList<>();
         List<MatchesDto> listMatchesDto = new ArrayList<>();
         MatchesWithTimeDto matchesWithTimeDto = new MatchesWithTimeDto();
@@ -59,12 +59,13 @@ public class MatchesController {
             matchesLink.leftTeamOdds = teamsOdds.get(0);
             matchesLink.rightTeamOdds = teamsOdds.get(1);
             matchesLinks.add(matchesLink);
+            matchesParserService.save(matchesLink);
 
             MatchesDto matchesDto = constructDto(matchesLink, mapsNames, now);
             listMatchesDto.add(matchesDto);
             //System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
         });
-        matchesParserService.saveAll(matchesLinks);
+        //matchesParserService.saveAll(matchesLinks);
         matchesWithTimeDto.matches = listMatchesDto;
         matchesWithTimeDto.fullTime = (int) (System.currentTimeMillis() - fullTime);
         System.out.println("Полное время: " + matchesWithTimeDto.fullTime);
@@ -87,7 +88,8 @@ public class MatchesController {
 
     @GetMapping("/total-matches-count")
     public Integer getTotalMatchesCountForParsing() {
-        return matchesPageParser.parseMatches().size();
+        List<String> allLinks = matchesPageParser.parseMatches();
+        return allLinks.size();
     }
 
     @GetMapping("/processed-matches-count")
