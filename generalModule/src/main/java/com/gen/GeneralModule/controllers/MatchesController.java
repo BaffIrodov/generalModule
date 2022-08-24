@@ -32,6 +32,7 @@ public class MatchesController {
 
     private MatchPageParser matchPageParser = new MatchPageParser();
 
+    // В данный момент не используется. Будет ли?
     @GetMapping("/write-links")
     public MatchesWithTimeDto writeAllLinks() {
         matchesParserService.deleteAll();
@@ -49,19 +50,19 @@ public class MatchesController {
             matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
             matchesLink.matchUrl = link;
             Document doc = commonUtils.reliableConnectAndGetDocument(link);
-            List<String> teamsNames = matchPageParser.getTeamsNames(doc);
-            matchesLink.leftTeam = teamsNames.get(0);
-            matchesLink.rightTeam = teamsNames.get(1);
+            List<String> teamNames = matchPageParser.getTeamsNames(doc);
+            matchesLink.leftTeam = teamNames.get(0);
+            matchesLink.rightTeam = teamNames.get(1);
             matchesLink.matchFormat = matchPageParser.getMatchFormat(doc);
-            List<String> mapsNames = matchPageParser.getMatchMapsNames(doc);
-            matchesLink.matchMapsNames = String.join("\n", mapsNames);
-            List<String> teamsOdds = matchPageParser.getTeamsOdds(doc);
-            matchesLink.leftTeamOdds = teamsOdds.get(0);
-            matchesLink.rightTeamOdds = teamsOdds.get(1);
+            List<String> mapNames = matchPageParser.getMatchMapsNames(doc);
+            matchesLink.matchMapsNames = String.join("\n", mapNames);
+            List<String> teamOdds = matchPageParser.getTeamsOdds(doc);
+            matchesLink.leftTeamOdds = teamOdds.get(0);
+            matchesLink.rightTeamOdds = teamOdds.get(1);
             matchesLinks.add(matchesLink);
             matchesParserService.save(matchesLink);
 
-            MatchesDto matchesDto = constructDto(matchesLink, mapsNames, now);
+            MatchesDto matchesDto = constructDto(matchesLink, mapNames, now);
             listMatchesDto.add(matchesDto);
             //System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
         });
@@ -72,14 +73,35 @@ public class MatchesController {
         return matchesWithTimeDto;
     }
 
-    private MatchesDto constructDto(MatchesLink matchesLink, List<String> mapsNames, long now) {
+    @PostMapping("/write-one-match")
+    public MatchesDto writeOneMatch(@RequestBody String link) {
+        MatchesLink matchesLink = new MatchesLink();
+        long now = System.currentTimeMillis();
+        matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
+        matchesLink.matchUrl = link;
+        Document doc = commonUtils.reliableConnectAndGetDocument(link);
+        List<String> teamsNames = matchPageParser.getTeamsNames(doc);
+        matchesLink.leftTeam = teamsNames.get(0);
+        matchesLink.rightTeam = teamsNames.get(1);
+        matchesLink.matchFormat = matchPageParser.getMatchFormat(doc);
+        List<String> mapNames = matchPageParser.getMatchMapsNames(doc);
+        matchesLink.matchMapsNames = String.join("\n", mapNames);
+        List<String> teamsOdds = matchPageParser.getTeamsOdds(doc);
+        matchesLink.leftTeamOdds = teamsOdds.get(0);
+        matchesLink.rightTeamOdds = teamsOdds.get(1);
+        matchesParserService.save(matchesLink);
+        MatchesDto matchesDto = constructDto(matchesLink, mapNames, now);
+        return matchesDto;
+    }
+
+    private MatchesDto constructDto(MatchesLink matchesLink, List<String> mapNames, long now) {
         MatchesDto matchesDtoN = new MatchesDto();
         matchesDtoN.id = matchesLink.matchId;
         matchesDtoN.matchesUrl = matchesLink.matchUrl;
         matchesDtoN.leftTeam = matchesLink.leftTeam;
         matchesDtoN.rightTeam = matchesLink.rightTeam;
         matchesDtoN.matchFormat = matchesLink.matchFormat;
-        matchesDtoN.matchMapsNames = mapsNames;
+        matchesDtoN.matchMapsNames = mapNames;
         matchesDtoN.leftTeamOdds = matchesLink.leftTeamOdds;
         matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
         matchesDtoN.matchTime = (int) (System.currentTimeMillis() - now);
@@ -87,13 +109,25 @@ public class MatchesController {
     }
 
     @GetMapping("/total-matches-count")
-    public Integer getTotalMatchesCountForParsing() {
+    public List<String> getTotalMatchesCountForParsing() {
+        matchesParserService.deleteAll();
         List<String> allLinks = matchesPageParser.parseMatches();
-        return allLinks.size();
+        return allLinks;
     }
 
     @GetMapping("/processed-matches-count")
     public Long getProcessedMatchesCount() {
         return matchesParserService.getProcessedMatchesCount();
+    }
+
+    @GetMapping("/matches-from-db")
+    public List<MatchesDto> getMatchesFromDB() {
+        List<MatchesDto> matchesDtoList = new ArrayList<>();
+        List<MatchesLink> matches = matchesParserService.getMatchesFromDB();
+        matches.forEach(match -> {
+            List<String> mapNames = Arrays.stream(match.matchMapsNames.split("\n")).toList();
+            matchesDtoList.add(constructDto(match, mapNames, 0));
+        });
+        return matchesDtoList;
     }
 }
