@@ -60,9 +60,10 @@ public class MatchesController {
             matchesLink.leftTeamOdds = teamOdds.get(0);
             matchesLink.rightTeamOdds = teamOdds.get(1);
             matchesLinks.add(matchesLink);
+            matchesLink.matchTime = (int) (System.currentTimeMillis() - now);
             matchesParserService.save(matchesLink);
 
-            MatchesDto matchesDto = constructDto(matchesLink, mapNames, now);
+            MatchesDto matchesDto = constructDto(matchesLink, mapNames);
             listMatchesDto.add(matchesDto);
             //System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
         });
@@ -89,12 +90,13 @@ public class MatchesController {
         List<String> teamsOdds = matchPageParser.getTeamsOdds(doc);
         matchesLink.leftTeamOdds = teamsOdds.get(0);
         matchesLink.rightTeamOdds = teamsOdds.get(1);
+        matchesLink.matchTime = (int) (System.currentTimeMillis() - now);
         matchesParserService.save(matchesLink);
-        MatchesDto matchesDto = constructDto(matchesLink, mapNames, now);
+        MatchesDto matchesDto = constructDto(matchesLink, mapNames);
         return matchesDto;
     }
 
-    private MatchesDto constructDto(MatchesLink matchesLink, List<String> mapNames, long now) {
+    private MatchesDto constructDto(MatchesLink matchesLink, List<String> mapNames) {
         MatchesDto matchesDtoN = new MatchesDto();
         matchesDtoN.id = matchesLink.matchId;
         matchesDtoN.matchesUrl = matchesLink.matchUrl;
@@ -104,13 +106,13 @@ public class MatchesController {
         matchesDtoN.matchMapsNames = mapNames;
         matchesDtoN.leftTeamOdds = matchesLink.leftTeamOdds;
         matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
-        matchesDtoN.matchTime = (int) (System.currentTimeMillis() - now);
+        matchesDtoN.matchTime = matchesLink.matchTime;
         return matchesDtoN;
     }
 
     @GetMapping("/total-matches-count")
     public List<String> getTotalMatchesCountForParsing() {
-        matchesParserService.deleteAll();
+        //matchesParserService.deleteAll();
         List<String> allLinks = matchesPageParser.parseMatches();
         return allLinks;
     }
@@ -120,13 +122,16 @@ public class MatchesController {
         return matchesParserService.getProcessedMatchesCount();
     }
 
+    @GetMapping("/clear-all-matches")
+    public void clearAllMatches() { matchesParserService.deleteAll(); }
+
     @GetMapping("/matches-from-db")
     public List<MatchesDto> getMatchesFromDB() {
         List<MatchesDto> matchesDtoList = new ArrayList<>();
         List<MatchesLink> matches = matchesParserService.getMatchesFromDB();
         matches.forEach(match -> {
             List<String> mapNames = Arrays.stream(match.matchMapsNames.split("\n")).toList();
-            matchesDtoList.add(constructDto(match, mapNames, 0));
+            matchesDtoList.add(constructDto(match, mapNames));
         });
         return matchesDtoList;
     }

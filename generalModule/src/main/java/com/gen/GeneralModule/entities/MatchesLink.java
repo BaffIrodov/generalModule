@@ -17,4 +17,5 @@ public class MatchesLink {
     public String matchMapsNames;
     public String leftTeamOdds;
     public String rightTeamOdds;
+    public int matchTime;
 }

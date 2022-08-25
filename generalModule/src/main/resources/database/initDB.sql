@@ -56,7 +56,8 @@ CREATE TABLE IF NOT EXISTS matches_link
     "match_format" VARCHAR(200) not null,
     "match_maps_names" VARCHAR(200),
     "left_team_odds" VARCHAR(200),
-    "right_team_odds" VARCHAR(200)
+    "right_team_odds" VARCHAR(200),
+    "match_time" int8
     );
 
 DROP TABLE IF EXISTS round_history;
