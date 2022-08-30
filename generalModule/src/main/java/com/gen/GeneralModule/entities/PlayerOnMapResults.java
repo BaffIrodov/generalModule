@@ -72,7 +72,11 @@ public class PlayerOnMapResults {
         }
     }
 
-    public void calculateKD(){
-        this.kd = (float) this.kills / (float) this.deaths;
+    public void calculateKD() {
+        if (this.deaths > 0) {
+            this.kd = (float) this.kills / (float) this.deaths;
+        } else {
+            this.kd = (float) this.kills;
+        }
     }
 }
