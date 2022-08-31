@@ -74,9 +74,9 @@ public class StatsPageParser {
         result.idStatsMap = Integer.parseInt(idStatsMap);
         result.dateOfMatch = dateOfMatch;
         result.roundSequence = roundSequence;
-        if(leftTeamIsTerrorists) {
+        if (leftTeamIsTerrorists) {
             result.leftTeamIsTerroristsInFirstHalf = true;
-        } else if(rightTeamIsTerrorists) {
+        } else if (rightTeamIsTerrorists) {
             result.leftTeamIsTerroristsInFirstHalf = false;
         }
         return returnValidatedObjectOrNull(result);
@@ -85,10 +85,14 @@ public class StatsPageParser {
     private Boolean thisTeamIsTerrorists(Element historyRow) {
         Boolean result = false;
         int index = 0;
-        for(Node e : historyRow.childNodes()) {
+        for (Node e : historyRow.childNodes()) {
             index++;
-            if (index < 15 && (e.attributes().get("src").contains("/t_win") || e.attributes().get("src").contains("/bomb_exploded"))) {
+            // Проверка до 21 элемента, потому что история матча начинается только с 5-ого элемента
+            if (index < 21 && (e.attributes().get("src").contains("/t_win")
+                    || e.attributes().get("src").contains("/bomb_exploded"))) {
                 result = true;
+                break;
+            } else if (index >= 21) {
                 break;
             }
         }
@@ -241,9 +245,9 @@ public class StatsPageParser {
         AtomicReference<String> result = new AtomicReference<>("");
         Elements mapInfoBox = doc.body().getElementsByClass("match-info-box"); //всегда один элемент должен быть
         mapInfoBox.get(0).childNodes().forEach(e -> {
-            if(e.attributes().get("class").toString().equals("team-left")) {
+            if (e.attributes().get("class").toString().equals("team-left")) {
                 e.childNodes().forEach(r -> {
-                    if(r.toString().contains("bold won")){
+                    if (r.toString().contains("bold won")) {
                         result.set("left");
                     } else if (r.toString().contains("bold lost")) {
                         result.set("right");
