@@ -57,9 +57,6 @@ public class StatsPageParser {
         Elements elements = doc.body().getElementsByClass("round-history-team-row");
         List<Boolean> leftTeamRow = getRoundHistoryTeamRow(elements.get(0));
         List<Boolean> rightTeamRow = getRoundHistoryTeamRow(elements.get(1));
-        Boolean leftTeamIsTerrorists = thisTeamIsTerrorists(elements.get(0));
-        //в теории может произойти 15 0 и не будет понятно, кто где
-        Boolean rightTeamIsTerrorists = thisTeamIsTerrorists(elements.get(1));
         for (int i = 0; i < leftTeamRow.size(); i++) {
             if (leftTeamRow.get(i) != rightTeamRow.get(i)) {
                 if (leftTeamRow.get(i)) {
@@ -71,28 +68,31 @@ public class StatsPageParser {
                 break;
             }
         }
+        result.roundSequence = roundSequence;
         result.idStatsMap = Integer.parseInt(idStatsMap);
         result.dateOfMatch = dateOfMatch;
-        result.roundSequence = roundSequence;
-        if (leftTeamIsTerrorists) {
+        Integer leftNew = thisTeamIsTerrorists(elements.get(0));
+        Integer rightNew = thisTeamIsTerrorists(elements.get(1));
+        if (leftNew == 1 || (leftNew == -1 && rightNew == 0)) {
             result.leftTeamIsTerroristsInFirstHalf = true;
-        } else if (rightTeamIsTerrorists) {
+        } else {
             result.leftTeamIsTerroristsInFirstHalf = false;
         }
         return returnValidatedObjectOrNull(result);
     }
 
-    private Boolean thisTeamIsTerrorists(Element historyRow) {
-        Boolean result = false;
-        int index = 0;
+    private Integer thisTeamIsTerrorists(Element historyRow) {
+        Integer result = -1;
         for (Node e : historyRow.childNodes()) {
-            index++;
-            // Проверка до 21 элемента, потому что история матча начинается только с 5-ого элемента
-            if (index < 21 && (e.attributes().get("src").contains("/t_win")
-                    || e.attributes().get("src").contains("/bomb_exploded"))) {
-                result = true;
-                break;
-            } else if (index >= 21) {
+            // Поиск в нодах первого сыгранного раунда
+            if (e.attributes().get("src").contains("/scoreboard/")) {
+                String elem = e.attributes().get("src");
+                if (elem.contains("/t_win") || elem.contains("/bomb_exploded")) {
+                    result = 1;
+                } else if (elem.contains("/ct_win") || elem.contains("/bomb_defused") ||
+                        elem.contains("/stopwatch")) {
+                    result = 0;
+                }
                 break;
             }
         }
