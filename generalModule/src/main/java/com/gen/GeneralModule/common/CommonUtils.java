@@ -59,7 +59,7 @@ public class CommonUtils {
                 doc = Jsoup.connect(url).userAgent(userAgent.getUserAgentChrome()).get();
             } catch (IOException exception) {
                 if(i >= 4) {
-                    errorsService.saveError(exception, url);
+//                    errorsService.saveError(exception, url);
                 }
                 System.out.println("IOException в запросе по адресу: " + url);
             }

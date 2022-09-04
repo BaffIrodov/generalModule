@@ -11,5 +11,6 @@ public enum MapsEnum {
     ANCIENT,
     CACHE,
     TRAIN,
-    TUSCAN
+    TUSCAN,
+    COBBLESTONE
 }
