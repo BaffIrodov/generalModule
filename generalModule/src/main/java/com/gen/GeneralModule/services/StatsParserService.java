@@ -51,14 +51,16 @@ public class StatsParserService {
         for (String link : links) {
             if (index < request.batchSize) {
                 Map<List<PlayerOnMapResults>, RoundHistory> resultMap = resultPageParser.parseMapStats(link);
-                List<List<PlayerOnMapResults>> result = resultMap.keySet().stream().toList();
-                List<RoundHistory> resultValues = resultMap.values().stream().toList();
-                result.forEach(stats -> {
-                    mapsCount.getAndIncrement();
-                    playerRepository.saveAll(stats);
-                });
-                resultValues.forEach(this::saveRoundHistory);
-                setLinkProcessed(link);
+                if(resultMap != null) {
+                    List<List<PlayerOnMapResults>> result = resultMap.keySet().stream().toList();
+                    List<RoundHistory> resultValues = resultMap.values().stream().toList();
+                    result.forEach(stats -> {
+                        mapsCount.getAndIncrement();
+                        playerRepository.saveAll(stats);
+                    });
+                    resultValues.forEach(this::saveRoundHistory);
+                    setLinkProcessed(link);
+                }
                 index++;
             } else {
                 break;
@@ -72,9 +74,11 @@ public class StatsParserService {
         ResultsLink res = resultsLinkRepository
                 .findById(id)
                 .orElse(null);
-        resultsLinkRepository.deleteById(id);
-        res.processed = true;
-        resultsLinkRepository.save(res);
+        if(res != null) {
+            resultsLinkRepository.deleteById(id);
+            res.processed = true;
+            resultsLinkRepository.save(res);
+        }
     }
 
     public Long getAvailableCount() {

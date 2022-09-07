@@ -4,6 +4,7 @@ import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.common.MapsEnum;
 import com.gen.GeneralModule.entities.PlayerOnMapResults;
 import com.gen.GeneralModule.entities.RoundHistory;
+import org.jboss.jandex.Index;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -48,37 +49,47 @@ public class StatsPageParser {
             listPlayersLeftAndRight = getAllPlayers(doc, idStatsMap, date);
         }
         resultMap.put(listPlayersLeftAndRight, roundHistory);
-        return resultMap;
+        if (roundHistory != null && listPlayersLeftAndRight != null) {
+            return resultMap;
+        } else {
+            return null;
+        }
+
     }
 
     public RoundHistory getFullRoundHistory(Document doc, String idStatsMap, Date dateOfMatch) {
-        RoundHistory result = new RoundHistory();
-        String roundSequence = "";
-        Elements elements = doc.body().getElementsByClass("round-history-team-row");
-        List<Boolean> leftTeamRow = getRoundHistoryTeamRow(elements.get(0));
-        List<Boolean> rightTeamRow = getRoundHistoryTeamRow(elements.get(1));
-        for (int i = 0; i < leftTeamRow.size(); i++) {
-            if (leftTeamRow.get(i) != rightTeamRow.get(i)) {
-                if (leftTeamRow.get(i)) {
-                    roundSequence += "L";
+        try {
+            RoundHistory result = new RoundHistory();
+            String roundSequence = "";
+            Elements elements = doc.body().getElementsByClass("round-history-team-row");
+            List<Boolean> leftTeamRow = getRoundHistoryTeamRow(elements.get(0));
+            List<Boolean> rightTeamRow = getRoundHistoryTeamRow(elements.get(1));
+            for (int i = 0; i < leftTeamRow.size(); i++) {
+                if (leftTeamRow.get(i) != rightTeamRow.get(i)) {
+                    if (leftTeamRow.get(i)) {
+                        roundSequence += "L";
+                    } else {
+                        roundSequence += "R";
+                    }
                 } else {
-                    roundSequence += "R";
+                    break;
                 }
-            } else {
-                break;
             }
+            result.roundSequence = roundSequence;
+            result.idStatsMap = Integer.parseInt(idStatsMap);
+            result.dateOfMatch = dateOfMatch;
+            Integer leftNew = thisTeamIsTerrorists(elements.get(0));
+            Integer rightNew = thisTeamIsTerrorists(elements.get(1));
+            if (leftNew == 1 || (leftNew == -1 && rightNew == 0)) {
+                result.leftTeamIsTerroristsInFirstHalf = true;
+            } else {
+                result.leftTeamIsTerroristsInFirstHalf = false;
+            }
+            return returnValidatedObjectOrNull(result);
+        } catch (IndexOutOfBoundsException exception) {
+            System.out.println("Произошел сбой в history: " + exception + ". Обычно это значит, что карту сыграли как попало и history не сохранилась");
+            return null;
         }
-        result.roundSequence = roundSequence;
-        result.idStatsMap = Integer.parseInt(idStatsMap);
-        result.dateOfMatch = dateOfMatch;
-        Integer leftNew = thisTeamIsTerrorists(elements.get(0));
-        Integer rightNew = thisTeamIsTerrorists(elements.get(1));
-        if (leftNew == 1 || (leftNew == -1 && rightNew == 0)) {
-            result.leftTeamIsTerroristsInFirstHalf = true;
-        } else {
-            result.leftTeamIsTerroristsInFirstHalf = false;
-        }
-        return returnValidatedObjectOrNull(result);
     }
 
     private Integer thisTeamIsTerrorists(Element historyRow) {

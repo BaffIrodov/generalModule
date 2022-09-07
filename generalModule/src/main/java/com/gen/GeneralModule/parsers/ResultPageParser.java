@@ -2,12 +2,17 @@ package com.gen.GeneralModule.parsers;
 
 import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.entities.PlayerOnMapResults;
+import com.gen.GeneralModule.entities.QResultsLink;
+import com.gen.GeneralModule.entities.ResultsLink;
 import com.gen.GeneralModule.entities.RoundHistory;
+import com.gen.GeneralModule.repositories.ResultsLinkRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -28,6 +33,14 @@ public class ResultPageParser {
     @Autowired
     private StatsPageParser statsPageParser;
 
+    @Autowired
+    ResultsLinkRepository resultsLinkRepository;
+
+    @Autowired
+    JPAQueryFactory queryFactory;
+
+    private static final QResultsLink resultsLink = new QResultsLink("resultsLink");
+
     private CommonUtils commonUtils = new CommonUtils();
 
     public Map<List<PlayerOnMapResults>, RoundHistory> parseMapStats(String resultUrl){
@@ -40,7 +53,13 @@ public class ResultPageParser {
             statsLinks = getAllStatsLinks(doc);
             for(String link : statsLinks){
                 Map<List<PlayerOnMapResults>, RoundHistory> parsingResult = statsPageParser.parseMapStats(link);
-                resultMap.putAll(parsingResult);
+                if(parsingResult != null) {
+                    resultMap.putAll(parsingResult);
+                } else {
+                    ResultsLink res = (ResultsLink) queryFactory.from(resultsLink).where(resultsLink.resultUrl.eq(resultUrl)).fetchOne();
+                    resultsLinkRepository.delete(res);
+                    return null;
+                }
             }
         }
         return resultMap;
