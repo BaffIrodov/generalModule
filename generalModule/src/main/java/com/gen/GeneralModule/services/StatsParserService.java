@@ -4,7 +4,7 @@ import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.dtos.requestResponseDtos.StatsRequestDto;
 import com.gen.GeneralModule.entities.*;
 import com.gen.GeneralModule.parsers.ResultPageParser;
-import com.gen.GeneralModule.repositories.PlayerRepository;
+import com.gen.GeneralModule.repositories.PlayerOnMapResultsRepository;
 import com.gen.GeneralModule.repositories.ResultsLinkRepository;
 import com.gen.GeneralModule.repositories.RoundHistoryRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Log4j2
 public class StatsParserService {
     @Autowired
-    private PlayerRepository playerRepository;
+    private PlayerOnMapResultsRepository playerOnMapResultsRepository;
 
     @Autowired
     private JPAQueryFactory queryFactory;
@@ -39,7 +39,7 @@ public class StatsParserService {
 
 
     public PlayerOnMapResults save(PlayerOnMapResults player) {
-        return playerRepository.save(player);
+        return playerOnMapResultsRepository.save(player);
     }
 
     public void startParser(StatsRequestDto request) {
@@ -56,7 +56,7 @@ public class StatsParserService {
                     List<RoundHistory> resultValues = resultMap.values().stream().toList();
                     result.forEach(stats -> {
                         mapsCount.getAndIncrement();
-                        playerRepository.saveAll(stats);
+                        playerOnMapResultsRepository.saveAll(stats);
                     });
                     resultValues.forEach(this::saveRoundHistory);
                     setLinkProcessed(link);
