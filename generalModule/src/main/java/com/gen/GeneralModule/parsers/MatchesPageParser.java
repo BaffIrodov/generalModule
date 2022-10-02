@@ -1,6 +1,7 @@
 package com.gen.GeneralModule.parsers;
 
 import com.gen.GeneralModule.common.CommonUtils;
+import com.gen.GeneralModule.common.Config;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,10 @@ import java.util.stream.Collectors;
 
 @Component
 public class MatchesPageParser {
+
+    @Autowired
+    MatchPageParser matchPageParser;
+
     //List<String> listOfLinks = new ArrayList<>();
     private CommonUtils commonUtils = new CommonUtils();
 
@@ -26,18 +31,23 @@ public class MatchesPageParser {
             listOfLinks.addAll(getMatchesHrefs(elementsWithHrefs));
             elementsWithHrefs = doc.body().getElementsByClass("upcomingMatch");
             listOfLinks.addAll(getMatchesHrefs(elementsWithHrefs));
-            //listOfLinks.add("https://www.hltv.org/matches/2357236/onetap-vs-norway-european-championship-2022"); // Назову это "проблемный матч". Он чисто для теста
         }
         System.out.println("Запрос будущих матчей: " + (System.currentTimeMillis() - now));
         System.out.println("Всего возможных матчей: " + listOfLinks.size());
-        //parseAllPlayers(listOfLinks.subList(0, 1));
-        //parseAllPlayers(listOfLinks);
+        System.out.println("Берем из конфига вот столько матчей: " + Config.totalMatchesCount);
+        listOfLinks = listOfLinks.subList(0, Config.totalMatchesCount);
         return listOfLinks;
     }
 
-//    private void parseAllPlayers(List<String> listOfLinks) {
-//        listOfLinks.forEach(matchParser::parseMatch);
-//    }
+    private void parseAllPlayers(List<String> listOfLinks) {
+        for (String link : listOfLinks) {
+            List<List<String>> players = matchPageParser.parseMatch(link);
+        }
+    }
+
+    public List<List<String>> parseAllPlayersByLink(String link) {
+        return matchPageParser.parseMatch(link);
+    }
 
     private List<String> getMatchesHrefs(Elements elementsWithHrefs) {
         // Элемент в childNodes содержит две или одну ноду. Две если известны соперники и есть кнопка ставок. Одна в обратном случае.

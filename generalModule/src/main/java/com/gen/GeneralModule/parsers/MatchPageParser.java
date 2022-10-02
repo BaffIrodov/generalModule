@@ -16,16 +16,14 @@ import java.util.List;
 public class MatchPageParser {
     @Autowired
     private CommonUtils commonUtils;
-    public void parseMatch(String link) {
+    public List<List<String>> parseMatch(String link) {
         // Периодически вываливается ошибка с подключением, потому что ограничена скорость (error 1015), из-за этого
         // не получается забрать игроков и он выводит лист с двумя пустыми листами.
         Document doc = commonUtils.reliableConnectAndGetDocument(link);
         long now = System.currentTimeMillis();
         commonUtils.waiter(400); // Искусственное замедление, которое позволяет зайти на все матчи. На 350 та же ошибка 1015
         List<List<String>> listPlayersLeftAndRight = getAllPlayers(doc);
-        System.out.println(link);
-        System.out.println("Время: " + (System.currentTimeMillis() - now));
-        System.out.println("Команды: " + listPlayersLeftAndRight);
+        return listPlayersLeftAndRight;
     }
 
     public List<List<String>> getAllPlayers(Document doc) {

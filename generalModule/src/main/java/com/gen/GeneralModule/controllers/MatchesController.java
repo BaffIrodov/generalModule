@@ -30,7 +30,8 @@ public class MatchesController {
     @Autowired
     private CommonUtils commonUtils;
 
-    private MatchPageParser matchPageParser = new MatchPageParser();
+    @Autowired
+    private MatchPageParser matchPageParser;
 
     // В данный момент не используется. Будет ли?
     @GetMapping("/write-links")
@@ -78,6 +79,7 @@ public class MatchesController {
     public MatchesDto writeOneMatch(@RequestBody String link) {
         MatchesLink matchesLink = new MatchesLink();
         long now = System.currentTimeMillis();
+        List<List<String>> res = matchPageParser.parseMatch(link);
         matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
         matchesLink.matchUrl = link;
         Document doc = commonUtils.reliableConnectAndGetDocument(link);
