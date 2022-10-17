@@ -55,6 +55,7 @@ public class MatchesController {
             commonUtils.waiter(400);
             long now = System.currentTimeMillis();
             MatchesLink matchesLink = new MatchesLink();
+            List<List<String>> teams = matchPageParser.parseMatch(link);
             matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
             matchesLink.matchUrl = link;
             Document doc = commonUtils.reliableConnectAndGetDocument(link);
@@ -71,7 +72,10 @@ public class MatchesController {
             matchesLink.matchTime = (int) (System.currentTimeMillis() - now);
             matchesParserService.save(matchesLink);
 
-            MatchesDto matchesDto = constructDto(matchesLink, mapNames, new ArrayList<>(), new ArrayList<>());
+            MatchesDto matchesDto = constructDto(matchesLink, mapNames, teams.get(0), teams.get(1));
+            if (matchesDto.mapsPredict.size() != 0) {
+                int i = 0;
+            }
             listMatchesDto.add(matchesDto);
             //System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
         });
@@ -122,6 +126,9 @@ public class MatchesController {
         matchesDtoN.leftTeamOdds = matchesLink.leftTeamOdds;
         matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
         matchesDtoN.matchTime = matchesLink.matchTime;
+        matchesDtoN.mapsPredict.forEach((k, v) -> {
+            matchesDtoN.mapsPredictChanged.add(k + " - " + v);
+        });
         return matchesDtoN;
     }
 

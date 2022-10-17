@@ -9,7 +9,7 @@ public class Config {
     public static int totalMatchesCount = 20;
 
     //если сила больше в это число раз, то предикт выдается (должно совпадать с calculating)
-    public static float compareMultiplier = 2f;
+    public static float compareMultiplier = 3f;
 
     public static List<Integer> activeMaps = Arrays.asList(1,2,3,4,5,6,7);
 
