@@ -63,6 +63,7 @@ public class MatchesController {
             matchesLink.leftTeam = teamNames.get(0);
             matchesLink.rightTeam = teamNames.get(1);
             matchesLink.matchFormat = matchPageParser.getMatchFormat(doc);
+            String matchDate = matchPageParser.getMatchDate(doc);
             List<String> mapNames = matchPageParser.getMatchMapsNames(doc);
             matchesLink.matchMapsNames = String.join("\n", mapNames);
             List<String> teamOdds = matchPageParser.getTeamsOdds(doc);
@@ -72,7 +73,7 @@ public class MatchesController {
             matchesLink.matchTime = (int) (System.currentTimeMillis() - now);
             matchesParserService.save(matchesLink);
 
-            MatchesDto matchesDto = constructDto(matchesLink, mapNames, teams.get(0), teams.get(1));
+            MatchesDto matchesDto = constructDto(matchDate, matchesLink, mapNames, teams.get(0), teams.get(1));
             if (matchesDto.mapsPredict.size() != 0) {
                 int i = 0;
             }
@@ -98,6 +99,7 @@ public class MatchesController {
         matchesLink.leftTeam = teamsNames.get(0);
         matchesLink.rightTeam = teamsNames.get(1);
         matchesLink.matchFormat = matchPageParser.getMatchFormat(doc);
+        String matchDate = matchPageParser.getMatchDate(doc);
         List<String> mapNames = matchPageParser.getMatchMapsNames(doc);
         matchesLink.matchMapsNames = String.join("\n", mapNames);
         List<String> teamsOdds = matchPageParser.getTeamsOdds(doc);
@@ -105,14 +107,14 @@ public class MatchesController {
         matchesLink.rightTeamOdds = teamsOdds.get(1);
         matchesLink.matchTime = (int) (System.currentTimeMillis() - now);
         matchesParserService.save(matchesLink);
-        MatchesDto matchesDto = constructDto(matchesLink, mapNames, teams.get(0), teams.get(1));
+        MatchesDto matchesDto = constructDto(matchDate, matchesLink, mapNames, teams.get(0), teams.get(1));
         if (matchesDto.mapsPredict.size() != 0) {
             int i = 0;
         }
         return matchesDto;
     }
 
-    private MatchesDto constructDto(MatchesLink matchesLink, List<String> mapNames, List<String> leftTeamIds, List<String> rightTeamIds) {
+    private MatchesDto constructDto(String matchDate, MatchesLink matchesLink, List<String> mapNames, List<String> leftTeamIds, List<String> rightTeamIds) {
         MatchesDto matchesDtoN = new MatchesDto();
         if (leftTeamIds.size() > 0 && rightTeamIds.size() > 0) {
             getPredictByMapName(leftTeamIds, rightTeamIds, matchesDtoN.mapsPredict, matchesLink.matchUrl);
@@ -122,6 +124,7 @@ public class MatchesController {
         matchesDtoN.leftTeam = matchesLink.leftTeam;
         matchesDtoN.rightTeam = matchesLink.rightTeam;
         matchesDtoN.matchFormat = matchesLink.matchFormat;
+        matchesDtoN.matchDate = matchDate;
         matchesDtoN.matchMapsNames = mapNames;
         matchesDtoN.leftTeamOdds = matchesLink.leftTeamOdds;
         matchesDtoN.rightTeamOdds = matchesLink.rightTeamOdds;
@@ -223,7 +226,7 @@ public class MatchesController {
         List<MatchesLink> matches = matchesParserService.getMatchesFromDB();
         matches.forEach(match -> {
             List<String> mapNames = Arrays.stream(match.matchMapsNames.split("\n")).toList();
-            matchesDtoList.add(constructDto(match, mapNames, new ArrayList<>(), new ArrayList<>()));
+            matchesDtoList.add(constructDto("IM FROM DB", match, mapNames, new ArrayList<>(), new ArrayList<>()));
         });
         return matchesDtoList;
     }

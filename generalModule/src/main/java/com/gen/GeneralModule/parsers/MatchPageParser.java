@@ -3,7 +3,6 @@ package com.gen.GeneralModule.parsers;
 import com.gen.GeneralModule.common.CommonUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 public class MatchPageParser {
@@ -82,6 +82,28 @@ public class MatchPageParser {
             format = format.replaceAll(" [(].*", "").replaceAll("\n.*", "");
         }
         return format;
+    }
+
+    public String getMatchDate(Document doc) {
+        String res = "";
+        AtomicReference<String> time = new AtomicReference<>("");
+        AtomicReference<String> date = new AtomicReference<>("");
+        if (doc != null) {
+            Elements elementsWithDate = doc.body().getElementsByClass("timeAndEvent");
+            elementsWithDate.get(0).childNodes().forEach(e -> {
+                if (e instanceof Element) {
+                    Element thisEl = (Element) e;
+                    if(thisEl.className().equals("time")) {
+                        time.set(e.childNodes().get(0).toString().replaceAll("\n", ""));
+                    }
+                    if(thisEl.className().equals("date")) {
+                        date.set(e.childNodes().get(0).toString().replaceAll("\n", ""));
+                    }
+                }
+            });
+        }
+        res = time.get() + " | " + date.get();
+        return res;
     }
 
     public List<String> getMatchMapsNames(Document doc) {
