@@ -56,29 +56,33 @@ public class MatchesController {
             long now = System.currentTimeMillis();
             MatchesLink matchesLink = new MatchesLink();
             List<List<String>> teams = matchPageParser.parseMatch(link);
-            matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
-            matchesLink.matchUrl = link;
-            Document doc = commonUtils.reliableConnectAndGetDocument(link);
-            List<String> teamNames = matchPageParser.getTeamsNames(doc);
-            matchesLink.leftTeam = teamNames.get(0);
-            matchesLink.rightTeam = teamNames.get(1);
-            matchesLink.matchFormat = matchPageParser.getMatchFormat(doc);
-            String matchDate = matchPageParser.getMatchDate(doc);
-            List<String> mapNames = matchPageParser.getMatchMapsNames(doc);
-            matchesLink.matchMapsNames = String.join("\n", mapNames);
-            List<String> teamOdds = matchPageParser.getTeamsOdds(doc);
-            matchesLink.leftTeamOdds = teamOdds.get(0);
-            matchesLink.rightTeamOdds = teamOdds.get(1);
-            matchesLinks.add(matchesLink);
-            matchesLink.matchTime = (int) (System.currentTimeMillis() - now);
-            matchesParserService.save(matchesLink);
+            if(teams == null || teams.get(0) == null || teams.get(1) == null || teams.get(0).contains("") || teams.get(1).contains("")) {
+                //nothing
+            } else {
+                matchesLink.matchId = Integer.parseInt(CommonUtils.standardIdParsingBySlice("/matches/", link));
+                matchesLink.matchUrl = link;
+                Document doc = commonUtils.reliableConnectAndGetDocument(link);
+                List<String> teamNames = matchPageParser.getTeamsNames(doc);
+                matchesLink.leftTeam = teamNames.get(0);
+                matchesLink.rightTeam = teamNames.get(1);
+                matchesLink.matchFormat = matchPageParser.getMatchFormat(doc);
+                String matchDate = matchPageParser.getMatchDate(doc);
+                List<String> mapNames = matchPageParser.getMatchMapsNames(doc);
+                matchesLink.matchMapsNames = String.join("\n", mapNames);
+                List<String> teamOdds = matchPageParser.getTeamsOdds(doc);
+                matchesLink.leftTeamOdds = teamOdds.get(0);
+                matchesLink.rightTeamOdds = teamOdds.get(1);
+                matchesLinks.add(matchesLink);
+                matchesLink.matchTime = (int) (System.currentTimeMillis() - now);
+                matchesParserService.save(matchesLink);
 
-            MatchesDto matchesDto = constructDto(matchDate, matchesLink, mapNames, teams.get(0), teams.get(1));
-            if (matchesDto.mapsPredict.size() != 0) {
-                int i = 0;
+                MatchesDto matchesDto = constructDto(matchDate, matchesLink, mapNames, teams.get(0), teams.get(1));
+                if (matchesDto.mapsPredict.size() != 0) {
+                    int i = 0;
+                }
+                listMatchesDto.add(matchesDto);
+                //System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
             }
-            listMatchesDto.add(matchesDto);
-            //System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
         });
         //matchesParserService.saveAll(matchesLinks);
         matchesWithTimeDto.matches = listMatchesDto;
