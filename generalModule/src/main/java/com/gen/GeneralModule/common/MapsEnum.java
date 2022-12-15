@@ -9,6 +9,7 @@ public enum MapsEnum {
     OVERPASS,
     VERTIGO,
     ANCIENT,
+    ANUBIS,
     CACHE,
     TRAIN,
     TUSCAN,

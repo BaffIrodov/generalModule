@@ -101,7 +101,7 @@ public class StatsPageParserTests {
     @Test
     public void currentMapName(PlayerOnMapResults player) {
         List<String> maps = Arrays.asList("DUST2", "MIRAGE", "INFERNO", "NUKE", "OVERPASS", "VERTIGO",
-                "ANCIENT", "CACHE", "TRAIN", "TUSCAN");
+                "ANCIENT", "ANUBIS", "CACHE", "TRAIN", "TUSCAN");
         Assertions.assertTrue(maps.contains(player.playedMapString));
     }
 }

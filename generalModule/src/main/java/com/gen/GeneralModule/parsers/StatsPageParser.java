@@ -283,6 +283,7 @@ public class StatsPageParser {
                 case "OVERPASS" -> mapsEnum.set(MapsEnum.OVERPASS);
                 case "VERTIGO" -> mapsEnum.set(MapsEnum.VERTIGO);
                 case "ANCIENT" -> mapsEnum.set(MapsEnum.ANCIENT);
+                case "ANUBIS" -> mapsEnum.set(MapsEnum.ANUBIS);
                 case "CACHE" -> mapsEnum.set(MapsEnum.CACHE);
                 case "TRAIN" -> mapsEnum.set(MapsEnum.TRAIN);
                 case "TUSCAN" -> mapsEnum.set(MapsEnum.TUSCAN);
