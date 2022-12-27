@@ -35,7 +35,10 @@ public class MatchesPageParser {
         System.out.println("Запрос будущих матчей: " + (System.currentTimeMillis() - now));
         System.out.println("Всего возможных матчей: " + listOfLinks.size());
         System.out.println("Берем из конфига вот столько матчей: " + Config.totalMatchesCount);
-        listOfLinks = listOfLinks.subList(0, Config.totalMatchesCount);
+        if (listOfLinks.size() < Config.totalMatchesCount) {
+            int i = 0;
+        }
+        listOfLinks = listOfLinks.subList(0, Math.min(listOfLinks.size(), Config.totalMatchesCount));
         return listOfLinks;
     }
 
