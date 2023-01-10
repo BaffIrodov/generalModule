@@ -46,7 +46,6 @@ public class MatchesController {
         matchesParserService.deleteAll();
         long fullTime = System.currentTimeMillis();
         List<String> allLinks = matchesPageParser.parseMatches();
-        //allLinks = allLinks.subList(0, 20);
         List<MatchesLink> matchesLinks = new ArrayList<>();
         List<MatchesDto> listMatchesDto = new ArrayList<>();
         MatchesWithTimeDto matchesWithTimeDto = new MatchesWithTimeDto();
