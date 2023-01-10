@@ -4,12 +4,15 @@ import com.gen.GeneralModule.common.CommonUtils;
 import com.gen.GeneralModule.common.Config;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -18,12 +21,32 @@ public class MatchesPageParser {
     @Autowired
     MatchPageParser matchPageParser;
 
+    @Autowired
+    PositiveAvailableGamesParser positiveAvailableGamesParser;
+
     //List<String> listOfLinks = new ArrayList<>();
     private CommonUtils commonUtils = new CommonUtils();
 
     public List<String> parseMatches() {
         List<String> listOfLinks = new ArrayList<>();
-        //listOfLinks.clear();
+//        listOfLinks.clear();
+//        positiveAvailableGamesParser.parseAvailableGames();
+//        System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
+//
+//        ChromeOptions chromeOptions = new ChromeOptions();
+//        chromeOptions.setExperimentalOption("excludeSwitches", List.of("enable-automation"));
+//        chromeOptions.setExperimentalOption("useAutomationExtension", false);
+//        chromeOptions.addArguments("--disable-blink-features=AutomationControlled");
+//        WebDriver driver = new ChromeDriver(chromeOptions);
+//        driver.get("https://csgopositive.be");
+//        driver.manage().window().maximize();
+//        commonUtils.waiter(15000);
+//        driver.get("https://csgopositive.be");
+//        String handle = driver.getWindowHandle();
+//        driver.close();
+//        commonUtils.waiter(5000);
+//        driver = new ChromeDriver();
+//        driver.switchTo().window(handle);
         long now = System.currentTimeMillis();
         Document doc = commonUtils.reliableConnectAndGetDocument("https://www.hltv.org/matches");
         if (doc != null) {
