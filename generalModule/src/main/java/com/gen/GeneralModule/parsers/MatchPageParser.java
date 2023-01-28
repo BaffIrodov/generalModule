@@ -130,16 +130,18 @@ public class MatchPageParser {
             // и засовываем в левый список, следующую пустую ячейку пропускаем, берём коэф для правой команды
             // и засовываем в правый список. Так делаем пока не пройдём по всем ячейкам с классом odds-cell border-left.
             // Затем в общий список добавляем в начале левый, а потом правый списки.
-            Elements elementsWithOdds = doc.body().getElementsByClass("odds-cell border-left");
-            for(int i=0; i<(elementsWithOdds.size()-1); i+=3){
-                leftTeam = String.join(" ", leftTeam,
-                        ((TextNode) elementsWithOdds.get(i).childNodes().get(0).childNodes().get(0)).getWholeText());
-                rightTeam = String.join(" ", rightTeam,
-                        ((TextNode) elementsWithOdds.get(i+2).childNodes().get(0).childNodes().get(0)).getWholeText());
-            }
-            odds.add(leftTeam);
-            odds.add(rightTeam);
+//            Elements elementsWithOdds = doc.body().getElementsByClass("odds-cell border-left");
+//            for(int i=0; i<(elementsWithOdds.size()-1); i+=3){
+//                leftTeam = String.join(" ", leftTeam,
+//                        ((TextNode) elementsWithOdds.get(i).childNodes().get(0).childNodes().get(0)).getWholeText());
+//                rightTeam = String.join(" ", rightTeam,
+//                        ((TextNode) elementsWithOdds.get(i+2).childNodes().get(0).childNodes().get(0)).getWholeText());
+//            }
+//            odds.add(leftTeam);
+//            odds.add(rightTeam);
         }
+        odds.add(leftTeam);
+        odds.add(rightTeam);
         return odds;
     }
 }
