@@ -2,14 +2,14 @@ package com.gen.GeneralModule.common;
 
 public enum MapsEnum {
     ALL,
-    DUST2,
+    ANUBIS,
     MIRAGE,
     INFERNO,
     NUKE,
     OVERPASS,
     VERTIGO,
     ANCIENT,
-    ANUBIS,
+    DUST2,
     CACHE,
     TRAIN,
     TUSCAN,
