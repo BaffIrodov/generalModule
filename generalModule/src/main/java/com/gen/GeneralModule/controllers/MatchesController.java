@@ -5,10 +5,13 @@ import com.gen.GeneralModule.common.Config;
 import com.gen.GeneralModule.common.MapsEnum;
 import com.gen.GeneralModule.dtos.MatchesDto;
 import com.gen.GeneralModule.dtos.MatchesWithTimeDto;
+import com.gen.GeneralModule.entities.BetCondition;
 import com.gen.GeneralModule.entities.MatchesLink;
+import com.gen.GeneralModule.entities.QBetCondition;
 import com.gen.GeneralModule.entities.QPlayerForce;
 import com.gen.GeneralModule.parsers.MatchPageParser;
 import com.gen.GeneralModule.parsers.MatchesPageParser;
+import com.gen.GeneralModule.repositories.BetConditionRepository;
 import com.gen.GeneralModule.services.MatchesParserService;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -36,9 +39,13 @@ public class MatchesController {
     private MatchPageParser matchPageParser;
 
     @Autowired
+    private BetConditionRepository betConditionRepository;
+
+    @Autowired
     private JPAQueryFactory queryFactory; //TODO вот это надо бы в сервис
 
     private static final QPlayerForce playerForce = new QPlayerForce("playerForce");
+    private static final QBetCondition betCondition = new QBetCondition("betCondition");
 
     // В данный момент не используется. Будет ли?
     @GetMapping("/write-links")
@@ -76,10 +83,9 @@ public class MatchesController {
                 matchesParserService.save(matchesLink);
 
                 MatchesDto matchesDto = constructDto(matchDate, matchesLink, mapNames, teams.get(0), teams.get(1));
-                if (matchesDto.mapsPredict.size() != 0) {
-                    int i = 0;
+                if (!matchesDto.dontShow) {
+                    listMatchesDto.add(matchesDto);
                 }
-                listMatchesDto.add(matchesDto);
                 //System.out.println("Обработано " + matchesDto.size() + " из " + allLinks.size());
             }
         });
@@ -135,6 +141,18 @@ public class MatchesController {
         matchesDtoN.mapsPredict.forEach((k, v) -> {
             matchesDtoN.mapsPredictChanged.add(k + " - " + v);
         });
+        BetCondition betCondition = betConditionRepository.findById(matchesDtoN.id).orElse(null);
+        if (betCondition != null) {
+            matchesDtoN.alreadyBet = betCondition.alreadyBet;
+            matchesDtoN.betLimit = betCondition.betLimit;
+            matchesDtoN.dontShow = betCondition.dontShow;
+            if(matchesDtoN.alreadyBet >= matchesDtoN.betLimit)
+                matchesDtoN.dontShow = true;
+        } else {
+            matchesDtoN.alreadyBet = 0;
+            matchesDtoN.betLimit = 0;
+            matchesDtoN.dontShow = false;
+        }
         return matchesDtoN;
     }
 

@@ -18,4 +18,7 @@ public class MatchesDto {
     public Integer matchTime;
     public Map<String, String> mapsPredict = new HashMap<>(); //название карты к строчке, в которой название выигравшей команды. Может быть пустым
     public List<String> mapsPredictChanged = new ArrayList<>(); //for front
+    public Integer alreadyBet;
+    public Integer betLimit;
+    public Boolean dontShow;
 }
