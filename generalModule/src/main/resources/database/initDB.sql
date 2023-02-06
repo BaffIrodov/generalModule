@@ -60,6 +60,16 @@ CREATE TABLE IF NOT EXISTS matches_link
     "match_time" int8
     );
 
+DROP TABLE IF EXISTS bet_condition;
+CREATE TABLE IF NOT EXISTS bet_condition
+(
+    "match_id" int8 not null,
+    "already_bet" int8 not null,
+    "bet_limit" int8 not null,
+    "dont_show" boolean,
+    "it_was_won" boolean
+);
+
 DROP TABLE IF EXISTS round_history;
 CREATE TABLE IF NOT EXISTS round_history
 (

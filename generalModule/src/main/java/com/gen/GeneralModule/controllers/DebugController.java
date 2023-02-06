@@ -29,6 +29,9 @@ public class DebugController {
     MatchesLinkRepository matchesLinkRepository;
 
     @Autowired
+    BetConditionRepository betConditionRepository;
+
+    @Autowired
     PlayerOnMapResultsRepository playerOnMapResultsRepository;
 
     @Autowired
@@ -46,6 +49,7 @@ public class DebugController {
     private static final QStatsResponse statsResponse = new QStatsResponse("statsResponse");
     private static final QErrors errors = new QErrors("errors");
     private static final QMatchesLink matchesLink = new QMatchesLink("matchesLink");
+    private static final QBetCondition betCondition = new QBetCondition("betCondition");
 
     @GetMapping("/results-link-processed/{value}")
     public void setResultsLingProcessed(@PathVariable Boolean value) {
@@ -87,6 +91,22 @@ public class DebugController {
     @GetMapping("/create-matches-link")
     public void createMatchesLinkTable() {
         matchesLinkRepository.createMatchesLinkTable();
+    }
+
+    @GetMapping("/bet-condition-exist")
+    public Boolean betConditionExist() {
+        try {
+            queryFactory.from(betCondition).select(betCondition.matchId).fetch();
+        } catch (Exception exception) {
+            return false;
+        }
+        return true;
+    }
+
+    @Transactional
+    @GetMapping("/create-bet-condition")
+    public void createBetConditionTable() {
+        betConditionRepository.createBetConditionTable();
     }
 
     @GetMapping("/player-on-map-results-exist")
