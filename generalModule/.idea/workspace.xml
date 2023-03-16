@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c369a914-eb99-41e6-a996-06d0e30bee93" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/StatsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/controllers/StatsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/StatsParserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/gen/GeneralModule/services/StatsParserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,8 +64,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
-    "last_opened_file_path": "C:/Users/serge/Desktop/backup/db",
+    "database.data.extractors.current.export.id": "SQL Inserts",
+    "last_opened_file_path": "C:/Users/kseni/Desktop/atom/atomskittles/atomskittles-rest",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Facets",
     "project.structure.proportion": "0.0",
@@ -91,8 +89,8 @@
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.gen.GeneralModule.controllers" />
-      <recent name="com.gen.GeneralModule.services" />
       <recent name="com.gen.GeneralModule.repositories" />
+      <recent name="com.gen.GeneralModule.services" />
       <recent name="com.gen.GeneralModule.model" />
     </key>
   </component>
@@ -152,6 +150,23 @@
       <workItem from="1659737224472" duration="759000" />
       <workItem from="1660502933846" duration="3365000" />
       <workItem from="1660671059062" duration="7258000" />
+      <workItem from="1674984784531" duration="1850000" />
+      <workItem from="1675072818126" duration="732000" />
+      <workItem from="1675150825954" duration="7195000" />
+      <workItem from="1675244877978" duration="2455000" />
+      <workItem from="1675336937937" duration="654000" />
+      <workItem from="1675360918833" duration="967000" />
+      <workItem from="1675404014087" duration="1398000" />
+      <workItem from="1675499608990" duration="1215000" />
+      <workItem from="1675591599672" duration="639000" />
+      <workItem from="1675606264085" duration="616000" />
+      <workItem from="1675673330982" duration="10106000" />
+      <workItem from="1675761929135" duration="3298000" />
+      <workItem from="1676050400360" duration="1223000" />
+      <workItem from="1676131782637" duration="3039000" />
+      <workItem from="1676204370400" duration="1707000" />
+      <workItem from="1676228327669" duration="794000" />
+      <workItem from="1677097452364" duration="35000" />
     </task>
     <servers />
   </component>
@@ -169,10 +184,17 @@
       </map>
     </option>
   </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="betByMatchId.keySet().stream().toList().get(0)" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/generalModule$GeneralModuleApplication.ic" NAME="GeneralModuleApplication Coverage Results" MODIFIED="1659737161148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/GeneralModule$GeneralModuleApplication.ic" NAME="GeneralModuleApplication Coverage Results" MODIFIED="1656529842262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.gen.GeneralModule.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/generalModule$GeneralModuleApplication.ic" NAME="GeneralModuleApplication Coverage Results" MODIFIED="1659737161148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
 </project>
